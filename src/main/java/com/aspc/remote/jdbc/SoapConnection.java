@@ -53,7 +53,7 @@ import org.apache.commons.logging.Log;
 public class SoapConnection extends ExecutorConnection
 {
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.jdbc.SoapConnection");//#LOGGER-NOPMD
-    private Client remoteClient;
+    private final Client remoteClient;
 
     /**
      * JDBC via SOAP

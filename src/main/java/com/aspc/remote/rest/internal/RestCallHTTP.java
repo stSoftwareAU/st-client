@@ -430,11 +430,14 @@ public class RestCallHTTP extends RestCall
                 c.setRequestProperty("Accept-Encoding", "gzip");
             }
             c.setUseCaches(false);
+            
             if(body != null)
             {           
                 if( DispositionType.ATTACHMENT.equals(dispositionType))
                 {
                     c.setDoOutput(true);
+
+                    c.setFixedLengthStreamingMode(body.length());
 
                     try(OutputStream os = c.getOutputStream();FileInputStream fin=new FileInputStream( body))
                     {
@@ -449,7 +452,7 @@ public class RestCallHTTP extends RestCall
                             }
                             os.write( array, 0, len );
                         }
-                        
+
                         os.flush();
                         os.close();
                     }

@@ -169,16 +169,16 @@ public final class MemoryManager
      * it would be great). PS. In JDK1.4 & JDK1.4.1 getMaxMemory() doesn't work.
      */
     private static long maxMemory;
-    
-    /**
-     * G1 segments are a maximum of 32 megs.
-     */
-    private static final int PADDING_MAX_SEGMENT=24*1024*1024;
-
-    /** 
-     * The maximum padding size.
-     */
-    private static final long MAX_PADDING_SIZE=PADDING_MAX_SEGMENT * 100;
+//    
+//    /**
+//     * G1 segments are a maximum of 32 megs.
+//     */
+//    private static final int PADDING_MAX_SEGMENT=24*1024*1024;
+//
+//    /** 
+//     * The maximum padding size.
+//     */
+//    private static final long MAX_PADDING_SIZE=PADDING_MAX_SEGMENT * 100L;
 
     /** the size of the rainy day fund */
     private static final int RAINY_DAY_SIZE=512 * 1024;
@@ -200,10 +200,10 @@ public final class MemoryManager
     /** Gives us some room if we are clearing up. */
     @SuppressWarnings("VolatileArrayField")
     private static volatile byte[] rainyDayFund;//MT CHECKED
-    /** weak handle to the padding of the memory */
-    private static final WeakReference WEAK_PADDING[];
-    /** hard handle to the padding of the memory */
-    private static final byte HARD_PADDING[][];
+//    /** weak handle to the padding of the memory */
+//    private static final WeakReference WEAK_PADDING[];
+//    /** hard handle to the padding of the memory */
+//    private static final byte HARD_PADDING[][];
     private static final Object GC_WATCH[];
 
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.memory.MemoryManager");//#LOGGER-NOPMD
@@ -306,17 +306,17 @@ public final class MemoryManager
      */
     public static final String ENV_MIN_INCREMENTAL_CLEAR_TIME="MIN_INCREMENTAL_CLEAR_TIME";
 
-    /**
-     * The padding margin
-     */
-    public static final String ENV_PADDING_MARGIN="PADDING_MARGIN";
-    private static final int PADDING_MARGIN;
+//    /**
+//     * The padding margin
+//     */
+//    public static final String ENV_PADDING_MARGIN="PADDING_MARGIN";
+//    private static final int PADDING_MARGIN;
 
-    /**
-     * The padding max growth percent
-     */
-    public static final String ENV_PADDING_MAX_GROWTH_PERCENT="PADDING_MAX_GROWTH_PERCENT";
-    private static final int PADDING_MAX_GROWTH_PERCENT;
+//    /**
+//     * The padding max growth percent
+//     */
+//    public static final String ENV_PADDING_MAX_GROWTH_PERCENT="PADDING_MAX_GROWTH_PERCENT";
+//    private static final int PADDING_MAX_GROWTH_PERCENT;
 
     /**
      * The minimum tenured percentage
@@ -1113,40 +1113,40 @@ public final class MemoryManager
         return free;
     }
 
-    /**
-     * the size of the memory padding
-     * @return the size in bytes
-     */
-    @CheckReturnValue @Nonnegative
-    public static long getPaddingMemory()
-    {
-        long padding = 0;
-        synchronized( WEAK_PADDING)
-        {
-            for( int i=0; i < WEAK_PADDING.length;i++)
-            {
-                WeakReference ref = WEAK_PADDING[i];
-
-                if( ref != null)
-                {
-                    Object data = ref.get();
-
-                    if( data instanceof byte[])
-                    {
-                        byte[] array = (byte[])data;
-                        padding += array.length;
-                    }
-                    else
-                    {
-                        WEAK_PADDING[i] = null;
-                    }
-                }
-            }
-        }
-
-        assert padding>=0: "padding must not be negative: " + padding;
-        return padding;
-    }
+//    /**
+//     * the size of the memory padding
+//     * @return the size in bytes
+//     */
+//    @CheckReturnValue @Nonnegative
+//    public static long getPaddingMemory()
+//    {
+//        long padding = 0;
+//        synchronized( WEAK_PADDING)
+//        {
+//            for( int i=0; i < WEAK_PADDING.length;i++)
+//            {
+//                WeakReference ref = WEAK_PADDING[i];
+//
+//                if( ref != null)
+//                {
+//                    Object data = ref.get();
+//
+//                    if( data instanceof byte[])
+//                    {
+//                        byte[] array = (byte[])data;
+//                        padding += array.length;
+//                    }
+//                    else
+//                    {
+//                        WEAK_PADDING[i] = null;
+//                    }
+//                }
+//            }
+//        }
+//
+//        assert padding>=0: "padding must not be negative: " + padding;
+//        return padding;
+//    }
 
     /**
      * Call System.gc() regardless of when it has been called last.
@@ -1606,7 +1606,7 @@ public final class MemoryManager
                 free;
 
         MemoryUsage heapMemoryUsage = getHeapMemoryUsage();
-        long paddingSize=getPaddingMemory();
+//        long paddingSize=getPaddingMemory();
         MemoryUsage tenuredUsage = getMemoryUsage(TENURED_GENERATION_POOL);
 
         max = getTotalMemory(heapMemoryUsage);
@@ -1700,11 +1700,11 @@ public final class MemoryManager
         sb.append( "% )");
         sb.append( "\n");
         
-        if( paddingSize>0){
-            sb.append( "    Padding:     ");
-            sb.append( NumUtil.convertMemoryToHumanReadable(paddingSize));
-            sb.append( "\n");
-        }
+//        if( paddingSize>0){
+//            sb.append( "    Padding:     ");
+//            sb.append( NumUtil.convertMemoryToHumanReadable(paddingSize));
+//            sb.append( "\n");
+//        }
         long currentThreadhold = TENURED_GENERATION_POOL.getCollectionUsageThreshold();
 
         sb.append( "    Threshold:   ");
@@ -1999,8 +1999,8 @@ public final class MemoryManager
             assert totalMemoryFree>=0: "totalMemoryFree must be non negative: " + totalMemoryFree;
             if( totalMemoryFree<0) totalMemoryFree=0;
             
-            long paddingMemory = getPaddingMemory();
-            long totalMemoryFreeAdjusted=totalMemoryFree-paddingMemory;
+//            long paddingMemory = getPaddingMemory();
+            long totalMemoryFreeAdjusted=totalMemoryFree;//-paddingMemory;
             
             if( totalMemoryFreeAdjusted<0) totalMemoryFreeAdjusted=0;
             double totalMemoryFreePercentAdjusted=(double)totalMemoryFreeAdjusted/(double)totalMemory;
@@ -2063,7 +2063,7 @@ public final class MemoryManager
                 }
             }
             long tenuredUsed  = tenuredUsage.getUsed();
-            long tenuredUsedAdjusted  = tenuredUsed-paddingMemory;
+            long tenuredUsedAdjusted  = tenuredUsed;//-paddingMemory;
             if( tenuredUsedAdjusted < 0) tenuredUsedAdjusted = 0;
 
             long tenuredFreeAdjusted =  tenuredMax- tenuredUsedAdjusted ;
@@ -2098,7 +2098,7 @@ public final class MemoryManager
             {
                 PANIC_COUNT.incrementAndGet();
 
-                long requiredFree = (long)( totalMemory * (double)safeZoneUpper/100.0) - paddingMemory;
+                long requiredFree = (long)( totalMemory * (double)safeZoneUpper/100.0);// - paddingMemory;
 
                 if( requiredFree<0)
                 {
@@ -2155,10 +2155,10 @@ public final class MemoryManager
                 if( lastCleared== Cost.PANIC)
                 {
                     type = "PANIC ONLY " + PF.format(totalMemoryFreePercentAdjusted)+ " (" + NumUtil.convertMemoryToHumanReadable(totalMemoryFreeAdjusted) + " of " + NumUtil.convertMemoryToHumanReadable(totalMemory) + ") free.";
-                    if( paddingMemory>0)
-                    {
-                        type +=" Padding " + NumUtil.convertMemoryToHumanReadable(paddingMemory) +".";
-                    }
+//                    if( paddingMemory>0)
+//                    {
+//                        type +=" Padding " + NumUtil.convertMemoryToHumanReadable(paddingMemory) +".";
+//                    }
                     type +=" CLEARED " + NumUtil.convertMemoryToHumanReadable(cleared);
                     LOGGER.warn(type);
 
@@ -2338,7 +2338,7 @@ public final class MemoryManager
                 totalClearedTimeTaken += diff;
             }
 
-            populatePadding();
+//            populatePadding();
 
             /*
              * Set the name back if changed
@@ -2368,115 +2368,115 @@ public final class MemoryManager
         
         return rainyDayFundSize;
     }
-    
-    private static void populatePadding()
-    {
-        long threshold = TENURED_GENERATION_POOL.getUsageThreshold();
-        assert threshold > 0: "Usage should be positive was: " + threshold;
-
-        long used = getMemoryUsage(TENURED_GENERATION_POOL).getUsed();
-
-        long paddingSize = threshold - used;
-        if( paddingSize > MAX_PADDING_SIZE)
-        {
-            paddingSize=MAX_PADDING_SIZE;
-        }
-
-        int segmentSize = (int)(threshold/100L);
-        if( segmentSize<=0)segmentSize=1;
-        if( segmentSize > PADDING_MAX_SEGMENT) segmentSize=PADDING_MAX_SEGMENT;
-        int paddingPercent = (int)(paddingSize/segmentSize);
-
-        paddingPercent -= PADDING_MARGIN;
-        // it's posible for the used amount to be many times our threshold
-        if( paddingPercent < -100 ) paddingPercent = -100;
-
-        if( paddingPercent != 0)
-        {
-            int tempPercent=paddingPercent;
-            int clearedPercent = 0;
-            int addedPercent = 0;
-            synchronized( WEAK_PADDING)
-            {
-                for( int i = 0; i < WEAK_PADDING.length;i++)
-                {
-                    WeakReference ref = WEAK_PADDING[i];
-
-                    if( ref != null)
-                    {
-                        if( HARD_PADDING[i] == null)
-                        {
-                            Object data = ref.get();
-
-                            if( data instanceof byte[])
-                            {
-                                // if we are adding memory then put the hard links back in
-                                if( paddingPercent > 0)
-                                {
-                                    HARD_PADDING[i] = (byte[])data;
-                                }
-                            }
-                            else
-                            {
-                                WEAK_PADDING[i] = null;
-                                ref = null;
-                            }
-                        }
-                    }
-
-                    if( tempPercent > 0 && addedPercent < PADDING_MAX_GROWTH_PERCENT) // only add few percent at a time.
-                    {
-                        if( ref == null)
-                        {
-                            byte array[] = new byte[segmentSize];
-                            WEAK_PADDING[i] = new WeakReference( array);
-                            HARD_PADDING[i] = array;
-                            addedPercent++;
-                            tempPercent--;
-                        }
-                    }
-                    else if( tempPercent < 0)
-                    {
-                        if( ref != null && HARD_PADDING[i] == null)
-                        {
-                            // We have already released the reference so we don't need to do again as the GC hasn't clear it yet
-                            tempPercent++;
-                        }
-                    }
-                }
-
-                // OK we need to release some more.
-                for( int i = 0; tempPercent < 0 && i < WEAK_PADDING.length;i++)
-                {
-                    if( HARD_PADDING[i] != null)
-                    {
-                        HARD_PADDING[i] = null;
-                        tempPercent++;
-                        clearedPercent--;
-                    }
-                }
-            }
-
-            if( LOGGER.isDebugEnabled())
-            {
-                int changedPercent;
-
-                if( paddingPercent < 0)
-                {
-                    changedPercent = clearedPercent;
-                }
-                else
-                {
-                    changedPercent = addedPercent;
-                }
-
-                if( changedPercent != 0)
-                {
-                    LOGGER.debug("Padding Percent: " + changedPercent + "%, size: " + NumUtil.convertMemoryToHumanReadable(segmentSize * changedPercent));
-                }
-            }
-        }
-    }
+//    
+//    private static void populatePadding()
+//    {
+//        long threshold = TENURED_GENERATION_POOL.getUsageThreshold();
+//        assert threshold > 0: "Usage should be positive was: " + threshold;
+//
+//        long used = getMemoryUsage(TENURED_GENERATION_POOL).getUsed();
+//
+//        long paddingSize = threshold - used;
+//        if( paddingSize > MAX_PADDING_SIZE)
+//        {
+//            paddingSize=MAX_PADDING_SIZE;
+//        }
+//
+//        int segmentSize = (int)(threshold/100L);
+//        if( segmentSize<=0)segmentSize=1;
+//        if( segmentSize > PADDING_MAX_SEGMENT) segmentSize=PADDING_MAX_SEGMENT;
+//        int paddingPercent = (int)(paddingSize/segmentSize);
+//
+//        paddingPercent -= PADDING_MARGIN;
+//        // it's posible for the used amount to be many times our threshold
+//        if( paddingPercent < -100 ) paddingPercent = -100;
+//
+//        if( paddingPercent != 0)
+//        {
+//            int tempPercent=paddingPercent;
+//            int clearedPercent = 0;
+//            int addedPercent = 0;
+//            synchronized( WEAK_PADDING)
+//            {
+//                for( int i = 0; i < WEAK_PADDING.length;i++)
+//                {
+//                    WeakReference ref = WEAK_PADDING[i];
+//
+//                    if( ref != null)
+//                    {
+//                        if( HARD_PADDING[i] == null)
+//                        {
+//                            Object data = ref.get();
+//
+//                            if( data instanceof byte[])
+//                            {
+//                                // if we are adding memory then put the hard links back in
+//                                if( paddingPercent > 0)
+//                                {
+//                                    HARD_PADDING[i] = (byte[])data;
+//                                }
+//                            }
+//                            else
+//                            {
+//                                WEAK_PADDING[i] = null;
+//                                ref = null;
+//                            }
+//                        }
+//                    }
+//
+//                    if( tempPercent > 0 && addedPercent < PADDING_MAX_GROWTH_PERCENT) // only add few percent at a time.
+//                    {
+//                        if( ref == null)
+//                        {
+//                            byte array[] = new byte[segmentSize];
+//                            WEAK_PADDING[i] = new WeakReference( array);
+//                            HARD_PADDING[i] = array;
+//                            addedPercent++;
+//                            tempPercent--;
+//                        }
+//                    }
+//                    else if( tempPercent < 0)
+//                    {
+//                        if( ref != null && HARD_PADDING[i] == null)
+//                        {
+//                            // We have already released the reference so we don't need to do again as the GC hasn't clear it yet
+//                            tempPercent++;
+//                        }
+//                    }
+//                }
+//
+//                // OK we need to release some more.
+//                for( int i = 0; tempPercent < 0 && i < WEAK_PADDING.length;i++)
+//                {
+//                    if( HARD_PADDING[i] != null)
+//                    {
+//                        HARD_PADDING[i] = null;
+//                        tempPercent++;
+//                        clearedPercent--;
+//                    }
+//                }
+//            }
+//
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                int changedPercent;
+//
+//                if( paddingPercent < 0)
+//                {
+//                    changedPercent = clearedPercent;
+//                }
+//                else
+//                {
+//                    changedPercent = addedPercent;
+//                }
+//
+//                if( changedPercent != 0)
+//                {
+//                    LOGGER.debug("Padding Percent: " + changedPercent + "%, size: " + NumUtil.convertMemoryToHumanReadable(segmentSize * changedPercent));
+//                }
+//            }
+//        }
+//    }
 
     @CheckReturnValue @Nonnull
     private static MemoryHandler[] listHandlers( final @Nonnull Cost cost) throws InterruptedException
@@ -2685,6 +2685,10 @@ public final class MemoryManager
 
     static
     {
+//        assert PADDING_MAX_SEGMENT>0:"Invalid PADDING_MAX_SEGMENT: " + PADDING_MAX_SEGMENT;
+//        assert MAX_PADDING_SIZE>0:"Invalid MAX_PADDING_SIZE: " + MAX_PADDING_SIZE;
+        assert RAINY_DAY_SIZE>0:"Invalid RAINY_DAY_SIZE: " + RAINY_DAY_SIZE;
+        
         GC_WATCH=new Object[11];
         for( int i = 1; i < GC_WATCH.length;i++)
         {
@@ -2699,34 +2703,34 @@ public final class MemoryManager
             LEVELS[ pos] = new WeakHashMap<>();
         }
 
-        int defaultValue=5;
-        String temp = System.getProperty(ENV_PADDING_MARGIN, "" + defaultValue);
-
-        try
-        {
-            defaultValue = Integer.parseInt(temp);
-        }
-        catch( NumberFormatException nf)
-        {
-             LOGGER.error(ENV_PADDING_MARGIN, nf);
-        }
-        PADDING_MARGIN=defaultValue;
-
-        defaultValue=5;
-        temp = System.getProperty(ENV_PADDING_MAX_GROWTH_PERCENT, "" + defaultValue);
-
-        try
-        {
-            defaultValue = Integer.parseInt(temp);
-        }
-        catch( NumberFormatException nf)
-        {
-             LOGGER.error(ENV_PADDING_MARGIN, nf);
-        }
-        PADDING_MAX_GROWTH_PERCENT=defaultValue;
-
-        WEAK_PADDING=new WeakReference[100];
-        HARD_PADDING=new byte[WEAK_PADDING.length][];
+//        int defaultValue=5;
+//        String temp = System.getProperty(ENV_PADDING_MARGIN, "" + defaultValue);
+//
+//        try
+//        {
+//            defaultValue = Integer.parseInt(temp);
+//        }
+//        catch( NumberFormatException nf)
+//        {
+//             LOGGER.error(ENV_PADDING_MARGIN, nf);
+//        }
+//        PADDING_MARGIN=defaultValue;
+//        assert PADDING_MARGIN>0:"Invalid PADDING_MARGIN: " + PADDING_MARGIN;
+//        defaultValue=5;
+//        temp = System.getProperty(ENV_PADDING_MAX_GROWTH_PERCENT, "" + defaultValue);
+//
+//        try
+//        {
+//            defaultValue = Integer.parseInt(temp);
+//        }
+//        catch( NumberFormatException nf)
+//        {
+//             LOGGER.error(ENV_PADDING_MARGIN, nf);
+//        }
+//        PADDING_MAX_GROWTH_PERCENT=defaultValue;
+//        assert PADDING_MAX_GROWTH_PERCENT>0:"Invalid PADDING_MAX_GROWTH_PERCENT: " + PADDING_MAX_GROWTH_PERCENT;
+//        WEAK_PADDING=new WeakReference[100];
+//        HARD_PADDING=new byte[WEAK_PADDING.length][];
 
         MEMORY_MX_BEAN = ManagementFactory.getMemoryMXBean();
         List<GarbageCollectorMXBean> garbageCollectorMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
@@ -2777,6 +2781,7 @@ public final class MemoryManager
         }
         
         OVERRIDE_OCCUPANCY_FRACTION=occupancyFaction;
+        assert OVERRIDE_OCCUPANCY_FRACTION>0 || OVERRIDE_OCCUPANCY_FRACTION==-1:"Invalid OVERRIDE_OCCUPANCY_FRACTION: " + OVERRIDE_OCCUPANCY_FRACTION;
         int reservePercent = COLLECTOR.defaultResercePercent;
         if( StringUtilities.notBlank(COLLECTOR.reservePercentArgument))
         {
@@ -2800,6 +2805,7 @@ public final class MemoryManager
         }
         
         RESERVE_PERCENT=reservePercent;
+        assert RESERVE_PERCENT>0: "Invalid RESERVE_PERCENT: " + RESERVE_PERCENT;
         assert foundGarbageCollector != null: "No Old generation GC found";
         TENURED_GENERATION_GARBAGE_COLLECTOR = foundGarbageCollector;
 
@@ -2836,7 +2842,7 @@ public final class MemoryManager
         setMinFreePercent( CProperties.getProperty( "MIN_FREE_PERCENT"));
         setTenuredSize( CProperties.getProperty( TENURED_SIZE));
 
-        temp = CProperties.getProperty( ENV_MIN_INCREMENTAL_CLEAR_TIME);
+        String temp = CProperties.getProperty( ENV_MIN_INCREMENTAL_CLEAR_TIME);
 
         long tempTime = -1;
 
