@@ -67,7 +67,7 @@ public class RestCallHTTP extends RestCall
     public RestCallHTTP(
         final @Nonnull Method method,             
         final URL url, 
-        final ReSTAuthorizationInterface auth, 
+        final ReSTPlugin auth, 
         final String agent, 
         final File propertiesFile,
         final File body,
@@ -83,9 +83,9 @@ public class RestCallHTTP extends RestCall
     @Override @CheckReturnValue @Nonnull
     protected Response doCall() throws Exception
     {
-        if( auth instanceof ReSTCallInterface)
+        if( plugin instanceof ReSTCallInterface)
         {
-            return ((ReSTCallInterface)auth).doCall(this);
+            return ((ReSTCallInterface)plugin).doCall(this);
         }
         else
         {
@@ -127,9 +127,9 @@ public class RestCallHTTP extends RestCall
             c.setRequestMethod(method.name());
             NetUrl.relaxSSLConnection(c);
             c.setDoOutput(false);
-            if( auth != null)
+            if( plugin instanceof ReSTAuthorizationInterface)
             {
-                auth.setRequestProperty( c);
+                ((ReSTAuthorizationInterface)plugin).setRequestProperty( c);
             }
 
             if( agent!=null)
@@ -416,9 +416,9 @@ public class RestCallHTTP extends RestCall
                 c.setRequestProperty("Content-MD5", md5);
             }
 
-            if( auth != null)
+            if( plugin instanceof ReSTAuthorizationInterface)
             {
-                auth.setRequestProperty( c);
+                ((ReSTAuthorizationInterface)plugin).setRequestProperty( c);
             }
 
             if( agent!=null)

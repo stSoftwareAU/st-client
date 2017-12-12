@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
  *  @version     $Revision: 1.1 $
  *  @since       06 May 2016 
  */
-public interface ReSTCallInterface
+public interface ReSTCallInterface extends ReSTPlugin
 {
     @Nonnull @CheckReturnValue
     public Response doCall( @Nonnull final RestCall call) throws Exception;

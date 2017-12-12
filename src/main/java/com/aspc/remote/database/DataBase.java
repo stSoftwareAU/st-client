@@ -104,6 +104,9 @@ public class DataBase
 
     /** Microsoft SQL Server */
     public static final String TYPE_MSSQL="MSSQL";
+    
+    /** SOAP JDBC driver */
+    private static final String TYPE_SOAP = "SOAP";
 
     /** Microsoft SQL Server using the Microsoft JDBC Driver */
     public static final String TYPE_MSSQL_NATIVE="MSSQL_N";
@@ -266,7 +269,7 @@ public class DataBase
         {
             driverClassName ="sun.jdbc.odbc.JdbcOdbcDriver";
         }
-        else if( type.equals( "SOAP" ) == true )
+        else if( type.equals(TYPE_SOAP) == true )
         {
             driverClassName ="com.aspc.remote.jdbc.Driver";
         }
@@ -712,7 +715,7 @@ public class DataBase
             {
                 jdbcURL = type + ":" + url;
             }
-            else if( type.equals( "SOAP" ) )
+            else if( type.equals(TYPE_SOAP) )
             {
                 jdbcURL = type + ":" + url;
             }

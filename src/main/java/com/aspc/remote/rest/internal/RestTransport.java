@@ -22,7 +22,7 @@ public abstract interface RestTransport
     String ETAG="ETag";
     
     String STATUS="status";
-//    String TRANSFER_ENCODING="transfer_encoding";
+
     String FILE_LIST="file_list";
 
     String getRootFolderName();
@@ -30,7 +30,7 @@ public abstract interface RestTransport
     RestCall makeRestCall(
         final @Nonnull Method method,    
         final @Nonnull URL url, 
-        final ReSTAuthorizationInterface auth, 
+        final ReSTPlugin plugin, 
         final String agent, 
         final File propertiesFile,
         final File body,

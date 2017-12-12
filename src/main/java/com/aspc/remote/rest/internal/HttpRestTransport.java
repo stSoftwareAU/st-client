@@ -29,7 +29,7 @@ public class HttpRestTransport implements RestTransport
     public RestCall makeRestCall(
         final Method method,
         final URL url,
-        final ReSTAuthorizationInterface auth,
+        final ReSTPlugin plugin,
         final String agent,
         final File propertiesFile,
         final File body,
@@ -39,7 +39,7 @@ public class HttpRestTransport implements RestTransport
         final @Nullable ContentType contentType,
         final @Nullable DispositionType dispositionType) {
         assert timeout >= 0: "timeout must be non negative " + timeout;
-        return new RestCallHTTP(method, url, auth, agent, propertiesFile, body, timeout, disableGZIP, friend,
+        return new RestCallHTTP(method, url, plugin, agent, propertiesFile, body, timeout, disableGZIP, friend,
                     contentType,
                     dispositionType);
     }

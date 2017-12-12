@@ -33,18 +33,29 @@
  */
 package com.aspc.remote.util.net;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.aspc.remote.rest.ContentType;
 import com.aspc.remote.rest.DispositionType;
 import com.aspc.remote.rest.Method;
 import com.aspc.remote.rest.ReST;
 import com.aspc.remote.rest.Response;
 import com.aspc.remote.rest.internal.AWSReSTAuthorization;
+import com.aspc.remote.rest.internal.ReSTCallInterface;
+import com.aspc.remote.rest.internal.RestCall;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.FileUtil;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.io.File;
 import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
+import com.aspc.remote.rest.Status;
+import java.net.URL;
 
 /**
  * Implements the ftp protocol for NetClient
@@ -99,7 +110,7 @@ public class NetClientS3 implements NetClient
             .setMethod(Method.GET)
             .setMinCachePeriod(cachePeriod)
 //            .setBody(new File("/home/nigel/Pictures/smiling-star.png"),new ContentType("image/png"), DispositionType.ATTACHMENT)
-            .setAuthorization(new AWSReSTAuthorization(accessKeyID,secretAccessKey))
+            .setPlugin(new AWSReSTAuthorization(accessKeyID,secretAccessKey))
             .getResponseAndCheck()
             .getContentAsFile();
 
@@ -117,7 +128,6 @@ public class NetClientS3 implements NetClient
     }
 
     @Override
-
     public void send(File rawFile, String sendPath) throws Exception {
 
         String url=makeURL( sendPath);
@@ -126,7 +136,7 @@ public class NetClientS3 implements NetClient
                 .builder(url)
                 .setMethod(Method.PUT)
                 .setBody(rawFile,ContentType.APPLICATION_OCTET_STREAM, DispositionType.ATTACHMENT)
-                .setAuthorization(new AWSReSTAuthorization(accessKeyID,secretAccessKey))
+                .setPlugin(new SendToAWS(accessKeyID,secretAccessKey))
                 .getResponseAndCheck();
 
         String data=r.getContentAsString();
@@ -204,5 +214,81 @@ public class NetClientS3 implements NetClient
     public void make(String url, String SOCKSProxyURL, String keyPath, int serverPort) throws Exception
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    private static class SendToAWS implements ReSTCallInterface
+    {
+        private final String accessKeyID;
+        private final String secretAccessKey;
+
+        public SendToAWS(final String accessKeyID, final String secretAccessKey) {
+            this.accessKeyID=accessKeyID;
+            this.secretAccessKey=secretAccessKey;
+        }
+        
+        @Override
+        public Response doCall(RestCall call) throws Exception {
+            
+            AWSCredentials credentials = new AWSCredentials() {
+                @Override
+                public String getAWSAccessKeyId() {
+                    return accessKeyID;
+                }
+
+                @Override
+                public String getAWSSecretKey() {
+                    return secretAccessKey;
+                }
+            };
+            
+            AWSCredentialsProvider awsCredentialsProvider = new AWSCredentialsProvider() {
+                @Override
+                public AWSCredentials getCredentials() {
+                    return credentials;
+                }
+                
+                @Override
+                public void refresh() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            };
+            
+            URL url = new URL(call.getURL());
+            String host = url.getHost();
+            
+            int pos=host.indexOf(".");
+            String bucketName=host.substring(0, pos);
+            host=host.substring(pos+1);
+            pos=host.indexOf(".");
+            String region = host.substring(3, pos);
+//            
+//            if( region.contains("amazonaws.com"))
+//            {
+//                region= region.substring(0, region.indexOf("."));
+//            }
+//            
+            AmazonS3 s3client = AmazonS3ClientBuilder
+                    .standard()
+                    .withCredentials(awsCredentialsProvider)
+                    .withRegion(region)
+                    .build();
+            
+            try{
+                String path=url.getPath();
+//                int pos = path.indexOf("/");
+//                String bucketName=path.substring(0, pos);
+//                String keyName=path.substring(pos + 1);
+                PutObjectResult pr = s3client.putObject(new PutObjectRequest(bucketName, path, call.getBody()));        
+
+//                LOGGER.info( pr.getETag());
+                
+                 return Response.builder(Status.C200_SUCCESS_OK, ContentType.TEXT_PLAIN, pr.getETag()).make();
+            }
+            catch( AmazonServiceException ase)
+            {
+                return Response.builder(Status.find(ase.getStatusCode()), ContentType.TEXT_PLAIN, ase.getMessage()).make();
+            }
+        }
+        
     }
 }

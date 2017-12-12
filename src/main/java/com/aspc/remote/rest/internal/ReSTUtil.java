@@ -254,14 +254,14 @@ public final class ReSTUtil
     /**
      * Make a file name
      * @param url the URL
-     * @param auth the authorization
+     * @param plugin the authorization
      * @param agent the browser agent
      * @return a simple name
      */
     @CheckReturnValue @Nonnull
     public static String makeFileName(
         final @Nonnull URL url,
-        final @Nullable ReSTAuthorizationInterface auth,
+        final @Nullable ReSTPlugin plugin,
         final @Nullable String agent
     )
     {
@@ -285,10 +285,10 @@ public final class ReSTUtil
         String fileName = "/";
         fileName += url.getHost();
         fileName+="/";
-        if( auth != null)
+        if( plugin instanceof ReSTAuthorizationInterface)
         {
-            fileName += auth.toShortString().toLowerCase() + "@";
-            checkSum=auth.checkSumAdler32(tmpURL);
+            fileName += ((ReSTAuthorizationInterface)plugin).toShortString().toLowerCase() + "@";
+            checkSum=((ReSTAuthorizationInterface)plugin).checkSumAdler32(tmpURL);
         }
         else
         {

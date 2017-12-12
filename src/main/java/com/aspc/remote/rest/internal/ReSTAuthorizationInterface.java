@@ -10,7 +10,7 @@ import javax.annotation.Nonnull;
  *  @version     $Revision: 1.1 $
  *  @since       06 May 2016 
  */
-public interface ReSTAuthorizationInterface
+public interface ReSTAuthorizationInterface extends ReSTPlugin
 {
     @Nonnull
     public ReSTAuthorizationInterface setRequestProperty( final @Nonnull URLConnection c);

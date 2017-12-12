@@ -40,7 +40,7 @@ import com.aspc.remote.rest.errors.ReSTException;
 import com.aspc.remote.rest.internal.Friend;
 import com.aspc.remote.rest.internal.HttpRestTransport;
 import com.aspc.remote.rest.internal.ReSTAuthorization;
-import com.aspc.remote.rest.internal.ReSTAuthorizationInterface;
+import com.aspc.remote.rest.internal.ReSTPlugin;
 import com.aspc.remote.rest.internal.ReSTTask;
 import com.aspc.remote.util.misc.DocumentUtil;
 
@@ -158,7 +158,7 @@ public final class ReST
         private DispositionType dispositionType;
         private File cacheDirectory;
         
-        private ReSTAuthorizationInterface auth;
+        private ReSTPlugin plugin;
         private Builder(final @Nonnull URL url, final @Nonnull RestTransport transport) throws InvalidDataException
         {
             if( url == null) throw new IllegalArgumentException( "URL is mandatory");
@@ -321,7 +321,7 @@ public final class ReST
                     user=user.substring(pos + 1);
                 }
                 
-                auth=new ReSTAuthorization(user, passwd, domain);
+                plugin=new ReSTAuthorization(user, passwd, domain);
                 
                 URL realURL=new URL( url.getProtocol(), url.getHost(), url.getPort(), url.getFile());
                 
@@ -383,7 +383,7 @@ public final class ReST
          */
         public @Nonnull Builder setAuthorization( final @Nonnull String user, final @Nonnull String passwd) throws InvalidDataException
         {
-            auth=new ReSTAuthorization(user, passwd, null);
+            plugin=new ReSTAuthorization(user, passwd, null);
 
             return this;
         }
@@ -397,7 +397,7 @@ public final class ReST
          */
         public @Nonnull Builder setAuthorization( final @Nonnull String token) throws InvalidDataException
         {
-            auth=new ReSTAuthorization(token);
+            plugin=new ReSTAuthorization(token);
 
             return this;
         }
@@ -413,7 +413,7 @@ public final class ReST
          */
         public @Nonnull Builder setAuthorization( final @Nonnull String user, final @Nonnull String passwd, final @Nullable String domain) throws InvalidDataException
         {
-            auth=new ReSTAuthorization(user, passwd, domain);
+            plugin=new ReSTAuthorization(user, passwd, domain);
 
             return this;
         }
@@ -421,13 +421,13 @@ public final class ReST
         /**
          * sets the customized authorization to use for this call.
          *
-         * @param auth the customized authorization
+         * @param plugin the customized authorization
          * @return this builder
          * @throws InvalidDataException the duration is not valid
          */
-        public @Nonnull Builder setAuthorization( final @Nonnull ReSTAuthorizationInterface auth) throws InvalidDataException
+        public @Nonnull Builder setPlugin( final @Nonnull ReSTPlugin plugin) throws InvalidDataException
         {
-            this.auth = auth;
+            this.plugin = plugin;
 
             return this;
         }
@@ -925,7 +925,7 @@ public final class ReST
         @CheckReturnValue
         public @Nonnull String makeFileName()
         {
-            return ReSTUtil.makeFileName(makeRealURL(), auth, agent);
+            return ReSTUtil.makeFileName(makeRealURL(), plugin, agent);
         }
         
         public static URL correctURL(final URL url)
@@ -1269,7 +1269,7 @@ public final class ReST
                 }
             }
             String feedPath = getCachePath() + transport.getRootFolderName();
-            String fileName = ReSTUtil.makeFileName( realURL, auth, agent);
+            String fileName = ReSTUtil.makeFileName( realURL, plugin, agent);
             int pos = fileName.lastIndexOf('.');
             File propertiesFile = new File(feedPath + fileName.substring(0, pos) + ".properties");
 
@@ -1291,7 +1291,7 @@ public final class ReST
                 com.aspc.remote.rest.internal.RestCall call = transport.makeRestCall(
                     method,
                     realURL, 
-                    auth, 
+                    plugin, 
                     agent, 
                     propertiesFile,
                     null,
@@ -1531,7 +1531,7 @@ public final class ReST
                 com.aspc.remote.rest.internal.RestCall r = transport.makeRestCall(
                     method,
                     realURL, 
-                    auth, 
+                    plugin, 
                     agent, 
                     null,
                     tmpBody,

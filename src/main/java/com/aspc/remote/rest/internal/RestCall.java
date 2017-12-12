@@ -32,7 +32,7 @@ public abstract class RestCall implements Callable<Response>
     protected final Method method;
     protected final URL url;
     protected final String agent;
-    protected final ReSTAuthorizationInterface auth;
+    protected final ReSTPlugin plugin;
     public final int timeoutMS;
     protected final Friend friend;
     protected final boolean disableGZIP;
@@ -44,7 +44,7 @@ public abstract class RestCall implements Callable<Response>
      * 
      * @param method the method
      * @param url the URL. 
-     * @param auth any authorization.
+     * @param plugin any authorization.
      * @param agent the agent string to use.
      * @param propertiesFile the properties file
      * @param body the call body
@@ -57,7 +57,7 @@ public abstract class RestCall implements Callable<Response>
     public RestCall(
         final @Nonnull Method method, 
         final @Nonnull URL url, 
-        final @Nullable ReSTAuthorizationInterface auth, 
+        final @Nullable ReSTPlugin plugin, 
         final @Nullable String agent,
         final @Nullable File propertiesFile,
         final @Nullable File body,
@@ -78,7 +78,7 @@ public abstract class RestCall implements Callable<Response>
         {
             throw new IllegalArgumentException( "url is mandatory");
         }
-        this.auth=auth;
+        this.plugin=plugin;
         this.agent=agent;
         this.propertiesFile = propertiesFile;
         this.body = body;
@@ -119,9 +119,9 @@ public abstract class RestCall implements Callable<Response>
         }
         
         String tmpAuth="";
-        if( auth!=null)
+        if( plugin!=null)
         {
-            tmpAuth=", auth=" + auth ;
+            tmpAuth=", plugin=" + plugin ;
         }
         return "RestCall{" + tmpMethod + StringUtilities.stripPasswordFromURL(url.toString()) + tmpAuth + '}';
     }

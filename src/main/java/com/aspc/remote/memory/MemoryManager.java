@@ -2805,7 +2805,7 @@ public final class MemoryManager
         }
         
         RESERVE_PERCENT=reservePercent;
-        assert RESERVE_PERCENT>0: "Invalid RESERVE_PERCENT: " + RESERVE_PERCENT;
+        assert RESERVE_PERCENT>=0: "Invalid RESERVE_PERCENT: " + RESERVE_PERCENT;
         assert foundGarbageCollector != null: "No Old generation GC found";
         TENURED_GENERATION_GARBAGE_COLLECTOR = foundGarbageCollector;
 
