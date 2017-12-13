@@ -275,6 +275,10 @@ public class NetClientS3 implements NetClient
             
             try{
                 String path=url.getPath();
+                while(path != null && path.startsWith("/"))
+                {
+                    path = path.substring(1);
+                }
 //                int pos = path.indexOf("/");
 //                String bucketName=path.substring(0, pos);
 //                String keyName=path.substring(pos + 1);
