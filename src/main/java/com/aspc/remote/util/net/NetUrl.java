@@ -69,7 +69,28 @@ public class NetUrl
     private static final String DEFUALT_URL = "http://localhost";
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.net.NetUrl");//#LOGGER-NOPMD
     private static final String VALID_PATTERN="((file|ftp|sftp|http|https|s3):/|)/.+";
-               
+            
+    /**
+     * Does the URL look valid ?
+     * @param url the URL to check
+     * @return true if OK
+     */
+    public static final boolean isValidURL( final @Nonnull String url)
+    {
+        String msg = validateCharactersInURL( url);
+
+        if( msg!=null) 
+        {
+            return false;
+        }
+
+        if( url.matches(VALID_PATTERN)==false)
+        {
+            return false;
+        }
+        return true;
+        
+    }
     public static final boolean asserValidURL( final @Nonnull String url)
     {        
         String msg = validateCharactersInURL( url);

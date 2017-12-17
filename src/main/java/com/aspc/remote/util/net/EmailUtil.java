@@ -77,8 +77,17 @@ import org.jsoup.select.Elements;
 public final class EmailUtil
 {
     public static enum ConnectionSecurity{
-        SSL_TLS,
-        STARTTLS,
+        /**
+         * Preferred method of connecting
+         */
+        SSL_TLS, 
+        /**
+         * Subject to Man In the Middle attacks
+         */
+        STARTTLS, 
+        /**
+         * Rate limited by AWS
+         */
         NONE;
     };
     

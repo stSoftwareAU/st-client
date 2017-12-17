@@ -197,6 +197,7 @@ public final class CProperties
      @CheckReturnValue @Nullable
      public static String getProperty(final @Nonnull String name)
      {
+         assert StringUtilities.notBlank(name);
          return System.getProperty(name);
      }
      
