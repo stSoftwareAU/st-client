@@ -26,9 +26,9 @@
  *  or by snail mail to:
  *
  *  stSoftware
- *  building C, level 1,
- *  14 Rodborough Rd
- *  Frenchs Forest 2086
+ *  Suite 223, Lifestyle Working
+ *  117 Old Pittwater Rd
+ *  Brookvale NSW 2100
  *  Australia.
  */
 package com.aspc.remote.util.links;
