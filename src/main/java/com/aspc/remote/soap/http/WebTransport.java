@@ -36,6 +36,7 @@ package com.aspc.remote.soap.http;
 import org.w3c.dom.Document;
 import com.aspc.remote.soap.internal.SoapTransport;
 import com.aspc.remote.util.misc.CLogger;
+import com.aspc.remote.util.misc.DocumentException;
 import com.aspc.remote.util.misc.DocumentUtil;
 import com.aspc.remote.util.misc.StringUtilities;
 import com.aspc.remote.util.net.NetUrl;
@@ -49,7 +50,9 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLHandshakeException;
 import org.apache.commons.logging.Log;
@@ -70,7 +73,7 @@ public class WebTransport extends SoapTransport
 {
     /** Log handler */
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.soap.http.WebTransport");//#LOGGER-NOPMD
-    
+    private HashMap<String,String>cookies;
     /** holder to place the header xml */
     private String headerXml = "";
     /** Static field for moveTo tag */
@@ -154,6 +157,21 @@ public class WebTransport extends SoapTransport
         {
             conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("POST");
+            if( cookies!=null && cookies.isEmpty()==false)
+            {
+                String values="";
+                for( String key:cookies.keySet())
+                {
+                    if( StringUtilities.notBlank(values))
+                    {
+                        values+="; ";
+                    }
+                    
+                    values+=key + "=" +cookies.get(key);                    
+                }
+                
+                conn.setRequestProperty("Cookie", values);
+            }
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             byte[] bytes = StringUtilities.compressToBytes(data);
             conn.setRequestProperty("Content-Length", "" +bytes.length);
@@ -231,7 +249,39 @@ public class WebTransport extends SoapTransport
             {
                 xml=new String( bOut.toByteArray(), StandardCharsets.UTF_8);
             }
-
+            
+            Map<String, List<String>> headers = conn.getHeaderFields();
+            
+            if( headers!=null)
+            {
+                List<String> setCookies=headers.get("Set-Cookie");
+                if( setCookies!=null)
+                {
+                    if( cookies==null)
+                    {
+                        cookies=new HashMap();
+                    }
+                    for( String tmp:setCookies)
+                    {
+                        int pos =tmp.indexOf("=");
+                        if( pos!=-1)
+                        {
+                            String key=tmp.substring(0,pos);
+                            String value=tmp.substring(pos+1);
+                            int pos2=value.indexOf(";");
+                            
+                            if( pos2!=-1)
+                            {
+                                value=value.substring(0, pos2);                                
+                            }
+                            
+                            cookies.put(key, value);
+//                            String[] fields = tmp.split(";\\s*");
+//                            LOGGER.info( "Cookie: " + key + "=" + value);                        
+                        }
+                    }
+                }
+            }
             Document result = DocumentUtil.makeDocument(xml, DocumentUtil.PARSER.TOLERANT);
 
             headerXml = "";
@@ -278,7 +328,7 @@ public class WebTransport extends SoapTransport
             {
                 docTemp = DocumentUtil.makeDocument( this.headerXml );
             }
-            catch( Exception e )
+            catch( DocumentException e )
             {
                 LOGGER.error("Error while prasing the headerXml",e);
                 return moveToUrlList;
