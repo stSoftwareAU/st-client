@@ -1268,7 +1268,7 @@ public final class ReST
                     return Response.builder(Status.C414_REQUEST_URI_TOO_LARGE,"text/plan", "URL over the safe limit of " + ReSTUtil.MAX_SAFE_URL_LENGTH + " was " + urlLen ).make();                
                 }
             }
-            String feedPath = getCachePath() + transport.getRootFolderName();
+            String feedPath = getCachePath() + "/"+ transport.getRootFolderName();
             String fileName = ReSTUtil.makeFileName( realURL, plugin, agent);
             int pos = fileName.lastIndexOf('.');
             File propertiesFile = new File(feedPath + fileName.substring(0, pos) + ".properties");

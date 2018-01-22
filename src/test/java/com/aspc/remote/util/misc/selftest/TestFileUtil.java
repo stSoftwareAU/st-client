@@ -35,7 +35,6 @@ package com.aspc.remote.util.misc.selftest;
 
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.FileUtil;
-import java.util.Properties;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -127,17 +126,19 @@ public class TestFileUtil extends TestCase
      * Cache dirs if CACHE_DIR is set.
      *
      */
-    public void testCacheSet()
+    public void testCacheNotSet()
     {
         String tmpDir=System.getProperty("java.io.tmpdir");
-        String expectedCache=tmpDir + "/st/cache";
+        String expectedCache=tmpDir + "/cache/";
       
+        System.getProperties().remove(FileUtil.CACHE_DIR);
+        System.getProperties().remove(FileUtil.DOC_CACHE);
+
         String calculatedCache=FileUtil.getCachePath();
-        assertEquals( "default cache dir", tmpDir+"/st/cache/", calculatedCache);
+        assertEquals( "default cache dir", expectedCache, calculatedCache);
 
         String calculatedDocCache=FileUtil.getDocCachePath();
-        assertEquals( "default doc cache dir", expectedCache + "/docs/", calculatedDocCache);
-      
+        assertEquals( "default doc cache dir", expectedCache + "docs/", calculatedDocCache);
     }
 
     /**
