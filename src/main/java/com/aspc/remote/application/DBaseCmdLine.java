@@ -136,7 +136,8 @@ public abstract class DBaseCmdLine extends AppCmdLine
         }
         catch( Exception e)
         {
-            LOGGER.info( "Connect Error :- Url:" + url + " User:" + user + " Type:" + type + " Password:" + password);
+            String tmpPwd = password == null ? password : password.charAt(0) + "*******";
+            LOGGER.info( "Connect Error :- Url:" + url + " User:" + user + " Type:" + type + " Password:" + tmpPwd);
             throw e;
         }
     }

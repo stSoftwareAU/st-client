@@ -131,8 +131,18 @@ public class TestNotModified extends TestCase
 
         rr.getContentAsFile().delete();
 
-        Response rr3=call.getResponseAndCheck();
+        Response rr3=null;
+        for( int attempts=0;attempts<3;attempts++)
+        {
+            rr3=call.getResponse();
+            
+            if( rr3.status == Status.C200_SUCCESS_OK) break;
+            
+            Thread.sleep((long) (60000 * Math.random() + 1));
+        }
 
+        assert rr3!=null;
+        assertEquals( "OK", Status.C200_SUCCESS_OK, rr3.status);
         assertEquals( "data match", data, rr3.getContentAsString());
         assertEquals( "mime type", mimeType, rr3.mimeType);
 
