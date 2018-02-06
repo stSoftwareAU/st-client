@@ -96,6 +96,12 @@ public class TestStatusReference extends TestCase
             String url=status.reference;
             if( url!=null)
             {
+                int pos = url.indexOf("#");
+                if( pos != -1)
+                {
+                    url=url.substring(0, pos);
+                }
+//                Response r = ReST.builder(url).setMinCachePeriod("31 days").setAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").getResponse();
                 Response r = ReST.builder(url).setMinCachePeriod("31 days").getResponse();
                 if( r.status.isError())
                 {
