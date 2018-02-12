@@ -148,6 +148,16 @@ public class TestHTMLUtilities extends TestCase
             {
                 "<u>Ignore underline allow <b>bold</b> text.</u>",
                 "Ignore underline allow <b>bold</b> text."
+            },
+            {
+                "<ol reversed type=\"A\" start=\"5\">\n" +
+                "   <li>Cats</li>\n" +
+                "   <li>Dogs</li>\n" +
+                "</ol>",
+                "<ol reversed type=\"A\" start=\"5\">" +
+                " <li>Cats</li>" +
+                " <li>Dogs</li> " +
+                "</ol>"                
             }
         };
         
@@ -157,7 +167,10 @@ public class TestHTMLUtilities extends TestCase
             String safeHTML=HTMLUtilities.makeSafeSegment(html).replace("\n", "");
             
             String expectedHTML=check[1];
-            
+            if( expectedHTML.equals(safeHTML)==false)
+            {
+                LOGGER.warn( "Invalid: " + safeHTML);
+            }
             assertEquals( html, expectedHTML, safeHTML);
         }
     }

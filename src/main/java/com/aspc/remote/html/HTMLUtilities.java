@@ -161,10 +161,45 @@ public final class HTMLUtilities
                     case "BR":
                         cleanHTML+="<br>\n";
                         break;
+                    case "OL":  // <ol> tag is used for specifying an ordered list.
+                        cleanHTML+="<" + tag.toLowerCase();
+                        if( e.attr("reversed")!=null)
+                        {
+                            cleanHTML+=" reversed";
+                        }
+                        String type=e.attr("type");
+                        
+                        if( type!=null && type.matches("[1aAiI]"))
+                        {
+                            cleanHTML+=" type=\""+type +"\"";
+                        }
+                               
+                        String start=e.attr("start");
+                        
+                        if( start!=null && start.matches("[0-9]+"))
+                        {
+                            cleanHTML+=" start=\""+start +"\"";
+                        }
+                               
+                        cleanHTML+=">\n";
+                        for( Node n2:e.childNodes())
+                        {
+                            cleanHTML+=makeSafeSegment(n2);
+                        }
+                        cleanHTML+="\n</" + tag.toLowerCase() +">";
+                        
+                        break;
+                    case "LI":  // The HTML <li> tag is used for specifying a list item in ordered and unordered lists. 
+                        cleanHTML+="<" + tag.toLowerCase() +">";
+                        for( Node n2:e.childNodes())
+                        {
+                            cleanHTML+=makeSafeSegment(n2);
+                        }
+                        cleanHTML+="</" + tag.toLowerCase() +">\n";
+                        break;
                     case "P":
                     case "I":
                     case "UL":
-                    case "LI":
                     case "BLOCKQUOTE":  // The <blockquote> tag specifies a section that is quoted from another source.
 //                    case "P":
                     case "EM":      // The <em> tag is a phrase tag. It renders as emphasized text.
