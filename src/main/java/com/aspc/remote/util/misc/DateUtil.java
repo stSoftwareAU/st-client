@@ -202,6 +202,11 @@ public final class DateUtil
         {
             field = Calendar.WEEK_OF_YEAR;
         }
+        
+        if( type.equalsIgnoreCase("Months"))
+        {
+            field = Calendar.MONTH;
+        }
 
         if( type.equalsIgnoreCase( "Days"))
         {
