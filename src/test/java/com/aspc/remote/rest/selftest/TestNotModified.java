@@ -98,10 +98,10 @@ public class TestNotModified extends TestCase
         String url="http://code.jquery.com/jquery-3.2.1.min.js";
 
         ReST.Builder call = ReST.builder(url);
-
+        call.setTimeout("10 secs");
         Response rr=null;
         
-        for( int loops=0;loops<3; loops++)
+        for( int loops=0;loops<30; loops++)
         {
             try{
                 rr=call.getResponseAndCheck();
