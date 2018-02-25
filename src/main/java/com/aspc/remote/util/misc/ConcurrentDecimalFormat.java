@@ -35,9 +35,11 @@ package com.aspc.remote.util.misc;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 
 /**
- *  A wraper for Decimal Format to make sure it's thread safe.
+ *  A wrapper for Decimal Format to make sure it's thread safe.
  *  <br>
  *  <i>THREAD MODE: MULTI-THREADED</i>
  *
@@ -46,7 +48,7 @@ import java.text.ParseException;
  */
 public final class ConcurrentDecimalFormat
 {
-    private static final long serialVersionUID = 42L;
+//    private static final long serialVersionUID = 42L;
     private final String pattern;
     private final ThreadLocal< DecimalFormat > df = new ThreadLocal< DecimalFormat >()
     {
@@ -61,19 +63,22 @@ public final class ConcurrentDecimalFormat
      * create a new Concurrent decimal format
      * @param pattern the pattern
      */
-    public ConcurrentDecimalFormat( final String pattern)
+    public ConcurrentDecimalFormat( final @Nonnull String pattern)
     {
+        if( StringUtilities.isBlank(pattern)) throw new IllegalArgumentException("pattern is mandatory");
         this.pattern=pattern;
     }
 
     /**
      * format the number
-     * @param no the number to format
+     * @param number the number to format
      * @return the formated string
      */
-    public String format(Object no)
+    @Nonnull @CheckReturnValue
+    public String format( final @Nonnull Object number)
     {
-        return df.get().format(no);
+        if( number instanceof Number == false) throw new IllegalArgumentException("Must be a number was: " + number);
+        return df.get().format(number);
     }
 
     /**
@@ -82,8 +87,10 @@ public final class ConcurrentDecimalFormat
      * @return the number
      * @throws java.text.ParseException failed to parse the text
      */
-    public Number parse( String text) throws ParseException
+    @Nonnull @CheckReturnValue
+    public Number parse( final @Nonnull String text) throws ParseException
     {
+        if( StringUtilities.isBlank(text)) throw new IllegalArgumentException("text is mandatory");
         return df.get().parse(text);
     }
 }
