@@ -231,7 +231,7 @@ public class HTMLTextEditor extends HTMLTextArea
         onChangeScripts.put( "teOnChanged", "");
 
         page = getParentPage();
-
+//        page.addModule("tinymce");
         String funcExt = HTMLUtilities.makeValidName(page.doGenerateId());
         String completeCompName = "ONLOAD_COMPLETE_TINYMCE_" + funcExt;
         String funcName = "textEditorInit_" + funcExt;
