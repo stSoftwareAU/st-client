@@ -37,6 +37,8 @@ import com.aspc.remote.application.Shutdown;
 import com.aspc.remote.application.ShutdownListener;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.TimeUtil;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
@@ -46,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
@@ -75,6 +78,24 @@ public final class LinkManager
         return TYPES.get(key);
     }
 
+    /**
+     * List all types
+     * @return the value
+     */
+    @CheckReturnValue @Nonnull
+    public static LinkType[] listType()
+    {
+        Enumeration<LinkType> elements = TYPES.elements();
+        ArrayList<LinkType> list=new ArrayList();
+        while( elements.hasMoreElements())
+        {
+            list.add(elements.nextElement());
+        }
+        
+        LinkType a[]=new LinkType[list.size()];
+        list.toArray(a);
+        return a;
+    }
     /**
      * Does this type exist
      * @param key The key
@@ -210,7 +231,7 @@ public final class LinkManager
      * @throws Exception a serious problem
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public static int countAvailableClient( final @Nonnull String type) throws Exception
     {
         checkUp();
@@ -338,6 +359,19 @@ public final class LinkManager
         return obj;
     }
 
+    /**
+     * Check all connections for a type.
+     * @param type the type to check.
+     * @throws Exception a problem.
+     */
+    public static void checkType( final @Nonnull LinkType type) throws Exception
+    {
+//        LinkType lt = getType(type);
+        if( type==null) throw new IllegalArgumentException( "Type is mandatory");
+        
+        type.testLines(CHECKEDOUT);
+        
+    }
     /**
      * Short hand method of checking out and removing a client.
      * @param type the type

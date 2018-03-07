@@ -132,15 +132,15 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
         String tmpPath=path.trim();
         if( StringUtilities.notBlank(format))
         {
-            String parms="DISPLAY_FORMAT=\""+ format.replaceAll("\"", "\\\"") + "\"";
+            String parms="FORMAT=\""+ format.replaceAll("\"", "\\\"") + "\"";
             
             if( tmpPath.endsWith("}"))
             {
-                tmpPath=tmpPath.substring(0, tmpPath.length()-2) + ", " + parms + "}";
+                tmpPath=tmpPath.substring(0, tmpPath.length()-1) + ", " + parms + "}";
             }
             else
             {
-                tmpPath="{" + parms + "}";
+                tmpPath+="{" + parms + "}";
             }
         }
         buffer.append(" data-path=\"").append(StringUtilities.encodeHTML(tmpPath)).append("\"");

@@ -39,6 +39,9 @@ import com.aspc.remote.database.*;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -56,6 +59,8 @@ import javax.annotation.Nullable;
 public class LinkType
 {
 
+    private final ReadWriteLock gate=new ReentrantReadWriteLock();
+    
     /**
      * The code for this type
      */
@@ -102,7 +107,7 @@ public class LinkType
      * Count the number of connections in this group.
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public int countAvailableConnections()
     {
         int count = 0;
@@ -489,88 +494,97 @@ public class LinkType
      */
     @SuppressWarnings({"AssignmentToForLoopParameter", "BroadCatchBlock", "TooBroadCatch", "UseSpecificCatch"})
     @Nonnull
-    public LinkType testLines(final @Nonnull ConcurrentHashMap<Object, LinkConnection>    checkout ) throws Exception//NOPMD
+    public LinkType testLines(final @Nonnull ConcurrentHashMap<Object, LinkConnection> checkout ) throws Exception//NOPMD
     {
-        List<LinkConnection> listValuesList=Collections.list(linkIds.elements());
-        for( LinkConnection lc:listValuesList )
-        {
-            if( lc.checkOut(checkout))
+        Lock wl = gate.writeLock();
+        
+        wl.lock();
+        try{
+            List<LinkConnection> listValuesList=Collections.list(linkIds.elements());
+            for( LinkConnection lc:listValuesList )
             {
-                try
+                if( lc.checkOut(checkout))
                 {
-                    lc.testConnection();
-                    lc.checkIn(checkout);
-                }
-                catch( TimeoutException to)
-                {
-                    closeConnection(lc, checkout);
-                }
-                catch( SQLException sqlException)
-                {
-                    LOGGER.warn(
-                        "Connection failed " + lc,
-                        sqlException
-                    );
+                    try
+                    {
+                        lc.testConnection();
+                        lc.checkIn(checkout);
+                    }
+                    catch( TimeoutException to)
+                    {
+                        closeConnection(lc, checkout);
+                    }
+                    catch( SQLException sqlException)
+                    {
+                        LOGGER.warn(
+                            "Connection failed " + lc,
+                            sqlException
+                        );
 
-                    closeConnection(lc, checkout);
-                }
-                catch( Throwable t)
-                {
-                    LOGGER.error(
-                        "Connection failed " + lc,
-                        t
-                    );
+                        closeConnection(lc, checkout);
+                    }
+                    catch( Throwable t)
+                    {
+                        LOGGER.error(
+                            "Connection failed " + lc,
+                            t
+                        );
 
-                    closeConnection(lc, checkout);
+                        closeConnection(lc, checkout);
+                    }
                 }
             }
-        }
 
-        /**
-         * Make extra connections as needed.
-         * We may have other threads creating connections so test each loop how many connections
-         */
-        for(
-            int createCount = minConnections - countConnections();
-            createCount > 0 && countConnections() < minConnections;
-            createCount--
-        )
-        {
-            LinkConnection connection = makeConnection();
-
-            addConnection( connection);
-        }
-
-        // Remove excess connections
-        int tmpMaxReserve = calMaximumReserve();
-        for(
-            int loop = 0;
-            tmpMaxReserve               >= 0 &&                 // not -1
-            countConnections()          > minConnections &&
-            countAvailableConnections() > tmpMaxReserve;
-            loop++
-        )
-        {
-            boolean found = false;
-            
-            for( LinkConnection lc:Collections.list(linkIds.elements()) )
+            /**
+             * Make extra connections as needed.
+             * We may have other threads creating connections so test each loop how many connections
+             */
+            for(
+                int createCount = minConnections - countConnections();
+                createCount > 0 && countConnections() < minConnections;
+                createCount--
+            )
             {
-                if( LinkManager.rawCheckOutConnection(this, lc ))
-                {
-                    LOGGER.info(
-                        "Culling connection " + lc
-                    );
+                LinkConnection connection = makeConnection();
 
-                    closeConnection(lc, checkout);
-                    found = true;
+                addConnection( connection);
+            }
+
+            // Remove excess connections
+            int tmpMaxReserve = calMaximumReserve();
+            for(
+                int loop = 0;
+                tmpMaxReserve               >= 0 &&                 // not -1
+                countConnections()          > minConnections &&
+                countAvailableConnections() > tmpMaxReserve;
+                loop++
+            )
+            {
+                boolean found = false;
+
+                for( LinkConnection lc:Collections.list(linkIds.elements()) )
+                {
+                    if( LinkManager.rawCheckOutConnection(this, lc ))
+                    {
+                        LOGGER.info(
+                            "Culling connection " + lc
+                        );
+
+                        closeConnection(lc, checkout);
+                        found = true;
+                        break;
+                    }
+                }
+
+                if( loop > 10 || found == false)
+                {
                     break;
                 }
             }
-
-            if( loop > 10 || found == false)
-            {
-                break;
-            }
+        }
+        finally
+        {
+            wl.unlock();
         }
         
         return this;

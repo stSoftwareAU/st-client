@@ -860,8 +860,18 @@ public final class CSQL extends SResultSet implements ResultsLoader
             {
                 conn.setAutoCommit(false);
 
-                stmt = conn.createStatement();
-
+                if(query)
+                {
+                    stmt = conn.createStatement(
+                        java.sql.ResultSet.TYPE_FORWARD_ONLY,
+                        java.sql.ResultSet.CONCUR_READ_ONLY,
+                        java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT
+                    );
+                }
+                else
+                {
+                    stmt = conn.createStatement();
+                }
                 stmt.setFetchSize(1000);
             }
             else
@@ -869,10 +879,10 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 stmt = conn.createStatement();
             }
 
-            if (!dbType.equalsIgnoreCase(DataBase.TYPE_POSTGRESQL))
-            {
+//            if (!dbType.equalsIgnoreCase(DataBase.TYPE_POSTGRESQL))
+//            {
                 stmt.setQueryTimeout(queryTimeOutSeconds);
-            }
+//            }
             theSql  = (String)inObj;
 
             String aSql = theSql.trim();
