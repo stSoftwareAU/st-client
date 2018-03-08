@@ -114,7 +114,21 @@ public abstract class HTMLComponent
         }
         else
         {
-            this.className += " " + className;
+            boolean classExists = false;
+            String[] classes = this.className.split(" ");
+            for (String clas : classes) 
+            {
+                if(clas.equalsIgnoreCase(className))
+                {
+                    classExists = true;
+                    break;
+                }
+            }
+            if(classExists == false)
+            {
+                this.className += " " + className;
+            }
+                
         }
     }
 
