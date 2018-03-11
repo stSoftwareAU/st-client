@@ -202,7 +202,7 @@ public class TestAddressBlock extends TestCase
         {
             String reason = bl.getReason(ip, 60000);
             assertNotNull("should not have timed out", reason);
-            assertTrue("Should be clean " + ip, StringUtilities.isBlank(reason));
+            assertTrue("Should be clean " + ip + " " + reason, StringUtilities.isBlank(reason));
             assertTrue( "Should know about " + ip, bl.knowsIP(ip));
         }
     }
