@@ -33,6 +33,7 @@
  */
 package com.aspc.remote.util.net;
 import java.io.File;
+import java.io.IOException;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -94,9 +95,10 @@ public interface NetClient
      * @return boolean true if directory changed false otherwise
      * @param path the path
      * @param create should we create the directory if missing ? 
+     * @throws java.io.IOException 
      */
     @CheckReturnValue
-    public boolean changeDirectory( final @Nonnull String path, final boolean create );
+    public boolean changeDirectory( final @Nonnull String path, final boolean create ) throws IOException;
     
     
     /**
@@ -177,7 +179,7 @@ public interface NetClient
      * Get the underlying connection object
      * @return the underlying connection object
      */
-    @CheckReturnValue @Nonnull
+    @Nullable @CheckReturnValue
     public Object getUnderlyingConnectionObject();
 
     /**

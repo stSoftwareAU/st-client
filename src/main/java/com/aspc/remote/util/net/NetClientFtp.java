@@ -42,6 +42,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.net.ftp.FTP;
@@ -127,7 +128,7 @@ public class NetClientFtp implements NetClient, CopyStreamListener
      * @throws Exception a serious problem
      */
     @Override
-    public void fetch( final String path, final File target ) throws Exception
+    public void fetch( final @Nonnull String path, final @Nonnull File target ) throws Exception
     {
         // validate input
         if( StringUtilities.isBlank( path ) )
@@ -147,7 +148,9 @@ public class NetClientFtp implements NetClient, CopyStreamListener
             deadConnection=true;
             throw new Exception( "fetch 'path' must be relative: "+path );
         }
-        
+
+        if( target.isDirectory()) throw new IllegalArgumentException("target file must be a file: " + target);
+
         // try to fetch
         if( ftp != null && ftp.isConnected() )
         {

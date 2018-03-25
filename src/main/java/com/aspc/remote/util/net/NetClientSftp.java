@@ -108,6 +108,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
      * @throws Exception in case of error
      */
     @Override
+    @SuppressWarnings("UseSpecificCatch")
     public boolean exists( final String path ) throws Exception
     {
         if( sftp == null || sftp.isConnected()==false )
@@ -207,7 +208,9 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
         {
             throw new Exception( "'path' must be relative: "+path );
         }
-        
+
+        if( target.isDirectory()) throw new IllegalArgumentException("target file must be a file: " + target);
+
         // now try to fetch
         if( sftp != null && sftp.isConnected() )
         {            
@@ -253,7 +256,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
             {
                 sftp.rm( path );
             }
-            catch( Exception e )
+            catch( SftpException e )
             {
                 LOGGER.warn( "could not remove " + path, e);
             }
@@ -312,7 +315,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
                 
                 sftp.rename( from, to );
             }
-            catch( Exception e )
+            catch( SftpException e )
             {
                 deadConnection=true;
                 LOGGER.info( "NetClientSftp: failed to rename the file from "+from+" to "+to, e );
@@ -463,7 +466,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
                         if (token.length() > 0) {
                             try {
                                 sftp.cd(token);
-                            } catch (Exception e) {
+                            } catch (SftpException e) {
                                 if (create) {
                                     sftp.mkdir(token);
                                     sftp.cd(token);
@@ -477,7 +480,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
                     changed = true;
                 }
             }
-            catch( Exception e )
+            catch( SftpException e )
             {
                 deadConnection=true;
                 LOGGER.warn( "NetClientSftp: connected, but unable to change directory to "+path, e );

@@ -47,6 +47,9 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
@@ -535,60 +538,74 @@ public final class LinkManager
     */
     private static void checkUp()
     {
-        if( isRunning() == false)
-        {
-            startUp();
+        Lock rl = START_UP_GATE.readLock();
+        try{
+            rl.lock();
+            if( isRunning()) return;
         }
+        finally{
+            rl.unlock();
+        }
+        
+        startUp();
     }
 
    /**
     * Check if Link Manager is running.
     * Starts a new thread if not running.
     */
-    private static synchronized void startUp()
+    private static void startUp()
     {
-        if( SHUTTING_DOWN.get()==false)
-        {
-            long lastChecked = LAST_CHECKED.get();
-            // Check again it may have been
-            // restarted since our first check.
-            if( isRunning(lastChecked) == false)
+        Lock wl=START_UP_GATE.writeLock();
+        try{
+            wl.lock();
+            if( SHUTTING_DOWN.get()==false)
             {
-                if( SHUTTING_DOWN.get()==false) // double check as shutdown isn't sync'd
+                long lastChecked = LAST_CHECKED.get();
+                // Check again it may have been
+                // restarted since our first check.
+                if( isRunning(lastChecked) == false)
                 {
-                    if( thread != null)
+                    if( SHUTTING_DOWN.get()==false) // double check as shutdown isn't sync'd
                     {
-                        LOGGER.fatal(
-                            "LinkManager restarted - loop test has taken " +
-                            TimeUtil.getDiff(lastChecked)
+                        if( thread != null)
+                        {
+                            LOGGER.fatal(
+                                "LinkManager restarted - loop test has taken " +
+                                TimeUtil.getDiff(lastChecked)
+                            );
+
+                            thread.setName("DEAD - LinkManager");
+                            thread.interrupt();
+
+                            StringBuilder buffer = new StringBuilder();
+
+                            CLogger.requestDump( buffer);
+                            LOGGER.fatal(buffer);
+                        }
+                        LinkManager lm=new LinkManager();
+                        LinkManagerRunner lmr=new LinkManagerRunner(lm);
+                        LinkManagerShutdownListener lmsl=new LinkManagerShutdownListener();
+                        Shutdown.addListener(lmsl);
+                        Thread tmpThread = new Thread(
+                            lmr,
+                            "LinkManager"
                         );
 
-                        thread.setName("DEAD - LinkManager");
-                        thread.interrupt();
+                        tmpThread.setDaemon(  true);
+                        tmpThread.setPriority(Thread.MIN_PRIORITY);
+                        LAST_CHECKED.set(System.currentTimeMillis());
 
-                        StringBuilder buffer = new StringBuilder();
+                        tmpThread.start();
 
-                        CLogger.requestDump( buffer);
-                        LOGGER.fatal(buffer);
+                        thread=tmpThread;
                     }
-                    LinkManager lm=new LinkManager();
-                    LinkManagerRunner lmr=new LinkManagerRunner(lm);
-                    LinkManagerShutdownListener lmsl=new LinkManagerShutdownListener();
-                    Shutdown.addListener(lmsl);
-                    Thread tmpThread = new Thread(
-                        lmr,
-                        "LinkManager"
-                    );
-
-                    tmpThread.setDaemon(  true);
-                    tmpThread.setPriority(Thread.MIN_PRIORITY);
-                    LAST_CHECKED.set(System.currentTimeMillis());
-
-                    tmpThread.start();
-
-                    thread=tmpThread;
                 }
             }
+        }
+        finally
+        {
+            wl.unlock();
         }
     }
 
@@ -727,6 +744,8 @@ public final class LinkManager
             }
         }
     }
+    
+    private static final ReadWriteLock START_UP_GATE=new ReentrantReadWriteLock();
     
     private static final ConcurrentHashMap<String, LinkType>    TYPES = new ConcurrentHashMap();
     private static final ConcurrentHashMap<Object, LinkConnection>    CHECKEDOUT = new ConcurrentHashMap();

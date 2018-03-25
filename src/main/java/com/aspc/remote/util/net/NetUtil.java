@@ -205,6 +205,8 @@ public final class NetUtil
 
         if( cacheFile.exists() )
         {
+            assert cacheFile.isFile():"Must be a file: " + cacheFile;
+            
             if( StringUtilities.isBlank( checksum)== false )
             {
                 if( ! FileUtil.isValid( cacheFile, checksum, -1 ) )

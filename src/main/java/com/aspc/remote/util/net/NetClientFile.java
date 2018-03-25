@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
 
@@ -62,7 +63,7 @@ public class NetClientFile implements NetClient
      * @return boolean true if it exists
      * @throws Exception a serious problem
      */
-    @Override
+    @Override @CheckReturnValue
     public boolean exists( final String path ) throws Exception
     {
         File rawFile = new File( makePathAbsolute( path));
@@ -80,9 +81,18 @@ public class NetClientFile implements NetClient
      * @throws Exception a serious problem
      */
     @Override
-    public void fetch( final String path, final File target ) throws Exception
+    public void fetch( final @Nonnull String path, final @Nonnull File target ) throws Exception
     {                
+        if( StringUtilities.isBlank( path ) ) throw new IllegalArgumentException( "blank 'path' in call to fetch" );
+                
+        if( target == null ) throw new IllegalArgumentException("no target file");
+                
+        if( target.isDirectory()) throw new IllegalArgumentException("target file must be a file: " + target);
+        
         File rawFile = new File( makePathAbsolute( path));
+        
+        if( rawFile.exists()==false) throw new IOException( "Does NOT exist: " + rawFile);
+        
         if( rawFile.equals( target))
         {
             return;
@@ -100,7 +110,7 @@ public class NetClientFile implements NetClient
      * @throws Exception a serious problem
      */
     @Override
-    public void remove( final String path ) throws Exception
+    public void remove( final @Nonnull String path ) throws Exception
     {
         File targetFile = new File( makePathAbsolute( path));
         
@@ -117,7 +127,7 @@ public class NetClientFile implements NetClient
      * @throws Exception a serious problem
      */
     @Override
-    public void rename( final String from, final String to ) throws Exception
+    public void rename( final @Nonnull String from, final @Nonnull String to ) throws Exception
     {
         // creates directories if they do not exist
         String tmp = FileUtil.getBaseFromPath( makePathAbsolute( to ) );
@@ -127,6 +137,8 @@ public class NetClientFile implements NetClient
         }
 
         File fromFile = new File( makePathAbsolute( from));
+        if( fromFile.exists()==false) throw new IOException( "Does NOT exist: " + fromFile);
+        
         File toFile = new File( makePathAbsolute(to));
         
         if( fromFile.renameTo( toFile ) == false )
@@ -143,8 +155,9 @@ public class NetClientFile implements NetClient
      * @throws Exception a serious problem
      */
     @Override
-    public void send( final File rawFile, final String path ) throws Exception
+    public void send( final @Nonnull File rawFile, final @Nonnull String path ) throws Exception
     {
+        if( rawFile.exists()==false) throw new IOException( "Does NOT exist: " + rawFile);
         String absPath = makePathAbsolute( path);
         changeDirectory( getBaseFromPath(absPath), true );
             
@@ -160,7 +173,8 @@ public class NetClientFile implements NetClient
      * @param path the file path
      * @return String the directory portion
      */
-    public static String getBaseFromPath( final String path )
+    @Nonnull @CheckReturnValue
+    public static String getBaseFromPath( final @Nonnull String path )
     {
         String base = "";
         
@@ -178,9 +192,10 @@ public class NetClientFile implements NetClient
      * @param create create the directory if it doesn't exist
      * @param path the directories to create
      * @return boolean true if the path could be changed
+     * @throws java.io.IOException
      */
     @Override
-    public boolean changeDirectory( final String path, final boolean create ) 
+    public boolean changeDirectory( final @Nonnull String path, final boolean create ) throws IOException
     {
         boolean changed = false;
         File pathFile = null;
@@ -199,7 +214,7 @@ public class NetClientFile implements NetClient
                 changed = true;
             }
         }
-        
+        if( pathFile==null) throw new IOException("Could not change directory: " + path);
         if( !changed && create )
         {
             try
@@ -221,7 +236,7 @@ public class NetClientFile implements NetClient
      * @return String the current working directory
      * @throws Exception a serious problem
      */
-    @Override
+    @Override @CheckReturnValue
     public String getDirectory() throws Exception
     {        
         return originalPath;
@@ -231,7 +246,7 @@ public class NetClientFile implements NetClient
      * Gets the protocol prefix that this client implements
      * @return String the protocol type
      */
-    @Override
+    @Override @CheckReturnValue
     public String getType()
     {
         return PREFIX_FILE;
@@ -244,7 +259,8 @@ public class NetClientFile implements NetClient
      * @param url the url to check
      * @return boolean true if the client can connect, false otherwise
      */
-    @Override
+    @Override @CheckReturnValue
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public boolean canConnect( final String url )
     {
         boolean connectable = false;
@@ -318,7 +334,7 @@ public class NetClientFile implements NetClient
      * Validates a client, also used by pooling
      * @return boolean true if the client is valid, false otherwise
      */
-    @Override
+    @Override  @CheckReturnValue
     public boolean validate()
     {
         return true;
@@ -399,7 +415,7 @@ public class NetClientFile implements NetClient
      * @return file names
      * @throws Exception io problem
      */
-    @Override
+    @Override  @CheckReturnValue @Nonnull
     public String[] retrieveFileList( ) throws Exception
     {
         String[] fileList;
@@ -427,7 +443,7 @@ public class NetClientFile implements NetClient
      * Get the underlying connection object
      * @return the null as there is no underlying connection object
      */
-    @Override
+    @Override @Nullable @CheckReturnValue
     public Object getUnderlyingConnectionObject()
     {
         return null;

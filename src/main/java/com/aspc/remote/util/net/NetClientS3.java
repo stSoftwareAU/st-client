@@ -96,7 +96,12 @@ public class NetClientS3 implements NetClient
     }
     
     @Override
-    public void fetch(String fetchPath, File target) throws Exception {
+    public void fetch(final @Nonnull String fetchPath, final @Nonnull File target) throws Exception {
+        if( StringUtilities.isBlank( fetchPath ) ) throw new IllegalArgumentException( "blank 'path' in call to fetch" );
+                
+        if( target == null ) throw new IllegalArgumentException("no target file");
+                
+        if( target.isDirectory()) throw new IllegalArgumentException("target file must be a file: " + target);
 
         String url=makeURL( fetchPath);
 
