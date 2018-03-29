@@ -33,6 +33,9 @@
  */
 package com.aspc.remote.util.timer;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
+
 /**
  *  Stopwatch
  *
@@ -56,6 +59,7 @@ public final class Lap
      * When was the lap started ? 
      * @return the nano time. 
      */
+    @CheckReturnValue @Nonnegative
     public long start()
     {
         return nanoStart;
@@ -65,37 +69,50 @@ public final class Lap
      * When was the lap ended ? 
      * @return the end time. 
      */    
+    @Nonnegative
     public long end()
     {
         if( nanoEnd ==0)
         {
             nanoEnd=System.nanoTime();
         }
+        
+        assert nanoEnd>=nanoStart: "Should end: " + nanoEnd +" after started: " + nanoStart;
         return nanoEnd;
     }
 
     /**
-     * The duration. 
+     * The duration in Nanoseconds. 
      * @return the difference.
      */
+    @CheckReturnValue @Nonnegative
     public long duration()
     {
+        assert nanoStart>0: "Must have a positive start time: " + nanoStart;
         long tmpEnd=nanoEnd;
         if( tmpEnd < nanoStart)
         {
+            assert tmpEnd==0: "End: " + tmpEnd + " should be greater than equal to start: " + nanoStart;
             tmpEnd=System.nanoTime();
         }
 //        assert nanoStart != 0 && nanoEnd != 0: "lap not stopped " + nanoStart + ", " + nanoEnd;
         
-        return tmpEnd-nanoStart;
+        long tmpDuration= tmpEnd-nanoStart;
+        assert tmpDuration>=0: "Must be non negative was: " + tmpDuration;
+        
+        return tmpDuration;
     }   
     
     /**
      * The duration in MILLISECONDS.
      * @return the difference.
      */
+    @CheckReturnValue @Nonnegative
     public long durationMS()
     {        
-        return duration()/1000/1000;
+        long tmpDurationMS=  duration()/1000L/1000L;
+        
+        assert tmpDurationMS>=0: "Must be non negative was: " + tmpDurationMS;
+        return tmpDurationMS;
     }  
 }
