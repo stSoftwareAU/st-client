@@ -689,7 +689,7 @@ public final class DateUtil
      * @return the initialized calendar.
      */
     @CheckReturnValue @Nonnull
-    public static GregorianCalendar makeGC( final TimeZone timeZone, final Date date )
+    public static GregorianCalendar makeGC( final @Nullable TimeZone timeZone, final @Nullable Date date )
     {
         TimeZone tz = timeZone;
 
