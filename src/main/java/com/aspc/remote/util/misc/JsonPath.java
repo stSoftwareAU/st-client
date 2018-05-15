@@ -98,14 +98,14 @@ public class JsonPath
                     }
                     else
                     {
-                        if( item!=null)
-                        {
+//                        if( item!=null)
+//                        {
                             return item;
-                        }
-                        else
-                        {
-                            return new JSONArray();
-                        }
+//                        }
+//                        else
+//                        {
+//                            return new JSONArray();
+//                        }
                     }
                 }
                 
@@ -226,7 +226,7 @@ public class JsonPath
         return "";
     }
     
-    public static void checkPath(final String jsonPath)
+    public static void checkPath(final @Nonnull String jsonPath)
     {
         if(jsonPath == null)
         {

@@ -36,6 +36,8 @@ package com.aspc.remote.html;
 import com.aspc.remote.html.input.HTMLInput;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  HTML FORM element
@@ -78,7 +80,7 @@ public class HTMLForm extends HTMLContainer
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;

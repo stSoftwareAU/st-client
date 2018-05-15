@@ -36,6 +36,10 @@ package com.aspc.remote.html;
 
 import com.aspc.remote.util.misc.StringUtilities;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * This class will generate the html for the AjaxField
@@ -72,7 +76,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * @param globalkey
      * @param format
      */
-    public HTMLAjaxFieldV2(final String path, final String dbclass, final String globalkey, final String format)
+    public HTMLAjaxFieldV2(final @Nonnull String path, final @Nonnull String dbclass, final @Nonnull String globalkey, final @Nullable String format)
     {
         assert checkPath( path): "inalid path " + path;
         this.path = path;
@@ -81,7 +85,8 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
         this.format = format;
     }
 
-    private boolean checkPath( final String path)
+    @CheckReturnValue
+    private boolean checkPath( final @Nonnull String path)
     {
         int bracket=path.lastIndexOf("}");
         int last=path.indexOf("]", bracket);
@@ -101,7 +106,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * @param browser client browser
      */
     @Override
-    protected void compile(final ClientBrowser browser)
+    protected void compile(final @Nonnull ClientBrowser browser)
     {
         if( StringUtilities.isBlank(getId()))
         {
@@ -113,7 +118,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
     
 
     @Override
-    protected void iGenerate(ClientBrowser browser, StringBuilder buffer)
+    protected void iGenerate(final @Nonnull ClientBrowser browser, final @Nonnull StringBuilder buffer)
     {
         buffer.append("<span id=\"");
         buffer.append(getId());
@@ -153,7 +158,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
         
         if( fontSize>0)
         {
-            style="fontSize=" + fontSize +"px";            
+            style="font-size:" + fontSize +"px";            
         }
         
         if( isBold())
@@ -163,11 +168,11 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
                 style+=";";
             }
             
-            style+="fontWeight=800";            
+            style+="font-weight:800";            
         }
         if( StringUtilities.notBlank(style))
         {
-            buffer.append("style=\"" ).append(style).append("\"");
+            buffer.append(" style=\"" ).append(style).append("\"");
         }
         
         buffer.append(">");
@@ -180,6 +185,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * Is bold
      * @return bold
      */
+    @CheckReturnValue
     public boolean isBold()
     {
         return bold;
@@ -189,6 +195,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * Get Font Size
      * @return size
      */
+    @CheckReturnValue
     public int getFontSize()
     {
         return fontSize;
@@ -198,7 +205,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * Set Bold
      * @param bold bold
      */
-    public void setBold(boolean bold)
+    public void setBold(final boolean bold)
     {
         this.bold = bold;
     }
@@ -206,7 +213,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * Set includes Tags
      * @param includesTags includes tags
      */
-    public void setIncludesTags(boolean includesTags)
+    public void setIncludesTags(final boolean includesTags)
     {
         this.includesTags = includesTags;
     }
@@ -214,7 +221,7 @@ public class HTMLAjaxFieldV2 extends HTMLComponent
      * Font Size
      * @param fontSize fontSize
      */
-    public void setFontSize(int fontSize)
+    public void setFontSize(final @Nonnegative int fontSize)
     {
         this.fontSize = fontSize;
     }

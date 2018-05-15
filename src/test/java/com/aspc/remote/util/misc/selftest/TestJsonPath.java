@@ -3,7 +3,9 @@ package com.aspc.remote.util.misc.selftest;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.JsonPath;
 import com.aspc.remote.util.misc.PathNotFoundException;
+import com.aspc.remote.util.misc.TimeUtil;
 import java.util.Date;
+import java.util.TimeZone;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -147,7 +149,7 @@ public class TestJsonPath extends TestCase
                 String actualValue=JsonPath.read(json, jsonPath).toString();
                 assertEquals("JsonPath: " + jsonPath + " value is incorrect", expectedValue, actualValue);
             }
-            catch(Exception e)
+            catch(PathNotFoundException e)
             {
                 fail("JsonPath " + jsonPath + " failed. " + e.getMessage());
             }
@@ -243,16 +245,27 @@ public class TestJsonPath extends TestCase
             {"{\"d1\":\"dd1\",\"d2\":[\"dd20\",\"dd21\"],\"d3\":[{\"e\":\"ee\"},{\"f\":\"ff\"}]}", "$.d"},
             {"true", "$.x"},
             {"1.2", "$.y"},
-            {"Mon Aug 10 22:40:00 AEST 2015", "$.z"},
+            {"10 Aug 2015 22:40@AEST", "$.z"},
         };
         
         for(String[] s : values)
         {
             try
             {
-                assertEquals("JsonPath: " + s[1] + " value is incorrect", s[0], JsonPath.read(json, s[1]).toString());
+                Object obj=JsonPath.read(json, s[1]);
+                String tmp;
+                if( obj instanceof Date)
+                {
+                    Date d=(Date)obj;
+                    tmp=TimeUtil.format("d MMM yyyy HH:mm@z", d, TimeZone.getTimeZone("Australia/Sydney"));
+                }
+                else
+                {
+                    tmp=obj.toString();
+                }
+                assertEquals("JsonPath: " + s[1] + " value is incorrect", s[0], tmp);
             }
-            catch(Exception e)
+            catch(PathNotFoundException e)
             {
                 fail("JsonPath " + s[1] + " failed. " + e.getMessage());
             }
@@ -329,7 +342,7 @@ public class TestJsonPath extends TestCase
             {
                 assertEquals("JsonPath: " + s[1] + " value is incorrect", s[0], JsonPath.read(ja, s[1]).toString());
             }
-            catch(Exception e)
+            catch(PathNotFoundException e)
             {
                 fail("JsonPath " + s[1] + " failed. " + e.getMessage());
             }

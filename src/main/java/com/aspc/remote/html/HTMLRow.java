@@ -46,6 +46,7 @@ import java.util.*;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *  HTMLRow
@@ -475,7 +476,7 @@ public final class HTMLRow extends HTMLContainer
      * @param event the event
      * @param col the column
      */
-    public void addCellEvent(HTMLEvent event, int col)
+    public void addCellEvent(final @Nonnull HTMLEvent event, int col)
     {
         CellData cd;
 
@@ -483,10 +484,10 @@ public final class HTMLRow extends HTMLContainer
 
         if( cd.events == null)
         {
-            cd.events = new Vector();//NOPMD
+            cd.events = new ArrayList();//NOPMD
         }
 
-        cd.events.addElement( event);
+        cd.events.add( event);
     }
 
     /**
@@ -494,7 +495,7 @@ public final class HTMLRow extends HTMLContainer
      * @param list
      */
     @Override
-    protected void makeListOfEvents( List list)
+    protected void makeListOfEvents( final @Nonnull List list)
     {
         super.makeListOfEvents( list);
 
@@ -512,10 +513,11 @@ public final class HTMLRow extends HTMLContainer
             {
                 if( cellData.events != null)
                 {
-                    for( int i = 0; i < cellData.events.size(); i++)
-                    {
-                        list.add(cellData.events.elementAt( i));
-                    }
+                    list.addAll(cellData.events);
+//                    for( int i = 0; i < cellData.events.size(); i++)
+//                    {
+//                        list.add(cellData.events.get( i));
+//                    }
                 }
             }
         }
@@ -524,32 +526,36 @@ public final class HTMLRow extends HTMLContainer
 
     private CellData findCellData( int col, boolean create)
     {
-        if( CDList == null )
+        if( cdList == null )
         {
             if( create == false)
             {
                 return null;
             }
 
-            CDList = new Vector();//NOPMD
+            cdList = new ArrayList();
         }
 
         CellData cd = null;
 
-        if( col < CDList.size())
+        if( col < cdList.size())
         {
-            cd = (CellData)CDList.elementAt( col);
+            cd = cdList.get( col);
         }
 
         if( cd == null && create == true)
         {
             cd = new CellData();
-            if( col >= CDList.size())
-            {
-                CDList.setSize( col + 1);
-            }
+//            if( col >= CDList.size())
+//            {
+//                CDList.setSize( col + 1);
+//            }
 
-            CDList.setElementAt( cd, col);
+            while( cdList.size() <= col)
+            {
+                cdList.add(null);
+            }
+            cdList.set( col,cd);
         }
 
         return cd;
@@ -597,7 +603,7 @@ public final class HTMLRow extends HTMLContainer
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
@@ -757,10 +763,10 @@ public final class HTMLRow extends HTMLContainer
 
         super.iGenerate(browser, buffer);
 
-        if( needsEndTags( browser))
-        {
+//        if( needsEndTags( browser))
+//        {
             buffer.append("</tr>\n");
-        }
+//        }
     }
 
     /**
@@ -813,13 +819,13 @@ public final class HTMLRow extends HTMLContainer
         /**************** List Events *****************/
         if( cellData != null && cellData.events != null)
         {
-            Hashtable tmpTable = new Hashtable();
+            HashMap<String,String> tmpTable = new HashMap();
 
             for( int i = 0; i < cellData.events.size();i++)
             {
                 HTMLEvent event;
 
-                event = (HTMLEvent)cellData.events.elementAt(i);
+                event = cellData.events.get(i);
                 String  call,
                         key;
 
@@ -838,12 +844,14 @@ public final class HTMLRow extends HTMLContainer
                 tmpTable.put( key, call);
             }
 
-            Enumeration e;
-            e = tmpTable.elements();
-            while( e.hasMoreElements())
+            for( String call: tmpTable.values())
             {
+//            Enumeration e;
+//            e = tmpTable.elements();
+//            while( e.hasMoreElements())
+//            {
                 buffer.append( " ");
-                buffer.append( e.nextElement());
+                buffer.append( call);
                 buffer.append( "\"" );
             }
         }
@@ -1107,8 +1115,8 @@ public final class HTMLRow extends HTMLContainer
             buffer.append( "&nbsp;");
         }
 
-        if( needsEndTags( browser))
-        {            
+//        if( needsEndTags( browser))
+//        {            
             if( headerRow)
             {
                 buffer.append( "</th>");
@@ -1117,13 +1125,13 @@ public final class HTMLRow extends HTMLContainer
             {
                 buffer.append( "</td>");            
             }
-        }
+//        }
     }
 
-    private boolean needsEndTags( final ClientBrowser browser)
-    {
-        return !browser.isBrowserNETSCAPE() || browser.getBrowserVersion() < 5;
-    }
+//    private boolean needsEndTags( final ClientBrowser browser)
+//    {
+//        return !browser.isBrowserNETSCAPE() || browser.getBrowserVersion() < 5;
+//    }
 
     private Color highlightColor;
 
@@ -1132,6 +1140,6 @@ public final class HTMLRow extends HTMLContainer
     private boolean     cancelSingleClickBubbleForAnchors;//NOPMD
 
     private String      rowHeight;
-    private Vector      CDList;
+    private List<CellData>      cdList;
     private HTMLTable   table;
 }

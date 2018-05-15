@@ -42,6 +42,7 @@ import com.aspc.remote.html.theme.HTMLTheme;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.awt.Color;
 import java.util.ArrayList;
+import javax.annotation.CheckReturnValue;
 import javax.annotation.Nullable;
 
 /**
@@ -103,7 +104,7 @@ public class HTMLTable extends HTMLContainer
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;

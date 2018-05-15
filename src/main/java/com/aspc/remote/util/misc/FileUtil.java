@@ -1124,12 +1124,27 @@ public final class FileUtil
     @CheckReturnValue @Nonnull
     public static String readFile( final @Nonnull File file ) throws IOException
     {
-        StringBuilder buffer = new StringBuilder();
+        long fileLen=file.length();
+        if( fileLen>Integer.MAX_VALUE/2)
+        {
+            throw new IllegalArgumentException("file too large was: " + NumUtil.convertMemoryToHumanReadable(fileLen));
+        }
+        else if( fileLen<1)
+        {
+            if( file.canRead()==false)
+            {
+                throw new IllegalArgumentException("Can not read: " + file);
+            }
+            return "";
+        }
+        
+        StringBuilder buffer = new StringBuilder((int)fileLen);
 
         try
         (FileReader fr = new FileReader( file )) {
             
-            char array[] = new char[10240];
+            int size = Math.min(10240, (int) fileLen);
+            char array[] = new char[size];
             while ( true )
             {
                 int len = fr.read( array );
@@ -1143,6 +1158,7 @@ public final class FileUtil
             }
         }
 
+        buffer.trimToSize();
         return buffer.toString();
     }
     
@@ -1167,12 +1183,27 @@ public final class FileUtil
     @CheckReturnValue @Nonnull
     public static byte[] readFileAsBytes( final @Nonnull File file ) throws IOException
     {        
+        long fileLen=file.length();
+        if( fileLen>Integer.MAX_VALUE/2)
+        {
+            throw new IllegalArgumentException("file too large was: " + NumUtil.convertMemoryToHumanReadable(fileLen));
+        }
+        else if( fileLen<1)
+        {
+            if( file.canRead()==false)
+            {
+                throw new IllegalArgumentException("Can not read: " + file);
+            }
+
+            return new byte[0];
+        }
+        int bufferSize = Math.min(10240, (int) fileLen);
         try
         (
             FileInputStream in = new FileInputStream( file );
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream(bufferSize);
         ) {
-            byte array[] = new byte[10240];
+            byte array[] = new byte[bufferSize];
             
             while ( true )
             {

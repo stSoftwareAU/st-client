@@ -37,9 +37,13 @@ import com.aspc.remote.html.ClientBrowser;
 import com.aspc.remote.html.HTMLAnchor;
 import com.aspc.remote.html.HTMLComponent;
 import com.aspc.remote.html.HTMLPage;
+import com.aspc.remote.html.HTMLUtilities;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *  HTMLTabPanel
@@ -78,7 +82,7 @@ public class HTMLTabPanel extends HTMLComponent
      *
      * @param flag
      */
-    public void setHideTarget( boolean flag)
+    public void setHideTarget(final boolean flag)
     {
         hideTarget = flag;
     }
@@ -88,7 +92,7 @@ public class HTMLTabPanel extends HTMLComponent
      * @param code
      * @param newName
      */
-    public void modifyTabName(String code,String newName)
+    public void modifyTabName(final String code,final String newName)
     {
         TabItem tab=findTab(code);
         if (tab!=null)
@@ -107,11 +111,11 @@ public class HTMLTabPanel extends HTMLComponent
      * @return the value
      */
     public TabItem addTab(
-        String code,
-        String name,
-        boolean selected,
-        String description,
-        String optionalURL
+        final String code,
+        final String name,
+        final boolean selected,
+        final String description,
+        final String optionalURL
     )
     {
         return addTab(code,name,selected,description,optionalURL,-1,null);
@@ -129,13 +133,13 @@ public class HTMLTabPanel extends HTMLComponent
      * @return the value
      */
     public TabItem addTab(
-        String code,
-        String name,
-        boolean selected,
-        String description,
-        String optionalURL,
-        int insertAt,
-        String tabBase
+        final String code,
+        final String name,
+        final boolean selected,
+        final String description,
+        final String optionalURL,
+        final int insertAt,
+        final String tabBase
     )
     {
         TabItem ti = new TabItem( code, name, optionalURL, description);
@@ -167,7 +171,7 @@ public class HTMLTabPanel extends HTMLComponent
      * @param call
      * @param script
      */
-    public void addOnLoadEvent( String code, String call, String script)
+    public void addOnLoadEvent( final String code, final String call, final String script)
     {
         if( script != null && StringUtilities.notBlank(script))
         {
@@ -183,6 +187,7 @@ public class HTMLTabPanel extends HTMLComponent
      *
      * @return the value
      */
+    @CheckReturnValue @Nonnull
     public String getSelectedTarget()
     {
         if( selectedItem != null)
@@ -198,6 +203,7 @@ public class HTMLTabPanel extends HTMLComponent
      *
      * @return the value
      */
+    @CheckReturnValue @Nullable
     public HashMap<String, String> getSelectedLoadScripts()
     {
         if( selectedItem != null)
@@ -226,7 +232,8 @@ public class HTMLTabPanel extends HTMLComponent
      * @param code
      * @return the value
      */
-    protected TabItem findTab( String code)
+    @CheckReturnValue @Nullable
+    protected TabItem findTab( final String code)
     {
         for( TabItem ti: list)
         {
@@ -240,7 +247,7 @@ public class HTMLTabPanel extends HTMLComponent
     }
 
     @Override
-    protected void compile(ClientBrowser browser) {
+    protected void compile(final ClientBrowser browser) {
         super.compile(browser); 
         
         HTMLPage page = getParentPage();
@@ -281,6 +288,8 @@ public class HTMLTabPanel extends HTMLComponent
         buffer.append("<div id='slider'>\n");
         buffer.append("<ul class=\"tabs\">\n");
         
+        String divsWithIds = "<div class=\"hidden\">\n";
+                
         for( TabItem ti: list)
         {
             String href;
@@ -357,12 +366,16 @@ public class HTMLTabPanel extends HTMLComponent
                 call = "window.location= '" + HTMLAnchor.htmlEncodeHREF(href)+ "';";
             }
             buffer.append(call).append(";\"");
-            buffer.append(" href=\"#").append(ti.getCode()).append( "\" ");
+            String tempID = HTMLUtilities.makeValidHTMLId(ti.getCode());
+            buffer.append(" href=\"#").append(tempID).append( "-TAB\" ");
             
+            divsWithIds += "<div id=\"" + tempID + "-TAB" + "\"></div>\n";
+
             if(ti == selectedItem)
             {
                 buffer.append( " class=\"selected\"");
             }
+            
             buffer.append( ">");
             String tmpName = ti.getName();
             String eName;
@@ -389,7 +402,7 @@ public class HTMLTabPanel extends HTMLComponent
         buffer.append("</ul>\n");
 
         super.iGenerate(browser, buffer);
-
+        buffer.append(divsWithIds).append("\n</div>\n");
         buffer.append("</div>\n");
     }
 

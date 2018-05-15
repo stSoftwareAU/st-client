@@ -450,7 +450,7 @@ public class HTMLPage extends HTMLPanel
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
@@ -983,11 +983,11 @@ public class HTMLPage extends HTMLPanel
      * @param browser
      */
     @Override
-    protected void compile( final ClientBrowser browser)
+    protected void compile( final @Nonnull ClientBrowser browser)
     {
         isCompiled = true;
         if( showNavigateAwayWarning &&
-            browser != null &&
+//            browser != null &&
             browser.isBrowserHTTPUnit() == false)
         {
             addJavaScript( "window.onbeforeunload = unloadMessage;\n");

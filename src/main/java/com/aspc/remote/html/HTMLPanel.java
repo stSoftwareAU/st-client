@@ -42,11 +42,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.locks.ReentrantLock;
 import javax.annotation.*;
-import javax.swing.text.BadLocationException;
 import org.apache.commons.logging.Log;
 
 /**
@@ -58,59 +55,66 @@ import org.apache.commons.logging.Log;
  */
 public class HTMLPanel extends HTMLContainer
 {
-    private final ReadWriteLock GENERATE_LOCK = new ReentrantReadWriteLock();
-
-    /**
-     *
-     * @return the value
-     */
-    public synchronized String generateRTF()
-    {
-        final String pars[] = new String[2];
-
-        String html = generate();
-
-        pars[0] = html;
-        pars[1] = null;
-
-        Runnable r = () -> {
-            try
-            {
-                javax.swing.JTextPane pane;
-                pane = new javax.swing.JTextPane();
-                
-                pane.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
-                
-                pane.read(
-                        new java.io.StringReader(pars[0]),
-                        "a.html"
-                );
-                
-                javax.swing.text.rtf.RTFEditorKit rtf = new javax.swing.text.rtf.RTFEditorKit();
-                
-                java.io.ByteArrayOutputStream out;
-                out = new java.io.ByteArrayOutputStream();
-                
-                javax.swing.text.Document doc;
-                doc = pane.getDocument();
-                
-                rtf.write(out, doc, 0, doc.getLength());
-                
-                pars[1] = new String( out.toByteArray());
-            }
-            catch( IOException | BadLocationException e)
-            {
-                pars[1] = e.toString();
-            }
-        };
-
-        com.aspc.remote.application.CApp.swingInvokeAndWait(r);
-
-        return pars[1];
-    }
+    private final ReentrantLock generateLock = new ReentrantLock();
+//
+//    /**
+//     *
+//     * @return the value
+//     */
+//    public String generateRTF()
+//    {
+//        generateLock.lock();
+//        try{
+//            final String pars[] = new String[2];
+//
+//            String html = generate();
+//
+//            pars[0] = html;
+//            pars[1] = null;
+//
+//            Runnable r = () -> {
+//                try
+//                {
+//                    javax.swing.JTextPane pane;
+//                    pane = new javax.swing.JTextPane();
+//
+//                    pane.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
+//
+//                    pane.read(
+//                            new java.io.StringReader(pars[0]),
+//                            "a.html"
+//                    );
+//
+//                    javax.swing.text.rtf.RTFEditorKit rtf = new javax.swing.text.rtf.RTFEditorKit();
+//
+//                    java.io.ByteArrayOutputStream out;
+//                    out = new java.io.ByteArrayOutputStream();
+//
+//                    javax.swing.text.Document doc;
+//                    doc = pane.getDocument();
+//
+//                    rtf.write(out, doc, 0, doc.getLength());
+//
+//                    pars[1] = new String( out.toByteArray());
+//                }
+//                catch( IOException | BadLocationException e)
+//                {
+//                    pars[1] = e.toString();
+//                }
+//            };
+//
+//            com.aspc.remote.application.CApp.swingInvokeAndWait(r);
+//
+//            return pars[1];
+//        }
+//        finally
+//        {
+//            generateLock.unlock();
+//        }
+//    }
 
     @Override
-    public void setParent( HTMLComponent parent)
+    public void setParent( final HTMLComponent parent)
     {
         super.setParent(parent);
     }
@@ -120,7 +124,8 @@ public class HTMLPanel extends HTMLContainer
      * @return the value
      * @throws Exception a serious problem.
      */
-    public synchronized String generateText() throws Exception
+    @Nonnull @CheckReturnValue
+    public String generateText() throws Exception
     {
         int count = getComponentCount();
         if( count == 0 ) return "";
@@ -133,14 +138,16 @@ public class HTMLPanel extends HTMLContainer
      * @return the value
      * @throws IOException a problem writing to the file occurred.
      */
-    public synchronized java.io.File generateHTMLFile( ) throws IOException
+    @Nonnull @CheckReturnValue
+    public File generateHTMLFile( ) throws IOException
     {
         String html = generate();
 
         return writeToFile( html);
     }
 
-    private File writeToFile( final String html ) throws IOException
+    @Nonnull @CheckReturnValue
+    private File writeToFile( final @Nonnull String html ) throws IOException
     {
         String title = "page";
         if( this instanceof HTMLPage)
@@ -151,7 +158,8 @@ public class HTMLPanel extends HTMLContainer
         return writeToFile( title, html, "html");
     }
 
-    public static File writeToFile( final String title, final String data, final String extension ) throws IOException
+    @Nonnull @CheckReturnValue
+    public static File writeToFile( final @Nonnull String title, final @Nonnull String data, final @Nonnull String extension ) throws IOException
     {
         Date now = new Date();
         String dirName = CProperties.getProperty("LOG_DIR") + "/pages/" + TimeUtil.format("yyyy/MMM/dd/HH/mm", now, TimeZone.getDefault());
@@ -195,7 +203,7 @@ public class HTMLPanel extends HTMLContainer
             // This should never happen but just in case.
             if( v > 1000 ) return tmpFile;
         }
-
+        assert file!=null;
         return file;
     }
 
@@ -204,32 +212,36 @@ public class HTMLPanel extends HTMLContainer
      *
      * @return the value
      */
+    @CheckReturnValue @Nonnull
     public String generate( )
     {
         return generate( new ClientBrowser());
     }
 
-     /**
-      *
-      * @param component
-      */
-     public void registerPostCompileCallBack( HTMLComponent component)
+    /**
+     *
+     * @param component
+     */
+    public void registerPostCompileCallBack( final @Nonnull HTMLComponent component)
     {
         if( postCompileList == null) postCompileList = new ArrayList();//MT WARN: Inconsistent synchronization
 
         postCompileList.add( component);
     }
 
-     /**
-      *
-      * @param browser
-      * @return the value
-      */
-     @SuppressWarnings("AssertWithSideEffects")
-    public synchronized @Nonnull String generate( @Nonnull final ClientBrowser browser)
+    /**
+     *
+     * @param browser
+     * @return the value
+     */
+    @SuppressWarnings({"AssertWithSideEffects", "ResultOfMethodCallIgnored"})
+    @CheckReturnValue
+    public @Nonnull String generate( @Nonnull final ClientBrowser browser)
     {
-        Lock l=GENERATE_LOCK.readLock();
-        l.lock();
+        if( browser == null){
+            throw new IllegalArgumentException("browser is mandatory");
+        }
+        generateLock.lock();
         try
         {
             assert ThreadCop.pushMonitor(this, ThreadCop.MODE.ACCESS_ONLY_BY_CREATING_THREAD);
@@ -276,7 +288,7 @@ public class HTMLPanel extends HTMLContainer
         }
         finally
         {
-            l.unlock();
+            generateLock.unlock();
             assert ThreadCop.popMonitor(this);
         }
     }

@@ -67,7 +67,7 @@ public class TestClientBrowser extends TestCase
     public static void main(String[] args)
     {
         Test test=suite();
-//        test =TestSuite.createTest(TestClientBrowser.class, "testIsWebCrawler");
+//        test =TestSuite.createTest(TestClientBrowser.class, "testIsNOTIE");
         TestRunner.run(test);
     }
 
@@ -590,6 +590,29 @@ public class TestClientBrowser extends TestCase
             }
 
             assertFalse( "should not be a mobile", browser.formMobile());
+        }
+    }
+
+    /**
+     * Check that we correctly map to IE
+     * @throws Exception a serious problem.
+     */
+    public void testIsNOTIE() throws Exception
+    {
+        String agents[]={
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" //google Crawler
+        };
+        
+        for (String agent : agents) 
+        {
+            ClientBrowser browser=new ClientBrowser( agent);
+
+            if( browser.isBrowserIE())
+            {
+                fail( "Should NOT be IE: " + agent);
+            }
+
+            assertFalse( "should not be an IE", browser.formMobile());
         }
     }
 

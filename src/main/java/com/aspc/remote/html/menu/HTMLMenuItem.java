@@ -35,6 +35,8 @@ package com.aspc.remote.html.menu;
 
 import com.aspc.remote.util.misc.StringUtilities; 
 import com.aspc.remote.html.*;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  * @since 6 January 2006
@@ -47,7 +49,7 @@ public abstract class HTMLMenuItem extends HTMLContainer
      * Get object's Id
      * @return String - object's Id
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         String strId = super.getId();

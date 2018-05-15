@@ -40,6 +40,7 @@ import com.aspc.remote.util.misc.StringUtilities;
 import java.util.StringTokenizer;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.RegEx;
 import org.apache.commons.logging.Log;
 
@@ -391,7 +392,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
@@ -496,7 +497,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
      *
      * @return the value
      */
-    @Override
+    @Override @CheckReturnValue @Nonnull
     public String getURL()
     {
         return href;
@@ -639,7 +640,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
      *
      * @return the href is html escaped, & -> &amp;, ' -> &#39;, " -> &#34;
      */
-    @Override
+    @Override @CheckReturnValue @Nonnull
     public String getHREF()
     {
 
@@ -699,7 +700,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
      * @param browser
      * @return the href is html escaped, & -> &amp;, ' -> &#39;, " -> &#34;
      */
-    @Override
+    @Override @CheckReturnValue @Nonnull
     public String getHREF( final ClientBrowser browser)
     {
         String temp;

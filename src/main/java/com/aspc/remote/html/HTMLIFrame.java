@@ -38,6 +38,8 @@ import com.aspc.remote.memory.HashMapFactory;
 import com.aspc.remote.util.misc.GWTConstants;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.util.HashMap;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  HTMLDiv
@@ -64,7 +66,7 @@ public class HTMLIFrame extends HTMLContainer implements HandlesMouseEvents
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
@@ -272,67 +274,67 @@ public class HTMLIFrame extends HTMLContainer implements HandlesMouseEvents
 
         addJavaScript("CLOSE_IFRM_CURTAIN", closeScript);
 
-        if( autoRefreshSeconds > 0)
-        {
-            HTMLPage page = getParentPage();
-
-            page.registerPostCompileCallBack( this);
-
-            page.addGWT( "com.aspc.gwt.doublebuffer.Reload");
-
-            HashMap map = (HashMap)page.getWorkingStorage( GWTConstants.DICTIONARY_RELOAD);
-
-            if( map == null)
-            {
-                map = HashMapFactory.create();
-                page.setWorkingStorage( GWTConstants.DICTIONARY_RELOAD, map);
-            }
-
-            //hide/show counter
-            String temp = (String)map.get( GWTConstants.ELEMENT_COUNTER);
-            if( temp == null)
-            {
-                temp = "";
-            }
-            else
-            {
-                temp += ",";
-            }
-
-            temp += hideCounterFg ? "HIDE":"SHOW";
-
-            map.put( GWTConstants.ELEMENT_COUNTER, temp);
-
-            // the reload target
-            temp = (String)map.get( GWTConstants.ELEMENT_TARGET);
-            if( temp == null)
-            {
-                temp = "";
-            }
-            else
-            {
-                temp += ",";
-            }
-
-            temp += getId();
-
-            map.put( GWTConstants.ELEMENT_TARGET, temp);
-
-            // the reload seconds
-            temp = (String)map.get( GWTConstants.ELEMENT_SECONDS);
-            if( temp == null)
-            {
-                temp = "";
-            }
-            else
-            {
-                temp += ",";
-            }
-
-            temp += autoRefreshSeconds;
-
-            map.put( GWTConstants.ELEMENT_SECONDS, temp);
-        }
+//        if( autoRefreshSeconds > 0)
+//        {
+//            HTMLPage page = getParentPage();
+//
+//            page.registerPostCompileCallBack( this);
+//
+//            page.addGWT( "com.aspc.gwt.doublebuffer.Reload");
+//
+//            HashMap map = (HashMap)page.getWorkingStorage( GWTConstants.DICTIONARY_RELOAD);
+//
+//            if( map == null)
+//            {
+//                map = HashMapFactory.create();
+//                page.setWorkingStorage( GWTConstants.DICTIONARY_RELOAD, map);
+//            }
+//
+//            //hide/show counter
+//            String temp = (String)map.get( GWTConstants.ELEMENT_COUNTER);
+//            if( temp == null)
+//            {
+//                temp = "";
+//            }
+//            else
+//            {
+//                temp += ",";
+//            }
+//
+//            temp += hideCounterFg ? "HIDE":"SHOW";
+//
+//            map.put( GWTConstants.ELEMENT_COUNTER, temp);
+//
+//            // the reload target
+//            temp = (String)map.get( GWTConstants.ELEMENT_TARGET);
+//            if( temp == null)
+//            {
+//                temp = "";
+//            }
+//            else
+//            {
+//                temp += ",";
+//            }
+//
+//            temp += getId();
+//
+//            map.put( GWTConstants.ELEMENT_TARGET, temp);
+//
+//            // the reload seconds
+//            temp = (String)map.get( GWTConstants.ELEMENT_SECONDS);
+//            if( temp == null)
+//            {
+//                temp = "";
+//            }
+//            else
+//            {
+//                temp += ",";
+//            }
+//
+//            temp += autoRefreshSeconds;
+//
+//            map.put( GWTConstants.ELEMENT_SECONDS, temp);
+//        }
 
         if ( StringUtilities.isBlank(height) == false)
         {
@@ -455,6 +457,7 @@ public class HTMLIFrame extends HTMLContainer implements HandlesMouseEvents
         {
             strId="BLANK";
         }
+        assert strId!=null;
         String strDivId = "IFRMCURTAIN_" + strId.toUpperCase();
 
         if( browser.canHandleDHTML())

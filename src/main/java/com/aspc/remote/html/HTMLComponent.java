@@ -50,6 +50,7 @@ import java.util.*;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.apache.commons.logging.Log;
 
 /**
@@ -80,6 +81,16 @@ public abstract class HTMLComponent
      */
     protected String alt;
     private HashMap<String, String>tagAttributes;
+    private final ThreadLocal<Boolean> requestingPP;
+
+    public HTMLComponent() {
+        requestingPP = new ThreadLocal(){
+            @Override
+            protected Object initialValue() {
+                return Boolean.FALSE;
+            }            
+        };
+    }
 
     /**
      *
@@ -205,7 +216,8 @@ public abstract class HTMLComponent
      * @param searchId
      * @return the value
      */
-    protected HTMLComponent iFindId( final String searchId)
+    @CheckReturnValue @Nullable
+    protected HTMLComponent iFindId( final @Nullable String searchId)
     {
         if( id != null && id.equalsIgnoreCase(searchId))
         {
@@ -241,7 +253,7 @@ public abstract class HTMLComponent
      *
      * @return the ID
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
@@ -252,7 +264,7 @@ public abstract class HTMLComponent
      *
      * @param id The id of the component
      */
-    protected void iSetId( final String id)
+    protected void iSetId( final @Nullable String id)
     {
         String temp = HTMLUtilities.makeValidHTMLId(id);
 //if( temp.equalsIgnoreCase("EFIELD_DBREPORT_COL_LAYOUT"))
@@ -276,6 +288,10 @@ public abstract class HTMLComponent
      */
     protected void iSetName( final @Nonnull String inName)
     {
+//        if( inName.contains("|null"))
+//        {
+//            LOGGER.info("AAA");
+//        }
        // assert inName.matches(VALID_NAME_REGEX): "invalid name '" + inName +"'";
         name = inName;
         name = name.replace( "=",StringUtilities.ENCODED_URL_EQUALS);
@@ -378,7 +394,7 @@ public abstract class HTMLComponent
         return compiled;
     }
 
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     protected HTMLPage monitorPage()
     {
         HTMLPage page = getParentPage();
@@ -391,8 +407,8 @@ public abstract class HTMLComponent
      * of the HTML components. Do not put it in iGenerate()
      * @param browser
      */
-    @SuppressWarnings("AssertWithSideEffects")
-    protected void compile( final ClientBrowser browser)
+    @SuppressWarnings({"AssertWithSideEffects", "null"})
+    protected void compile( final @Nonnull ClientBrowser browser)
     {        
         HTMLPage monitorPage=monitorPage();
         
@@ -513,8 +529,8 @@ public abstract class HTMLComponent
                     String value;
 
                     value = (String)onloadScripts.get( key);
-
-                    if( page.getFlag( (String)key).isEmpty())
+                    assert page!=null;
+                    if( page!=null && page.getFlag( (String)key).isEmpty())
                     {
                         HTMLStateEvent sEvent = new HTMLStateEvent( HTMLStateEvent.onLoadEvent, value);
                         page.addStateEvent( sEvent);
@@ -576,7 +592,7 @@ public abstract class HTMLComponent
      *
      * @param browser
      */
-    @SuppressWarnings("NoopMethodInAbstractClass")
+    @OverridingMethodsMustInvokeSuper
     protected void postCompile( final ClientBrowser browser)
     {
 
@@ -609,7 +625,7 @@ public abstract class HTMLComponent
      * @param list
      */
     @SuppressWarnings("AssertWithSideEffects")
-    protected void makeListOfEvents( final List list)
+    protected void makeListOfEvents( final @Nonnull List<HTMLEvent> list)
     {
         assert ThreadCop.read(getParentPage());
         if( events != null)
@@ -629,16 +645,6 @@ public abstract class HTMLComponent
 
             if( c == null ) continue;
 
-            if( c instanceof HTMLAnchor)
-            {
-                HTMLAnchor a = (HTMLAnchor)c;
-
-                if( a.getHREF( ).contains("javascript:"))
-                {
-                    list.add(a);
-                }
-            }
-
             c.makeListOfEvents( list);
         }
     }
@@ -647,7 +653,7 @@ public abstract class HTMLComponent
      *
      * @param alignment
      */
-    public void setAlignment( final String alignment)
+    public void setAlignment( final @Nullable String alignment)
     {
         String tmpAlignment = alignment;
         if( tmpAlignment != null)
@@ -708,7 +714,7 @@ public abstract class HTMLComponent
      *     order.
      * @param tabIndex
      */
-    public void setTabIndex( int tabIndex)
+    public void setTabIndex( final int tabIndex)
     {
         this.tabIndex = tabIndex;
     }
@@ -719,7 +725,7 @@ public abstract class HTMLComponent
      * receive the focus                                                 <br>
      * @param fg
      */
-    public void setHasInitFocus( boolean fg)
+    public void setHasInitFocus(final boolean fg)
     {
         hasInitFocus = fg;
     }
@@ -729,7 +735,7 @@ public abstract class HTMLComponent
      * addComponent
      * @param parent
      */
-    protected void setParent( HTMLComponent parent)
+    protected void setParent( final HTMLComponent parent)
     {
         this.parent = parent;
         myPage = null;
@@ -753,12 +759,11 @@ public abstract class HTMLComponent
     {
     }
 
-    private boolean requestingPP;
     /**
      *
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     protected HTMLPage getParentPage()
     {
         if( myPage == null)
@@ -776,9 +781,9 @@ public abstract class HTMLComponent
             {
                 try
                 {
-                    if( requestingPP==false)
+                    if( requestingPP.get()==false)
                     {
-                        requestingPP=true;
+                        requestingPP.set(Boolean.TRUE);
                         myPage = parent.getParentPage();
                     }
                     else
@@ -790,7 +795,7 @@ public abstract class HTMLComponent
                 }
                 finally
                 {
-                    requestingPP=false;
+                    requestingPP.set(Boolean.FALSE);
                 }
             }
         }
@@ -802,7 +807,7 @@ public abstract class HTMLComponent
      *
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     public HTMLComponent getParent( )
     {
         return parent;
@@ -813,8 +818,8 @@ public abstract class HTMLComponent
      * @param color
      * @return the value
      */
-    @CheckReturnValue
-    public static String makeColorID( Color color)
+    @CheckReturnValue @Nonnull
+    public static String makeColorID( final @Nonnull Color color)
     {
         int c;
         c = color.getRGB() & 0xffffff;
@@ -834,7 +839,7 @@ public abstract class HTMLComponent
      * @param type the property
      * @return the value NULL if not set
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     public String fetchStyleProperty( final String type)
     {
         if( intStyleSheet == null) return null;
@@ -851,7 +856,7 @@ public abstract class HTMLComponent
      * @param type the type
      * @param value the value
      */
-    public void setStyleProperty( final String type, final String value)
+    public void setStyleProperty( final @Nonnull String type, final @Nullable String value)
     {
         HTMLStyleSheet ss = getStyleSheet();
 
@@ -866,7 +871,7 @@ public abstract class HTMLComponent
     }
 
 
-    public void setAttribute( final String name, final String value)
+    public void setAttribute( final @Nonnull String name, final @Nonnull String value)
     {
         if( tagAttributes == null)
         {
@@ -880,7 +885,7 @@ public abstract class HTMLComponent
      * @param browser
      * @param buffer
      */
-    protected void iGenerateAttributesID(final ClientBrowser browser, final StringBuilder buffer)
+    protected void iGenerateAttributesID(final ClientBrowser browser, final @Nonnull StringBuilder buffer)
     {
         if( id != null && id.length()>0)
         {
@@ -902,7 +907,7 @@ public abstract class HTMLComponent
      * @param browser
      * @param buffer
      */
-    protected void iGenerateAttributes(final ClientBrowser browser, final StringBuilder buffer)
+    protected void iGenerateAttributes(final ClientBrowser browser, final @Nonnull StringBuilder buffer)
     {
         if( tagAttributes != null)
         {
@@ -1063,7 +1068,7 @@ public abstract class HTMLComponent
      * Protected methods
      * @param browser
      */
-    protected void doBuildToolTip(ClientBrowser browser)
+    protected void doBuildToolTip(@Nonnull ClientBrowser browser)
     {
      //   String divId = "";
 
@@ -1092,7 +1097,7 @@ public abstract class HTMLComponent
             HTMLMouseEvent.onMouseOutEvent,
             "doToolTipMouseOut( )");
         iAddEvent(me, null);
-
+        assert page!=null;
 
         if( page.getFlag( "HTMLToolTip").isEmpty())
         {
@@ -1220,7 +1225,7 @@ public abstract class HTMLComponent
      * @param browser The target browser
      * @param buffer The generate HTML
      */
-    protected void iGenerate( final ClientBrowser browser, final StringBuilder buffer)
+    protected void iGenerate( final @Nonnull ClientBrowser browser, final @Nonnull StringBuilder buffer)
     {
         if( items == null)
         {

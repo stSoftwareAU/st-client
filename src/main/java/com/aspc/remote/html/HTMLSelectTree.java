@@ -12,6 +12,8 @@
 package com.aspc.remote.html;
 
 import com.aspc.remote.util.misc.StringUtilities;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 
 /**
@@ -37,7 +39,7 @@ public class HTMLSelectTree extends HTMLContainer
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;

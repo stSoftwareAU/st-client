@@ -4,6 +4,7 @@ import com.aspc.remote.rest.errors.*;
 import com.aspc.remote.util.misc.CLogger;
 import java.io.FileNotFoundException;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
@@ -951,7 +952,7 @@ public enum Status
      * @return the ReSTStatus
      */
     @CheckReturnValue @Nonnull
-    public static Status find( final int status)
+    public static Status find( final @Nonnegative int status)
     {
         for( Status rs: values())
         {

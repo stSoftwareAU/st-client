@@ -40,6 +40,8 @@ import com.aspc.remote.util.misc.StringUtilities;
 import java.awt.Color;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  HTMLDiv
@@ -107,7 +109,7 @@ public class HTMLDiv extends HTMLContainer implements HandlesMouseEvents
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;

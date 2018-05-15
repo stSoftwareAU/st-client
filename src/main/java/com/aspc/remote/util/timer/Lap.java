@@ -52,7 +52,7 @@ public final class Lap
     
     public Lap()
     {
-        
+        assert nanoStart>0: "start must be positive was: " + nanoStart;
     }
     
     /**
@@ -76,6 +76,7 @@ public final class Lap
         {
             nanoEnd=System.nanoTime();
         }
+        assert nanoEnd>0: "end must be positive was: " + nanoEnd;
         
         assert nanoEnd>=nanoStart: "Should end: " + nanoEnd +" after started: " + nanoStart;
         return nanoEnd;
@@ -95,7 +96,6 @@ public final class Lap
             assert tmpEnd==0: "End: " + tmpEnd + " should be greater than equal to start: " + nanoStart;
             tmpEnd=System.nanoTime();
         }
-//        assert nanoStart != 0 && nanoEnd != 0: "lap not stopped " + nanoStart + ", " + nanoEnd;
         
         long tmpDuration= tmpEnd-nanoStart;
         assert tmpDuration>=0: "Must be non negative was: " + tmpDuration;

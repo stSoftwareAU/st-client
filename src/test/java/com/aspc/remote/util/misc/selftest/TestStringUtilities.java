@@ -466,6 +466,7 @@ public class TestStringUtilities extends TestCase
     public void testGoodURI()
     {
         String list[]={
+            "/ds/st-error/0.1.30/st-error.js",
             "http://www.penguin.com.au/products/9781925355864/i'm-supposed-to-protect-you-from/",
             "http://www.venturapress.com.au/books/#/rebellious-daughters/",
             "/",

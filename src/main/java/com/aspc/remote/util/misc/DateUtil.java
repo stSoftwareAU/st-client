@@ -248,7 +248,7 @@ public final class DateUtil
      * @return the value
      */
     @CheckReturnValue @Nonnull
-    public static Date weekEnd( final Date dt,  final TimeZone timeZone)
+    public static Date weekEnd( final @Nonnull Date dt,  final @Nullable TimeZone timeZone)
     {
         GregorianCalendar localGC = makeGC(timeZone, dt);
         GregorianCalendar gc = makeGC(GMT_ZONE, dt);
@@ -275,8 +275,8 @@ public final class DateUtil
         }
         
         Date weekEndDT=gc.getTime();
-        assert weekEndDT.getTime() + 25 * 60 * 60 * 1000> dt.getTime(): weekEndDT + " should be the same or greater date " + dt;
-        assert weekEndDT.getTime() < dt.getTime() + 7 * 24 * 60 * 60 * 1000: weekEndDT + " can only skip 7 days " + dt;
+        assert weekEndDT.getTime() + 48L * 60L * 60L * 1000L> dt.getTime(): weekEndDT + " should be the same or greater date " + dt;
+        assert weekEndDT.getTime() < dt.getTime() + 7L * 24L * 60L * 60L * 1000L: weekEndDT + " can only skip 7 days " + dt;
         
         return weekEndDT;
     }

@@ -1378,6 +1378,19 @@ public class ClientBrowser
     {
         return isBrowserIE() != true || getBrowserVersion() > 8.99;
     }
+    
+    /**
+     * can browser handler validation
+     * @return true if this browser handlers validation
+     */
+    @CheckReturnValue
+    public boolean canHandleValidation()
+    {
+        // value for input type="datetime-local" should not have seconds in it
+        // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/datetime-local
+        // https://stackoverflow.com/questions/43747521/mobile-safari-10-3-1-datetime-local-enter-a-valid-value-error
+        return isBrowserIPad() != true;
+    }
 
     /**
      * Does this browser support the HTML editor ?

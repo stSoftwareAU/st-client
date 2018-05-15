@@ -32,12 +32,13 @@
  *  Australia.
  */
 package com.aspc.remote.html.internal;
+import com.aspc.remote.html.scripts.HTMLEvent;
 import com.aspc.remote.html.style.HTMLStyleSheet;
 import com.aspc.remote.memory.HashMapFactory;
 import com.aspc.remote.util.misc.StringUtilities;
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 
 /**
  *  CellData.java
@@ -108,7 +109,7 @@ public class CellData
     /**
      *
      */
-    public Vector   events;
+    public List<HTMLEvent>   events;
     /**
      *
      */

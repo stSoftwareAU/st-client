@@ -36,7 +36,7 @@ import org.apache.commons.logging.Log;
  */
 public abstract class CacheTableTemplate<V> implements MemoryHandler
 {
-    protected final ReentrantReadWriteLock rwLock=new ReentrantReadWriteLock(true);
+    protected final ReentrantReadWriteLock rwLock=new ReentrantReadWriteLock();
 
     /**
      * create a new cache table.

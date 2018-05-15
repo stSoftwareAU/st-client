@@ -580,6 +580,10 @@ public final class TimeUtil
                 {
                     format=new StringBuilder("yyyy-MM-dd'T'HH:mm:ss");
                 }
+                else if( tempDateString.matches("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]"))
+                {
+                    format=new StringBuilder("yyyy-MM-dd'T'HH:mm");
+                }
                 else if( tempDateString.matches("[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]T[0-9][0-9]:[0-9][0-9]:[0-9][0-9]\\.[0-9][0-9][0-9]"))
                 {
                     format=new StringBuilder("yyyy-MM-dd'T'HH:mm:ss.SSS");

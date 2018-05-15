@@ -78,7 +78,7 @@ public class TestTimeUtil extends TestCase
     public static void main(String[] args)
     {
         Test test=suite();
-//        test = TestSuite.createTest(TestTimeUtil.class, "testApplyDuration");
+//        test = TestSuite.createTest(TestTimeUtil.class, "testParseIPadTS");
         TestRunner.run(test);
     }
 
@@ -484,6 +484,26 @@ public class TestTimeUtil extends TestCase
             parseDate(list);
         }
     }
+    
+    /**
+     * http://stackoverflow.com/questions/9581692/recommended-date-format-for-rest-get-api
+     * @throws Exception 
+     */
+    public void testParseIPadTSWithoutSeconds() throws Exception
+    {
+        String lists[][] = {
+        {
+            "2018-06-10T11:38"
+        }
+                
+        };
+
+        for(String list[] : lists)
+        {
+            parseDate(list);
+        }
+    }
+    
     
     /**
      * check parse of timezones.

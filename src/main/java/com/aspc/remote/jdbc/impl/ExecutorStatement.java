@@ -39,6 +39,8 @@ import com.aspc.remote.jdbc.SoapSQLException;
 import com.aspc.remote.soap.Constants;
 import com.aspc.remote.util.misc.CLogger;
 import java.sql.*;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -71,7 +73,7 @@ public class ExecutorStatement implements Statement
      */
     protected String sqlBatch = null;
     /**
-     *  Querry Timeout
+     *  Query Timeout
      */
     protected int queryTimeout = 0;
     private int maxFieldSize = 999;
@@ -102,7 +104,7 @@ public class ExecutorStatement implements Statement
 
     /** {@inheritDoc} */
     @Override
-    public ResultSet executeQuery(String sql) throws SQLException
+    public ResultSet executeQuery(final @Nonnull String sql) throws SQLException
     {
         if ( isClosedFg )
         {
@@ -118,18 +120,17 @@ public class ExecutorStatement implements Statement
                 executorConnection.commit();
             }
 
-            if(resultSet.isUpdateResult())
-            {
-                throw new SoapSQLException("Non-resultset query");
-            }
+//            if(resultSet.isUpdateResult())
+//            {
+//                throw new SoapSQLException("Non-resultset query");
+//            }
             resultSet.setFetchDirection(fetchDirection);
             resultSet.setFetchSize(fetchSize);
             return resultSet;
         }
         catch( Exception e)
         {
-            LOGGER.error("Error",e);
-            throw new SoapSQLException( e.toString());//NOPMD
+            throw new SoapSQLException( sql, e);
         }
     }
 
@@ -138,7 +139,7 @@ public class ExecutorStatement implements Statement
      * @return ResultSet Returned ResultSet
      * @throws java.sql.SQLException A serious problem
      */
-    protected ResultSet iExecuteQuery(String sql) throws SQLException
+    protected ResultSet iExecuteQuery(final @Nonnull String sql) throws SQLException
     {
         if ( isClosedFg )
         {
@@ -159,14 +160,13 @@ public class ExecutorStatement implements Statement
         }
         catch( Exception e)
         {
-            LOGGER.error("Error",e);
-            throw new SoapSQLException( e.toString());//NOPMD
+            throw new SoapSQLException( sql, e);
         }
     }
 
     /** {@inheritDoc} */
     @Override
-    public int executeUpdate(String sql) throws SQLException
+    public int executeUpdate(final @Nonnull String sql) throws SQLException
     {
         SoapResultSet result =(SoapResultSet)iExecuteQuery( sql);
         if( !result.isUpdateResult())
@@ -242,7 +242,7 @@ public class ExecutorStatement implements Statement
 
     /** {@inheritDoc} */
     @Override
-    public void setEscapeProcessing(boolean enable) throws SQLException
+    public void setEscapeProcessing(final boolean enable) throws SQLException
     {
         //if( enable == false)
         //{
@@ -298,7 +298,7 @@ public class ExecutorStatement implements Statement
 
     /** {@inheritDoc} */
     @Override
-    public boolean execute(final String sql) throws SQLException
+    public boolean execute(final @Nonnull String sql) throws SQLException
     {
         resultSet=null;
         Executor rc = executorConnection.getExecutor();
@@ -337,8 +337,8 @@ public class ExecutorStatement implements Statement
         }
         catch( Exception e)
         {
-            LOGGER.error("Error",e);
-            throw new SoapSQLException( e.toString());//NOPMD
+//            LOGGER.error("Error",e);
+            throw new SoapSQLException( sql, e);
         }
 
         return resultSet != null && (!resultSet.isUpdateResult());
@@ -356,7 +356,7 @@ public class ExecutorStatement implements Statement
     }
 
     /** {@inheritDoc} */
-    @Override
+    @Override @CheckReturnValue
     public int getUpdateCount() throws SQLException
     {
         return resultSet.getUpdateCount();

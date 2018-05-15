@@ -33,6 +33,7 @@
  */
 package com.aspc.remote.util.misc.selftest;
 
+import com.aspc.remote.database.InvalidDataException;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.DateUtil;
 import com.aspc.remote.util.misc.TimeUtil;
@@ -180,7 +181,7 @@ public class TestDateUtil extends TestCase
      *
      * @throws Exception a serious problem
      */
-    @SuppressWarnings("empty-statement")
+    @SuppressWarnings({"empty-statement", "ResultOfMethodCallIgnored"})
     public void testInvalidDateParse() throws Exception
     {
         TimeZone tz = TimeZone.getTimeZone("Europe/Moscow");
@@ -199,9 +200,9 @@ public class TestDateUtil extends TestCase
 
                 fail( "Should not been able to parse " + temp);
             }
-            catch( Exception e)
+            catch( InvalidDataException e)
             {
-                ;// Expected
+                // Expected
             }
         }
     }
@@ -210,7 +211,7 @@ public class TestDateUtil extends TestCase
      *
      * @throws Exception a serious problem
      */
-    @SuppressWarnings("empty-statement")
+    @SuppressWarnings({"empty-statement", "ResultOfMethodCallIgnored"})
     public void testConvertTimeIntoDate() throws Exception
     {
 
@@ -230,9 +231,9 @@ public class TestDateUtil extends TestCase
             DateUtil.parseUserDate("8 Jan XXXX 18:12:09", TimeZone.getTimeZone("GMT"), false);
             fail( "Date '8 Jan XXXX 18:12:09' should have been invalid ");
         }
-        catch( Exception e)
+        catch( InvalidDataException e)
         {
-            ;
+            
         }
     }
 

@@ -100,7 +100,7 @@ public abstract class AppCmdLine
      * execute the program
      * @param args the args
      */
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch"})
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "UseSpecificCatch"})
     public void execute( final @Nonnull String args[])
     {
         Shutdown.init();
@@ -171,7 +171,7 @@ public abstract class AppCmdLine
      * set exit or not flag
      * @param flag  the flag
      */
-    public void setExitFlg(boolean flag)
+    public void setExitFlg(final boolean flag)
     {
         exitFlag = flag;
     }

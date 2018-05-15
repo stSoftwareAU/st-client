@@ -35,6 +35,8 @@ package com.aspc.remote.html;
 
 import com.aspc.remote.html.scripts.HTMLMouseEvent;
 import com.aspc.remote.util.misc.StringUtilities;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  HTMLImage
@@ -91,7 +93,7 @@ public final class HTMLImage extends HTMLContainer implements AlternativeAttribu
      *
      * @return the ID
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public String getId()
     {
         return id;
