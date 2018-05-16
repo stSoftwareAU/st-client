@@ -120,10 +120,10 @@ public class ExecutorStatement implements Statement
                 executorConnection.commit();
             }
 
-//            if(resultSet.isUpdateResult())
-//            {
-//                throw new SoapSQLException("Non-resultset query");
-//            }
+            if(sql.trim().toUpperCase().startsWith("INSERT"))
+            {
+                throw new SoapSQLException("Non-resultset query");
+            }
             resultSet.setFetchDirection(fetchDirection);
             resultSet.setFetchSize(fetchSize);
             return resultSet;

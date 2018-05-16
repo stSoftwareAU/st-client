@@ -56,62 +56,6 @@ import org.apache.commons.logging.Log;
 public class HTMLPanel extends HTMLContainer
 {
     private final ReentrantLock generateLock = new ReentrantLock();
-//
-//    /**
-//     *
-//     * @return the value
-//     */
-//    public String generateRTF()
-//    {
-//        generateLock.lock();
-//        try{
-//            final String pars[] = new String[2];
-//
-//            String html = generate();
-//
-//            pars[0] = html;
-//            pars[1] = null;
-//
-//            Runnable r = () -> {
-//                try
-//                {
-//                    javax.swing.JTextPane pane;
-//                    pane = new javax.swing.JTextPane();
-//
-//                    pane.setEditorKit(new javax.swing.text.html.HTMLEditorKit());
-//
-//                    pane.read(
-//                            new java.io.StringReader(pars[0]),
-//                            "a.html"
-//                    );
-//
-//                    javax.swing.text.rtf.RTFEditorKit rtf = new javax.swing.text.rtf.RTFEditorKit();
-//
-//                    java.io.ByteArrayOutputStream out;
-//                    out = new java.io.ByteArrayOutputStream();
-//
-//                    javax.swing.text.Document doc;
-//                    doc = pane.getDocument();
-//
-//                    rtf.write(out, doc, 0, doc.getLength());
-//
-//                    pars[1] = new String( out.toByteArray());
-//                }
-//                catch( IOException | BadLocationException e)
-//                {
-//                    pars[1] = e.toString();
-//                }
-//            };
-//
-//            com.aspc.remote.application.CApp.swingInvokeAndWait(r);
-//
-//            return pars[1];
-//        }
-//        finally
-//        {
-//            generateLock.unlock();
-//        }
-//    }
 
     @Override
     public void setParent( final HTMLComponent parent)
@@ -185,8 +129,6 @@ public class HTMLPanel extends HTMLContainer
 
         try
         (PrintWriter out = new PrintWriter( new FileWriter( tmpFile))) {
-
-
             out.println(data);
         }
 
@@ -244,7 +186,7 @@ public class HTMLPanel extends HTMLContainer
         generateLock.lock();
         try
         {
-            assert ThreadCop.pushMonitor(this, ThreadCop.MODE.ACCESS_ONLY_BY_CREATING_THREAD);
+            assert ThreadCop.pushMonitor(this, ThreadCop.MODE.EXTERNAL_SYNCHRONIZED);
 
             if( isCompiled() == false)
             {
@@ -288,8 +230,8 @@ public class HTMLPanel extends HTMLContainer
         }
         finally
         {
-            generateLock.unlock();
             assert ThreadCop.popMonitor(this);
+            generateLock.unlock();
         }
     }
 
