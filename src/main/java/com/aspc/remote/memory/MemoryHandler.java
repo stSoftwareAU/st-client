@@ -115,6 +115,7 @@ public interface MemoryHandler
      * @param percentage The percentage to be cleared.
      * @return the estimated amount cleared.
      */
+    @Nonnegative 
     long queuedFreeMemory( @Nonnegative double percentage);
     
     /**
