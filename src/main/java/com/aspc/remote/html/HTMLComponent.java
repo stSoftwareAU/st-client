@@ -410,11 +410,11 @@ public abstract class HTMLComponent
     @SuppressWarnings({"AssertWithSideEffects", "null"})
     protected void compile( final @Nonnull ClientBrowser browser)
     {        
-        HTMLPage monitorPage=monitorPage();
-        
-        try
-        {
-            assert ThreadCop.enter(monitorPage, ThreadCop.ACCESS.MODIFY);
+//        HTMLPage monitorPage=monitorPage();
+//        
+//        try
+//        {
+//            assert ThreadCop.enter(monitorPage, ThreadCop.ACCESS.MODIFY);
         
             if( isCompiled() == true)
             {
@@ -580,11 +580,11 @@ public abstract class HTMLComponent
                     }
                 }
             }
-        }
-        finally
-        {
-            assert ThreadCop.leave(monitorPage);
-        }
+//        }
+//        finally
+//        {
+//            assert ThreadCop.leave(monitorPage);
+//        }
     }
 
     /**

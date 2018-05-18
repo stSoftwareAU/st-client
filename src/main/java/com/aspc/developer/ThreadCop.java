@@ -23,6 +23,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock.WriteLock;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
 
 /**
@@ -212,7 +215,7 @@ public final class ThreadCop
      * @param mode the access mode
      * @return always true
      */
-    public static boolean pushMonitor( final Object target, final MODE mode)
+    public static boolean pushMonitor( final @Nullable Object target, final @Nonnull MODE mode)
     {
         if( target == null) return true;
 
@@ -277,7 +280,8 @@ public final class ThreadCop
      * @param target the target object
      * @return always true
      */
-    public static MODE currentMonitor( final Object target)
+    @CheckReturnValue @Nonnull
+    public static MODE currentMonitor( final @Nonnull Object target)
     {
         Object rt=realTarget( target);
 
