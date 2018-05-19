@@ -56,6 +56,7 @@ import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.rest.Status;
 import java.net.URL;
+import javax.annotation.CheckReturnValue;
 
 /**
  * Implements the ftp protocol for NetClient
@@ -158,7 +159,7 @@ public class NetClientS3 implements NetClient
         return true;
     }
 
-    @Override
+    @Override @Nonnull @CheckReturnValue
     public String[] retrieveFileList() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

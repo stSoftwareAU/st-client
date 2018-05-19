@@ -716,10 +716,10 @@ public class NetClientFtp implements NetClient, CopyStreamListener
      * @return file names
      * @throws Exception serious problem
      */
-    @Override
+    @Override @CheckReturnValue @Nonnull
     public String[] retrieveFileList() throws Exception
     {
-        String[] fileList;
+        String[] fileList=new String[0];
         
         if( ftp != null && ftp.isConnected() )
         {            
@@ -727,8 +727,10 @@ public class NetClientFtp implements NetClient, CopyStreamListener
         }
         else
         {
-            fileList = null;
+            throw new IOException("not connected");
         }
+        
+        assert fileList!=null;
         return fileList;
     }
     

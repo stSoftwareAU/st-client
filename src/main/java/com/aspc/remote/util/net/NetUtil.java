@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
@@ -221,6 +222,7 @@ public final class NetUtil
             retrieveData( URLs, path, cacheFile, haMode, checksum);
         }
         assert cacheFile!=null;
+        assert cacheFile.exists(): "Doesn't exist: " + cacheFile;
         return cacheFile;
     }
 
@@ -522,7 +524,7 @@ public final class NetUtil
      * @param url The URL to connect to
      * @throws Exception could not create connection
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnull
     public static NetClient borrowClient( final @Nonnull String url) throws Exception
     {
 //        assert url.contains("://"): "Invalid URLs: " + StringUtilities.stripPasswordFromURLs(url);
@@ -535,7 +537,7 @@ public final class NetUtil
                 NetClient client;
 
                 client = (NetClient)CLIENT_POOL.borrowObject( url);
-
+                assert client!=null;
                 return client;
             }
             catch( NoRouteToHostException noRoute)
@@ -561,7 +563,7 @@ public final class NetUtil
      * The number of clients that are currently borrowed. 
      * @return The count of borrowed clients ( checked out but not back in yet)
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public static int borrowedClientCount()
     {
         return CLIENT_POOL.borrowedObjectsCount();
@@ -572,7 +574,7 @@ public final class NetUtil
      * @return int number
      * @throws Exception doesn't support exception
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public static int clientPoolSize() throws Exception
     {
         return CLIENT_POOL.size();
@@ -597,7 +599,7 @@ public final class NetUtil
      *
      * @return the max wait time.
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public static int getMaxWaitTime()
     {
         int clientMaxWait = 120 * 1000;
@@ -607,7 +609,15 @@ public final class NetUtil
             String temp = CProperties.getProperty(NETCLIENT_MAX_WAIT_MS);
             if( StringUtilities.isBlank(temp) == false)
             {
-                clientMaxWait = Integer.parseInt(temp);
+                int tmpValue=Integer.parseInt(temp);
+                if( tmpValue>=0) 
+                {
+                    clientMaxWait = tmpValue;
+                }
+                else
+                {
+                    LOGGER.warn( "Ignoring negative " + NETCLIENT_MAX_WAIT_MS + " was: " + temp);
+                }
             }
         }
         catch( NumberFormatException nf)
@@ -615,6 +625,7 @@ public final class NetUtil
             LOGGER.warn( "Couldn't set " + NETCLIENT_MAX_WAIT_MS, nf);
         }
 
+        assert clientMaxWait>=0;
         return clientMaxWait;
     }
 
@@ -661,6 +672,7 @@ public final class NetUtil
             returnClient( client );
         }
 
+        assert fileNames!=null: "null returned for " + url;
         return fileNames;
 
     }

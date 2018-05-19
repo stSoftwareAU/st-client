@@ -34,10 +34,8 @@
 package com.aspc.remote.util.net.selftest;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.util.misc.CLogger;
-import com.aspc.remote.util.net.NetClientFactory;
 import com.aspc.remote.util.net.NetUtil;
 
-import com.aspc.remote.util.net.URLParser;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -58,20 +56,29 @@ public class TestFTP extends TestCase
      * Check a sample FTP server.
      * @throws Exception a test failure.
      */
+    @SuppressWarnings("SleepWhileInLoop")
     public void testConnect() throws Exception
     {
-        String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
-        boolean found10GB=false;
-        for( String fn: fileList)
+        for( int attempts=0;true;attempts++)
         {
-            if( fn.contains("10GB.zip"))
+            String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
+            boolean found10GB=false;
+            for( String fn: fileList)
             {
-                found10GB=true;
+                if( fn.contains("10GB.zip"))
+                {
+                    found10GB=true;
+                }
+                LOGGER.info( fn);
             }
-            LOGGER.info( fn);
-        }
 
-        assertTrue("should have found file", found10GB);
+            if( found10GB) break;
+            
+            if( attempts>3) {
+                fail("should have found file");
+            }
+            Thread.sleep((long) (10000 * Math.random()));
+        }
     }
 
     /**

@@ -434,7 +434,7 @@ public class NetClientFile implements NetClient
         }
         
         fileList = (String[]) fileNames.toArray(new String[fileNames.size()]);
-        
+        assert fileList!=null;
         return fileList;
     }
 

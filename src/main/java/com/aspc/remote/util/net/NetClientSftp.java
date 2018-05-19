@@ -812,7 +812,7 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
      * @throws Exception serious problem
      * @return file names
      */
-    @Override @CheckReturnValue @Nullable
+    @Override @CheckReturnValue @Nonnull
     public String[] retrieveFileList() throws Exception
     {
         String[] fileList;
@@ -829,8 +829,9 @@ public class NetClientSftp implements NetClient, SftpProgressMonitor
         }
         else
         {
-            fileList = null;
+            throw new IOException("Not connected");
         }
+        assert fileList!=null;
         return fileList;       
     }
 
