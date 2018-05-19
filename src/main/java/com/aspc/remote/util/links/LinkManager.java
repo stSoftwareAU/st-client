@@ -523,14 +523,25 @@ public final class LinkManager
     @CheckReturnValue
     private static boolean isRunning(final long lastChecked)
     {
-        if( SHUTTING_DOWN.get() || thread == null || thread.getState()== Thread.State.TERMINATED)
+        if( SHUTTING_DOWN.get() )
         {
             return false;
         }
-
+        else if( thread != null && thread.getState()== Thread.State.TERMINATED)
+        {
+            return false;
+        }
+        
         long now=System.currentTimeMillis();
         
-        return now - lastChecked <= MAX_CHECK_TIME;
+        if(now - lastChecked <= MAX_CHECK_TIME)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     
     /**

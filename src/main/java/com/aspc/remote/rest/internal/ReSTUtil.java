@@ -113,6 +113,9 @@ public final class ReSTUtil
     
     /**
      * Check the URL is valid for a ReST call.
+     * 
+     * https://perishablepress.com/stop-using-unsafe-characters-in-urls/
+     * 
      * @param url the URL to check
      * @param checkUrlLength
      */
@@ -174,7 +177,10 @@ public final class ReSTUtil
             }
             
             String path=tmpURL.getFile();
-            if( path != null &&path.matches(".*[ ].*"))
+            /**
+             * The path should not contain space and " < > # % { } | \ ^ ~ [ ] ` 
+             */
+            if( path != null &&path.matches(".*[\\[\\] ].*"))
             {
                 throw new IllegalArgumentException( "ReST URL path should be encoded: " + StringUtilities.stripPasswordFromURL(url));
             }
