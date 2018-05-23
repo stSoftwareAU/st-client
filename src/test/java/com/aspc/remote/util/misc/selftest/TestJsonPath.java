@@ -248,10 +248,13 @@ public class TestJsonPath extends TestCase
             {"10 Aug 2015 22:40@AEST", "$.z"},
         };
         
+        TimeZone tz=TimeZone.getDefault();
         for(String[] s : values)
         {
+            
             try
             {
+//                TimeZone.setDefault(TimeZone.getTimeZone("Australia/Sydney"));
                 Object obj=JsonPath.read(json, s[1]);
                 String tmp;
                 if( obj instanceof Date)
@@ -268,6 +271,10 @@ public class TestJsonPath extends TestCase
             catch(PathNotFoundException e)
             {
                 fail("JsonPath " + s[1] + " failed. " + e.getMessage());
+            }
+            finally
+            {
+                TimeZone.setDefault(tz);
             }
         }
         
