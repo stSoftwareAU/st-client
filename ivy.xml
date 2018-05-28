@@ -203,7 +203,7 @@
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
     <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1"/>
     <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
-    <dependency org="joda-time" name="joda-time" rev="2.9.9"/>
+    <dependency org="joda-time" name="joda-time" rev="2.9.9"/>    
 
     <!-- <dependency>
     <groupId>com.amazonaws</groupId>
