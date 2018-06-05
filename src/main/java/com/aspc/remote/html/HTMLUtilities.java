@@ -302,7 +302,7 @@ public final class HTMLUtilities
 //                sPort=SECONDARY_HTTPS_PORT;
 //            }
 
-            String tempkey = currentURL.getHost() + ":";
+            String tempkey = currentURL.getHost().toLowerCase() + ":";
             if(tryUpgradeToSSL || currentlySSL)
             {
                 tempkey += sPort;
@@ -340,7 +340,7 @@ public final class HTMLUtilities
             }
             if( checked == null)
             {
-                String host = currentURL.getHost();
+                String host = currentURL.getHost().toLowerCase();
                 if( host.matches("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+") == false)
                 {                    
                     /**

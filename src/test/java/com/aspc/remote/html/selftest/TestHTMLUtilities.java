@@ -177,14 +177,19 @@ public class TestHTMLUtilities extends TestCase
         
     private void checkHTTPS() throws Exception
     {
-        URL url = HTMLUtilities.bestURL("http://stSoftware.com.au", true);
+        URL url = HTMLUtilities.bestURL("http://www.stsoftware.com.au/", true);
 
         assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        assertEquals("Change to default port https", "https://stSoftware.com.au", url.toString());
+        assertEquals("Change to default port https", "https://www.stsoftware.com.au/", url.toString());
+        
+        url = HTMLUtilities.bestURL("http://stSoftware.com.au", true);
+
+        assertEquals("should have upgraded to SSL", "https", url.getProtocol());
+        assertEquals("Change to default port https", "https://stsoftware.com.au", url.toString());
 
         url = HTMLUtilities.bestURL("http://stSoftware.com.au:8080/siteST", true);
         assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        assertEquals("Change to default port https", "https://stSoftware.com.au/siteST", url.toString());
+        assertEquals("Change to default port https", "https://stsoftware.com.au/siteST", url.toString());
         url = HTMLUtilities.bestURL("http://stSoftware.com.au:80/siteST", true);
 
         assertEquals("should have upgraded to SSL", "https", url.getProtocol());
@@ -214,13 +219,13 @@ public class TestHTMLUtilities extends TestCase
 
         assertEquals("Don't upgrade if not asked", "http", url.getProtocol());
 
-        assertEquals("Don't change", "http://stSoftware.com.au/site/ST?X=Y", url.toString());
+        assertEquals("Don't change", "http://stsoftware.com.au/site/ST?X=Y", url.toString());
 
         url = HTMLUtilities.bestURL("http://stSoftware.com.au:80/site/ST?X=Y", false);
 
         assertEquals("Don't upgrade if not asked", "http", url.getProtocol());
 
-        assertEquals("Don't change", "http://stSoftware.com.au/site/ST?X=Y", url.toString());
+        assertEquals("Don't change", "http://stsoftware.com.au/site/ST?X=Y", url.toString());
         
         url = HTMLUtilities.bestURL("http://60.241.239.222:8080", true);
 
