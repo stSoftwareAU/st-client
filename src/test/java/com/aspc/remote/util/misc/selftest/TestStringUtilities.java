@@ -512,6 +512,7 @@ public class TestStringUtilities extends TestCase
             "/summary/generic?SCREEN_KEY=270650@2~170@1&LAYERID=110?FC=Y",
             "ftp://noboby:xxxx@localhost/docs2,ftp://noboby:xxxx@localhost/docs",
             "http:\\/\\/www.youtube.com\\/v\\/7zxEw3QanhY",
+            "http://www.jobtrack.com.au/docs/web/icon[2].png",
             "/report_explorer/transfer?ESEARCHOR1=ESEARCHAND|Task%3asimpleStatus|IS|OPEN%402%7e2791%402&EFIELD_sortDesc=&SCREEN_KEY=231009@2~170@1&EFIELD_sortField=&FORMAT=CSV&EFIELD_name=Job&CLASS_KEY=74@2~1@1&TS=1484111658864&ADD_VALUES=@@@@@@@@@@@@@"
         };
         

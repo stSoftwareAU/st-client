@@ -121,7 +121,7 @@ public final class ReSTUtil
      */
     public static void checkURL( final @Nonnull String url, final boolean checkUrlLength) throws IllegalArgumentException
     {
-     if( url==null){
+        if( url==null){
             throw new IllegalArgumentException( "URL is null");
         }
 

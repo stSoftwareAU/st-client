@@ -723,6 +723,16 @@ public class ClientBrowser
 
                         if( StringUtilities.isBlank(temp)== false)
                         {
+                            int pos1=temp.indexOf(".");
+                            if( pos1 !=-1)
+                            {
+                                int pos2 = temp.indexOf(".", pos1 +1);
+                                
+                                if( pos2!=-1)
+                                {
+                                    temp=temp.substring(0, pos2);
+                                }
+                            }
                             browserVersion = (new Double( temp ));
                         }
 
@@ -733,7 +743,7 @@ public class ClientBrowser
                     }
                     catch( NumberFormatException e)
                     {
-                        LOGGER.info( "Error parsing agent", e);
+                        LOGGER.info( "Error parsing agent: " + agent, e);
                         browserVersion = 6;
                     }
                 }

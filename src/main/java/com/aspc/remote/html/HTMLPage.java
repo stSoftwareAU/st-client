@@ -48,6 +48,8 @@ import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.CProperties;
 import com.aspc.remote.util.misc.DocumentUtil;
 import com.aspc.remote.util.misc.StringUtilities;
+import static com.aspc.remote.util.misc.StringUtilities.encode;
+import static com.aspc.remote.util.misc.StringUtilities.validCharactersHTML;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
@@ -1057,9 +1059,10 @@ public class HTMLPage extends HTMLPanel
     }
 
     /**
-     *
-     * @return the value
+     * The page title.
+     * @return the title
      */
+    @Nonnull @CheckReturnValue
     public String getTitle()
     {
         return title == null ? "" : title;
@@ -1068,8 +1071,10 @@ public class HTMLPage extends HTMLPanel
     /**
      * set the title
      * @param title the title
+     * @return this
      */
-    public void setTitle( final String title)
+    @Nonnull
+    public HTMLPage setTitle( final @Nullable String title)
     {
         if( "Untitled".equalsIgnoreCase(title))
         {
@@ -1077,25 +1082,39 @@ public class HTMLPage extends HTMLPanel
                 "*** Warning: Netscape doesn't show Page title's of '" + title + "'"
             );
         }
+        
+        assert title==null||validCharactersHTML( title): "invalid title '" + encode( title!=null?title:"") +"'";
+       
         this.title =  title;
+        
+        return this;
     }
 
     /**
      * set the description
      * @param description the description
+     * @return this
      */
-    public void setDescription( final String description)
+    @Nonnull
+    public HTMLPage setDescription( final @Nullable String description)
     {
+        assert description==null||validCharactersHTML( description): "invalid description '" + encode( description!=null?description:"") +"'";
+
         this.description =  description;
+        return this;
     }
 
     /**
      * set the keywords
      * @param keywords the keywords
+     * @return this
      */
-    public void setKeywords( final String keywords)
+    public HTMLPage setKeywords( final @Nullable String keywords)
     {
+        assert keywords==null||validCharactersHTML( keywords): "invalid keywords '" + encode( keywords!=null?keywords:"") +"'";
         this.keywords =  keywords;
+        
+        return this;
     }
 
     /**
@@ -1187,7 +1206,7 @@ public class HTMLPage extends HTMLPanel
      *
      * @param buffer
      */
-    private void pleaseWaitHook(final StringBuilder buffer)
+    private void pleaseWaitHook(final @Nonnull StringBuilder buffer)
     {
         // Note: Tried setting to 110% as IE is leaving edge on right hand side of screen but made iframe reports wider then they needed to be
         buffer.append("<div id=\"CURTAIN\" onkeydown = \"cancelEvent();\" class=\"aspc-GlassPanel\" style='top: 0px;width: 100%;height: 100%;left: 0px;position: fixed;z-index: 100;");
@@ -1217,7 +1236,7 @@ public class HTMLPage extends HTMLPanel
      * @param buffer The generate HTML
      */
     @Override
-    protected void iGenerate( final ClientBrowser browser, final StringBuilder buffer)
+    protected void iGenerate( final @Nonnull ClientBrowser browser, final @Nonnull StringBuilder buffer)
     {
         if( hasFrameSet == true)
         {
@@ -1324,27 +1343,27 @@ public class HTMLPage extends HTMLPanel
         
         if( title != null)
         {
-            if (browser.isBrowserMOBILE())
-            {
-                //buffer.append("<meta name=\"page_title_for_mobile\" content=\"").append(title).append("\">\n");
-                //makeMeta( buffer, "property", "og:site_name", ogSiteName);
-                if (mobileProperties != null)
-                {
-                    String props[] = new String[ mobileProperties.size()];
-                    mobileProperties.keySet().toArray(props);
-                    for (String propKey : props)
-                    {
-                        String value = (String)mobileProperties.get(propKey);
-
-                        buffer.append("<meta property_key=\"");
-                        buffer.append(propKey);
-                        buffer.append("\"");
-                        buffer.append(" property_value=\"");
-                        buffer.append(StringUtilities.encodeHTML(value));
-                        buffer.append("\">\n");
-                    }
-                }
-            }
+//            if (browser.isBrowserMOBILE())
+//            {
+//                //buffer.append("<meta name=\"page_title_for_mobile\" content=\"").append(title).append("\">\n");
+//                //makeMeta( buffer, "property", "og:site_name", ogSiteName);
+//                if (mobileProperties != null)
+//                {
+//                    String props[] = new String[ mobileProperties.size()];
+//                    mobileProperties.keySet().toArray(props);
+//                    for (String propKey : props)
+//                    {
+//                        String value = (String)mobileProperties.get(propKey);
+//
+//                        buffer.append("<meta property_key=\"");
+//                        buffer.append(propKey);
+//                        buffer.append("\"");
+//                        buffer.append(" property_value=\"");
+//                        buffer.append(StringUtilities.encodeHTML(value));
+//                        buffer.append("\">\n");
+//                    }
+//                }
+//            }
 
             // encodeHTML prevents JavaScript Injection in the title
             buffer.append("<title>").append(StringUtilities.encodeHTML(title)).append(
@@ -1624,6 +1643,9 @@ public class HTMLPage extends HTMLPanel
             while( cleanValue.contains("  ")){
                 cleanValue=cleanValue.replace("  ", " ");
             }
+            assert validCharactersHTML( type): "invalid meta type '" + encode( type!=null?type:"") +"'";
+            assert validCharactersHTML( name): "invalid meta name '" + encode( name!=null?name:"") +"'";
+            assert validCharactersHTML( cleanValue): "invalid meta type '" + encode( cleanValue) +"'";
 //            String encodedValue = value.replace( "&", AND).replace("\\", SLASH).replace("\"", QUOTE);
             String temp="<meta " + type + "=\"" + StringUtilities.encodeHTML(name) + "\" content=\"" + StringUtilities.encodeHTML(cleanValue) + "\">\n";
             
@@ -2404,8 +2426,10 @@ public class HTMLPage extends HTMLPanel
      * @param dictionaryCode
      * @param code
      * @param value the value
+     * @return this
      */
-    public void addToDictionary( final String dictionaryCode, final String code, final String value)
+    @Nonnull
+    public HTMLPage addToDictionary( final @Nonnull String dictionaryCode, final @Nonnull String code, final @Nonnull String value)
     {
         if( dictionaries == null)
         {
@@ -2421,9 +2445,12 @@ public class HTMLPage extends HTMLPanel
         }
 
         map.put(code, value);
+        
+        return this;
     }
     
-    public int getDictionarySize( final String dictionaryCode)
+    @Nonnegative
+    public int getDictionarySize( final @Nonnull String dictionaryCode)
     {
         if( dictionaries == null)
         {
@@ -2438,20 +2465,20 @@ public class HTMLPage extends HTMLPanel
     }
 
 
-     /**
-     * puts mobile property
-     * @param name
-     * @param value the value
-     */
-    public void putMobileProperty( final String name, final String value)
-    {
-        if( mobileProperties == null)
-        {
-            mobileProperties = HashMapFactory.create();
-        }
-
-        mobileProperties.put( name, value);
-    }
+//     /**
+//     * puts mobile property
+//     * @param name
+//     * @param value the value
+//     */
+//    public void putMobileProperty( final String name, final String value)
+//    {
+//        if( mobileProperties == null)
+//        {
+//            mobileProperties = HashMapFactory.create();
+//        }
+//
+//        mobileProperties.put( name, value);
+//    }
 
     public void setOgURL(final String ogURL) 
     {
@@ -2462,30 +2489,68 @@ public class HTMLPage extends HTMLPanel
     {
         this.ogSiteName = ogSiteName;
     }
+    
     public void setOgImage(String ogImage)
     {
         this.ogImage = ogImage;
     }
 
-    public void setOgTitle(String ogTitle) 
+    /**
+     * Set the og Title
+     * @param ogTitle
+     * @return this
+     */
+    @Nonnull
+    public HTMLPage setOgTitle(final @Nullable String ogTitle) 
     {
+        assert ogTitle==null||validCharactersHTML( ogTitle): "invalid ogTitle '" + encode( ogTitle!=null?ogTitle:"") +"'";
         this.ogTitle = ogTitle;
+        return this;
     }
 
-    public void setOgType(final String ogType) 
+    /**
+     * Set the Open Graph protocol type
+     * http://ogp.me/
+     * 
+     * @param ogType
+     * @return this
+     */
+    @Nonnull
+    public HTMLPage setOgType(final @Nullable String ogType) 
     {
+        assert ogType==null||validCharactersHTML( ogType): "invalid ogType '" + encode( ogType!=null?ogType:"") +"'";
         this.ogType = ogType;
+        
+        return this;
     }
 
-    public void setOgDescription(final String ogDescription) 
+    /**
+     * Set the Open Graph protocol description
+     * http://ogp.me/
+     * 
+     * @param ogDescription
+     * @return this
+     */
+    @Nonnull
+    public HTMLPage setOgDescription(final @Nullable String ogDescription) 
     {
+        assert ogDescription==null||validCharactersHTML( ogDescription): "invalid ogDescription '" + encode( ogDescription!=null?ogDescription:"") +"'";
         this.ogDescription = ogDescription;
+        return this;
     }
 
-    public void setGooglePlusID(final String googleplusid)
+    /**
+     * set the Google plus ID
+     * @param googleplusid
+     * @return this
+     */
+    @Nonnull
+    public HTMLPage setGooglePlusID(final String googleplusid)
     {
         assert googleplusid == null || googleplusid.matches("[\\+0-9a-zA-Z/]+"): "invald goodle plus id " + googleplusid;
         this.googleplusid = googleplusid;
+        
+        return this;
     }        
     
     @Nullable @CheckReturnValue
@@ -2494,9 +2559,17 @@ public class HTMLPage extends HTMLPanel
         return faviconPath;
     }
     
-    public void setFavIconPath(final @Nullable String path)
+    /**
+     * set the favorite icon path
+     * @param path
+     * @return this
+     */
+    @Nonnull
+    public HTMLPage setFavIconPath(final @Nullable String path)
     {
+        assert path==null|| StringUtilities.URI_PATTERN.matcher(path).find():"Invalid favorite icon: " + path;
         faviconPath = path;
+        return this;
     }
 
     private HashMap<String, HashMap<String, String>>       dictionaries;
@@ -2571,7 +2644,7 @@ public class HTMLPage extends HTMLPanel
      */
     private static HashMap gwtModulesCache;//MT CHECKED
 
-    private HashMap mobileProperties;
+//    private HashMap mobileProperties;
     
     /**
      * add this host to the css links if it's not blank
