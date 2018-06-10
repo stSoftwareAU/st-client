@@ -97,7 +97,7 @@ import javax.annotation.Nullable;
  * @author JSON.org
  * @version 2014-05-03
  */
-public class JSONObject {
+public final class JSONObject {
     /**
      * JSONObject.NULL is equivalent to the value that JavaScript calls null,
      * whilst Java's null is equivalent to the value that JavaScript calls
@@ -112,7 +112,7 @@ public class JSONObject {
          * @return NULL.
          */
         @Override
-        @SuppressWarnings("CloneDoesntCallSuperClone")
+        @SuppressWarnings("CloneDoesntCallSuperClone")  @CheckReturnValue
         protected final Object clone() {
             return this;
         }
@@ -125,9 +125,9 @@ public class JSONObject {
          * @return true if the object parameter is the JSONObject.NULL object or
          *         null.
          */
-        @Override
+        @Override  @CheckReturnValue
         @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
-        public boolean equals(Object object) {
+        public boolean equals(final @Nullable Object object) {
             return object == null || object == this;
         }
 
@@ -136,12 +136,12 @@ public class JSONObject {
          *
          * @return The string "null".
          */
-        @Override
+        @Override @CheckReturnValue
         public String toString() {
             return "null";
         }
 
-        @Override
+        @Override  @CheckReturnValue
         public int hashCode() {
             int hash = 5;
             return hash;
@@ -182,12 +182,13 @@ public class JSONObject {
      *                If a value is a non-finite number or if a name is
      *                duplicated.
      */
-    public JSONObject(JSONObject jo, String[] names) {
+    public JSONObject(final @Nonnull JSONObject jo, final @Nonnull String[] names) {
         this();
-        for (int i = 0; i < names.length; i += 1) {
+        for (String name: names) {
             try {
-                this.putOnce(names[i], jo.opt(names[i]));
-            } catch (Exception ignore) {
+                this.putOnce(name, jo.opt(name));
+            } catch (JSONException e) {
+                throw new IllegalArgumentException(name, e);
             }
         }
     }
@@ -201,7 +202,7 @@ public class JSONObject {
      *             If there is a syntax error in the source string or a
      *             duplicated key.
      */
-    public JSONObject(JSONTokener x) throws JSONException {
+    public JSONObject(final @Nonnull JSONTokener x) throws JSONException {
         this();
         char c;
         String key;
@@ -255,7 +256,7 @@ public class JSONObject {
      *            the JSONObject.
      * @throws JSONException
      */
-    public JSONObject(Map<String, Object> map) {
+    public JSONObject(final @Nullable Map<String, Object> map) {
         this.map = new LinkedHashMap<>();
         if (map != null) {
             Iterator<Entry<String, Object>> i = map.entrySet().iterator();
@@ -290,7 +291,7 @@ public class JSONObject {
      *            An object that has getter methods that should be used to make
      *            a JSONObject.
      */
-    public JSONObject(Object bean) {
+    public JSONObject(final @Nonnull Object bean) {
         this();
         this.populateMap(bean);
     }
@@ -309,14 +310,14 @@ public class JSONObject {
      *            An array of strings, the names of the fields to be obtained
      *            from the object.
      */
-    public JSONObject(Object object, String names[]) {
+    public JSONObject(final @Nonnull Object object, final @Nonnull String names[]) {
         this();
         Class c = object.getClass();
-        for (int i = 0; i < names.length; i += 1) {
-            String name = names[i];
+        for (String name: names) {
             try {
                 this.putOpt(name, c.getField(name).get(object));
-            } catch (Exception ignore) {
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchFieldException | SecurityException | JSONException e) {
+                throw new IllegalArgumentException(name, e);
             }
         }
     }
@@ -333,7 +334,7 @@ public class JSONObject {
      *                If there is a syntax error in the source string or a
      *                duplicated key.
      */
-    public JSONObject(String source) throws JSONException {
+    public JSONObject(final @Nonnull String source) throws JSONException {
         this(new JSONTokener(source));
     }
 
@@ -481,7 +482,7 @@ public class JSONObject {
      *             if the key is not found.
      */
     @Nonnull @CheckReturnValue
-    public Object get(String key) throws JSONException {
+    public Object get(final @Nonnull String key) throws JSONException {
         if (key == null) {
             throw new JSONException("Null key.");
         }
@@ -1007,7 +1008,7 @@ public class JSONObject {
      * @return A string which is the value.
      */
     @Nonnull @CheckReturnValue
-    public String optString(String key) {
+    public String optString(final @Nonnull String key) {
         return this.optString(key, "");
     }
 
@@ -1022,12 +1023,14 @@ public class JSONObject {
      * @return A string which is the value.
      */
     @Nonnull @CheckReturnValue
-    public String optString(String key, String defaultValue) {
+    public String optString(final @Nonnull String key, final @Nonnull String defaultValue) {
+        if( key==null) throw new IllegalArgumentException("key is mandatory");
+        assert defaultValue!=null;
         Object object = this.opt(key);
-        return NULL.equals(object) ? defaultValue : object.toString();
+        return object==null||NULL.equals(object) ? defaultValue : object.toString();
     }
 
-    private void populateMap(Object bean) {
+    private void populateMap(final @Nonnull Object bean) {
         Class klass = bean.getClass();
 
 // If klass is a System class then set includeSuperClass to false.
@@ -1216,7 +1219,7 @@ public class JSONObject {
      *             if the key is a duplicate
      */
     @Nonnull
-    public JSONObject putOnce(String key, Object value) throws JSONException {
+    public final JSONObject putOnce(String key, Object value) throws JSONException {
         if (key != null && value != null) {
             if (this.opt(key) != null) {
                 throw new JSONException("Duplicate key \"" + key + "\"");
@@ -1547,7 +1550,7 @@ public class JSONObject {
      *             If the value is or contains an invalid number.
      */
     public static String valueToString(Object value) throws JSONException {
-        if (value == null || value.equals(null)) {
+        if (value == null || value.equals(NULL)) {
             return "null";
         }
         if (value instanceof JSONString) {
@@ -1627,7 +1630,8 @@ public class JSONObject {
             }
             return new JSONObject(object);
         } catch (JSONException exception) {
-            return null;
+            throw new RuntimeException("wrap(" + object + ")", exception);
+//            return null;
         }
     }
 
@@ -1637,16 +1641,17 @@ public class JSONObject {
      * <p>
      * Warning: This method assumes that the data structure is acyclical.
      *
+     * @param writer
      * @return The writer.
      * @throws JSONException
      */
-    public Writer write(Writer writer) throws JSONException {
+    public Writer write(final @Nonnull Writer writer) throws JSONException {
         return this.write(writer, 0, 0);
     }
 
     static final Writer writeValue(Writer writer, Object value,
             int indentFactor, int indent) throws JSONException, IOException {
-        if (value == null || value.equals(null)) {
+        if (value == null || value.equals(NULL)) {
             writer.write("null");
         } else if (value instanceof JSONObject) {
             ((JSONObject) value).write(writer, indentFactor, indent);
@@ -1701,8 +1706,9 @@ public class JSONObject {
             writer.write('{');
 
             if (length == 1) {
-                Object key = keys.next();
-                writer.write(quote(key.toString()));
+                String key = keys.next();
+                
+                writer.write(quote(key));
                 writer.write(':');
                 if (indentFactor > 0) {
                     writer.write(' ');
@@ -1711,7 +1717,7 @@ public class JSONObject {
             } else if (length != 0) {
                 final int newindent = indent + indentFactor;
                 while (keys.hasNext()) {
-                    Object key = keys.next();
+                    String key = keys.next();
                     if (commanate) {
                         writer.write(',');
                     }
@@ -1719,7 +1725,7 @@ public class JSONObject {
                         writer.write('\n');
                     }
                     indent(writer, newindent);
-                    writer.write(quote(key.toString()));
+                    writer.write(quote(key));
                     writer.write(':');
                     if (indentFactor > 0) {
                         writer.write(' ');

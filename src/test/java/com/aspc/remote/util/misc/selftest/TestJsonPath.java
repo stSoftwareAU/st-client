@@ -255,7 +255,8 @@ public class TestJsonPath extends TestCase
             try
             {
 //                TimeZone.setDefault(TimeZone.getTimeZone("Australia/Sydney"));
-                Object obj=JsonPath.read(json, s[1]);
+                String path=s[1];
+                Object obj=JsonPath.read(json, path);
                 String tmp;
                 if( obj instanceof Date)
                 {
@@ -264,6 +265,10 @@ public class TestJsonPath extends TestCase
                 }
                 else
                 {
+                    if( path.equals("$.z"))
+                    {
+                        fail( "expected a class: Date was class: " + obj.getClass() + " value: " + obj);
+                    }
                     tmp=obj.toString();
                 }
                 assertEquals("JsonPath: " + s[1] + " value is incorrect", s[0], tmp);

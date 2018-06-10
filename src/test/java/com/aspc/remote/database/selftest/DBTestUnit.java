@@ -42,6 +42,7 @@ import com.aspc.remote.util.misc.FileUtil;
 import com.aspc.remote.util.misc.QueueLog;
 import com.aspc.remote.util.misc.ThreadPool;
 import java.io.File;
+import javax.annotation.Nonnull;
 import junit.framework.TestCase;
 import org.apache.commons.logging.Log;
 
@@ -73,7 +74,7 @@ public abstract class DBTestUnit extends TestCase
      * Creates new VirtualDBTestUnit
      * @param name The name of the test.
      */
-    protected DBTestUnit(final String name) 
+    protected DBTestUnit(final @Nonnull String name) 
     {
         super( name);
         try

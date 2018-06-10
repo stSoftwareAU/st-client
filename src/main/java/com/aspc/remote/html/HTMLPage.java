@@ -2422,15 +2422,19 @@ public class HTMLPage extends HTMLPanel
     }
 
     /**
-     *
+     * add to the page's dictionary. 
+     * 
      * @param dictionaryCode
      * @param code
-     * @param value the value
+     * @param value the value to add, if null/blank the code will be removed
      * @return this
      */
     @Nonnull
-    public HTMLPage addToDictionary( final @Nonnull String dictionaryCode, final @Nonnull String code, final @Nonnull String value)
+    public HTMLPage addToDictionary( final @Nonnull String dictionaryCode, final @Nonnull String code, final @Nullable String value)
     {
+        if( StringUtilities.isBlank(dictionaryCode)) throw new IllegalArgumentException("dictionaryCode is mandatory");
+        if( StringUtilities.isBlank(code)) throw new IllegalArgumentException("code is mandatory");
+        
         if( dictionaries == null)
         {
             dictionaries = HashMapFactory.create();
@@ -2444,7 +2448,14 @@ public class HTMLPage extends HTMLPanel
             dictionaries.put(dictionaryCode, map);
         }
 
-        map.put(code, value);
+        if( StringUtilities.isBlank(value))
+        {
+            map.remove(code);
+        }
+        else
+        {
+            map.put(code, value);
+        }
         
         return this;
     }
