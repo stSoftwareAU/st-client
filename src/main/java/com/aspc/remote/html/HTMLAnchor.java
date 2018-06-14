@@ -731,6 +731,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
         {
             temp = temp.replace(' ', '+');
             temp = temp.replace("'", "&#39;");
+//            temp = temp.replace("%", "&#37;");
             temp = makeBondaryCheckURL( temp, false);
             if(
                 targetWidth > 0     ||
@@ -798,6 +799,10 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
                         link.append("javascript:");
                         link.append(function);
                         link.append("('");
+//                        if( StringUtilities.decode(temp).contains("["))
+//                        {
+//                            LOGGER.info( temp);
+//                        }
                         link.append(temp.replace("&", "&amp;"));
 //                                .replace("%7c", "%257c")); // THIS IS WRONG...
                         link.append("','");

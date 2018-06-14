@@ -2448,14 +2448,15 @@ public class HTMLPage extends HTMLPanel
             dictionaries.put(dictionaryCode, map);
         }
 
-        if( StringUtilities.isBlank(value))
+        String tempValue = value;
+        if( StringUtilities.isBlank(tempValue))
         {
-            map.remove(code);
+            tempValue = "";
         }
         else
         {
-            map.put(code, value);
         }
+        map.put(code, tempValue);
         
         return this;
     }
