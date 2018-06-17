@@ -11,13 +11,13 @@
  */
 package com.aspc.remote.memory.internal;
 
-import com.aspc.remote.util.misc.*;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
+import javax.annotation.Nonnull;
 
 /**
  *  MemoryUtil
@@ -36,10 +36,10 @@ public final class MemoryUtil
      * @return the size
      */
     @CheckReturnValue @Nonnegative
-    public static long parseSize( final String text)
+    public static long parseSize( final @Nonnull String text)
     {
         String temp = text.trim().toUpperCase();
-        temp = StringUtilities.replace( temp, ",", "");
+        temp = temp.replace( ",", "");
         temp = temp.replace( " ", "");
 
         long multiple = 1;
@@ -133,7 +133,7 @@ public final class MemoryUtil
      * @return the size in bytes
      */
     @CheckReturnValue @Nonnegative
-    public static int sizeof(boolean b)
+    public static int sizeof(final boolean b)
     {
         return 1;
     }

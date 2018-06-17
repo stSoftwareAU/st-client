@@ -642,7 +642,7 @@ public final class MemoryManager
     public static void setMaxMemory( final @Nullable String maximum)
     {
         if( StringUtilities.isBlank(maximum)) return;
-
+        assert maximum!=null;
         long tempMax = MemoryUtil.parseSize( maximum);
         setMaxMemory( tempMax);
     }
@@ -1745,7 +1745,7 @@ public final class MemoryManager
     public static void setTenuredSize( final @Nullable String size)
     {
         if( StringUtilities.isBlank(size)) return;
-
+        assert size!=null;
         long tempSize = MemoryUtil.parseSize( size);
         setTenuredSize( tempSize);
     }
