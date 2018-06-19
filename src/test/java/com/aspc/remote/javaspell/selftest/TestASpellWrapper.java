@@ -58,7 +58,7 @@ public class TestASpellWrapper  extends TestCase{
         List<SpellCheckResult> result = aSpell.checkString("This is eeb test");
         assertEquals(1, result.size());
         if (result.size() == 1){
-            System.out.println(result);
+            LOGGER.info(result);
             assertEquals("eeb", result.get(0).getWord());
             assertEquals(2, result.get(0).getWordIndex());
             assertEquals(8, result.get(0).getStartIndex());
@@ -104,7 +104,7 @@ public class TestASpellWrapper  extends TestCase{
 
         assertEquals(1, result.size());
         if (result.size() == 1){
-            System.out.println(result);
+            LOGGER.info(result);
             assertEquals("teleporters", result.get(0).getWord());
             assertEquals(75, result.get(0).getWordIndex());
             assertEquals(179, result.get(0).getStartIndex());

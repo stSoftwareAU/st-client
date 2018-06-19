@@ -2665,17 +2665,17 @@ public final class StringUtilities
      * @param value the value
      * @return the value
      */
-    @CheckReturnValue
-    public static String encodeHTML(final String value)
+    @CheckReturnValue @Nonnull
+    public static String encodeHTML(final @Nullable String value)
     {
         if (value == null)
         {
-            return null;
+            return "";
         }
         assert validCharactersHTML( value): "invalid HTML '" + encode( value) +"'";
         int len = value.length();
 
-        StringBuilder buffer = new StringBuilder(len);
+        StringBuilder buffer = new StringBuilder((int) (len * 1.2));
 
         for (int i = 0; i < len; i++)
         {
@@ -2720,7 +2720,9 @@ public final class StringUtilities
                 buffer.append(";");                
             }
         }
-
+        
+        buffer.trimToSize();
+        
         return buffer.toString();
     }
 
@@ -2729,8 +2731,8 @@ public final class StringUtilities
      * @param str String
      * @return checksum value as hex ( 8 characters).
      */
-    @CheckReturnValue
-    public static String checkSumAdler32(final String str)
+    @CheckReturnValue @Nonnull
+    public static String checkSumAdler32(final @Nullable String str)
     {
         String temp = str;
         if(temp == null)
@@ -2745,8 +2747,8 @@ public final class StringUtilities
      * @param data byte array
      * @return checksum 32-bit integer in hex
      */
-    @CheckReturnValue
-    public static String checkSumAdler32(final byte[] data)
+    @CheckReturnValue @Nonnull
+    public static String checkSumAdler32(final @Nonnull byte[] data)
     {
         ByteArrayInputStream bais = new ByteArrayInputStream(data);
         CheckedInputStream cis = new CheckedInputStream(bais, new Adler32());
