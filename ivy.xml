@@ -130,9 +130,9 @@
         <dependency org="mysql" name="mysql-connector-java" rev="6.0.6" conf="runtime->master"/>
         
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
-        <dependency org="org.postgresql" name="postgresql" rev="42.0.0" conf="runtime->master"/>
+        <dependency org="org.postgresql" name="postgresql" rev="42.2.2"/>
 
-        <dependency org="org.hsqldb" name="hsqldb" rev="2.4.0" conf="runtime->master"/>
+        <dependency org="org.hsqldb" name="hsqldb" rev="2.4.1" conf="runtime->master"/>
         <!--<dependency org="net.sourceforge.jtds" name="jtds" rev="1.2.6" conf="runtime->master"/>-->
         
         <!-- Webdav -->
