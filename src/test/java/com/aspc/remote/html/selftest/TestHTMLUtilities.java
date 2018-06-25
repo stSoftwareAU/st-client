@@ -33,6 +33,7 @@
  */
 package com.aspc.remote.html.selftest;
 
+import com.aspc.remote.database.selftest.DBTestUnit;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -177,27 +178,48 @@ public class TestHTMLUtilities extends TestCase
         
     private void checkHTTPS() throws Exception
     {
-        URL url = HTMLUtilities.bestURL("http://www.stsoftware.com.au/", true);
+        String hosts[]={
+            "www.stsoftware.com.au",
+            "www.stsoftware.net.au", 
+            "stsoftware.com.au",
+            "www.stSoftware.com.au",
+            "www.jobtrack.com.au",
+            "demo.jobtrack.com.au", 
+            "jobtrack.com.au",
+            "aspc.jobtrack.com.au"
+        };
+        for( String host: hosts)
+        {
+            checkHTTPS( host);
+        }
+    }
+    private void checkHTTPS(final String host) throws Exception
+    {
+        URL url = HTMLUtilities.bestURL("http://" + host + "/", true);
 
-        assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        assertEquals("Change to default port https", "https://www.stsoftware.com.au/", url.toString());
+        assertEquals("should have upgraded to SSL for " + host, "https", url.getProtocol());
+
+        assertEquals("Change to default port https", "https://"+ host.toLowerCase() + "/", url.toString());
         
-        url = HTMLUtilities.bestURL("http://stSoftware.com.au", true);
+        url = HTMLUtilities.bestURL("http://"+ host, true);
 
         assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        assertEquals("Change to default port https", "https://stsoftware.com.au", url.toString());
+        assertEquals("Change to default port https", "https://"+ host.toLowerCase(), url.toString());
 
-        url = HTMLUtilities.bestURL("http://stSoftware.com.au:8080/siteST", true);
-        assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        assertEquals("Change to default port https", "https://stsoftware.com.au/siteST", url.toString());
-        url = HTMLUtilities.bestURL("http://stSoftware.com.au:80/siteST", true);
+        url = HTMLUtilities.bestURL("http://" + host + ":8080/siteST", true);
 
         assertEquals("should have upgraded to SSL", "https", url.getProtocol());
-        url = HTMLUtilities.bestURL("https://stSoftware.com.au", true);
+        assertEquals("Change to default port https", "https://" + host.toLowerCase() + "/siteST", url.toString());
+
+        url = HTMLUtilities.bestURL("http://" + host + ":80/siteST", true);
+
+        assertEquals("should have upgraded to SSL", "https", url.getProtocol());
+
+        url = HTMLUtilities.bestURL("https://" + host, true);
 
         assertEquals("Already SSL no need to change", "https", url.getProtocol());
-
-        url = HTMLUtilities.bestURL("https://stSoftware.com.au", false);
+        
+        url = HTMLUtilities.bestURL("https://" + host, false);
 
         assertEquals("Already SSL no need to change", "https", url.getProtocol());
     }
@@ -219,13 +241,13 @@ public class TestHTMLUtilities extends TestCase
 
         assertEquals("Don't upgrade if not asked", "http", url.getProtocol());
 
-        assertEquals("Don't change", "http://stsoftware.com.au/site/ST?X=Y", url.toString());
+        assertEquals("Don't change", "http://stsoftware.com.au/site/st?x=y", url.toString().toLowerCase());
 
         url = HTMLUtilities.bestURL("http://stSoftware.com.au:80/site/ST?X=Y", false);
 
         assertEquals("Don't upgrade if not asked", "http", url.getProtocol());
 
-        assertEquals("Don't change", "http://stsoftware.com.au/site/ST?X=Y", url.toString());
+        assertEquals("Don't change", "http://stsoftware.com.au/site/st?x=y", url.toString().toLowerCase());
         
         url = HTMLUtilities.bestURL("http://60.241.239.222:8080", true);
 
