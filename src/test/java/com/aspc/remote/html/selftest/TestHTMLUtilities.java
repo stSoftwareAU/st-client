@@ -33,7 +33,6 @@
  */
 package com.aspc.remote.html.selftest;
 
-import com.aspc.remote.database.selftest.DBTestUnit;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
