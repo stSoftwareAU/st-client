@@ -1490,7 +1490,7 @@ public final class StringUtilities
      * @throws Exception a serious problem
      * @return the gzip bytes
      */
-    @CheckReturnValue
+    @Nonnull @CheckReturnValue
     public static byte[] compressToBytes(final @Nonnull String text) throws Exception
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -1618,8 +1618,8 @@ public final class StringUtilities
      * @throws Exception a serious problem
      * @return the value
      */
-    @CheckReturnValue
-    public static String decompress(final byte[] array) throws Exception
+    @Nonnull @CheckReturnValue
+    public static String decompress(final @Nonnull byte[] array) throws Exception
     {
         return decompress(array, COMPRESSION_GZIP);
     }
@@ -1628,11 +1628,12 @@ public final class StringUtilities
      * decompress a string to a normal native java string
      * @param array
      * @param type the type
-     * @throws Exception a serious problem
+     * @throws IllegalArgumentException a serious problem
      * @return the value
+     * @throws java.io.IOException
      */
-    @CheckReturnValue
-    public static String decompress(final byte[] array, final String type) throws Exception
+    @Nonnull @CheckReturnValue
+    public static String decompress(final @Nonnull byte[] array, final @Nonnull String type) throws IllegalArgumentException, IOException
     {
         if (type.equalsIgnoreCase(COMPRESSION_GZIP) || isBlank(type))
         {
@@ -1696,7 +1697,7 @@ public final class StringUtilities
         }
         else
         {
-            throw new RuntimeException("unknown compress type: " + type);
+            throw new IllegalArgumentException("unknown compress type: " + type);
         }
     }
 
@@ -3925,7 +3926,7 @@ public final class StringUtilities
      * @return ASCII string
      * @throws Exception a serious exception
      */
-    @CheckReturnValue
+    @Nonnull @CheckReturnValue
     public static String compressB91(final String text) throws Exception
     {
         byte[] data = compressToBytes(text);
@@ -3938,8 +3939,8 @@ public final class StringUtilities
      * @return original string
      * @throws Exception a serious exception
      */
-    @CheckReturnValue
-    public static String decompressB91(final String compressedData) throws Exception
+    @Nonnull @CheckReturnValue
+    public static String decompressB91(final @Nonnull String compressedData) throws Exception
     {
         byte data[] = decodeBase91(compressedData);
         return decompress(data);
@@ -3951,8 +3952,8 @@ public final class StringUtilities
      * @param data the data
      * @return ASCII string
      */
-    @CheckReturnValue
-    public static String encodeBase91(final byte[] data )
+    @CheckReturnValue @Nonnull
+    public static String encodeBase91(final @Nonnull byte[] data )
     {
         StringBuilder builder = new StringBuilder((int)(data.length * 1.3));
 
@@ -4002,8 +4003,8 @@ public final class StringUtilities
      * @throws Exception a serious exception
      */
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
-    @CheckReturnValue
-    public static byte[] decodeBase91(final String src) throws Exception
+    @Nonnull @CheckReturnValue
+    public static byte[] decodeBase91(final @Nonnull String src) throws Exception
     {
         byte data[] = new byte[src.length()];
         int len = 0;
