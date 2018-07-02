@@ -273,7 +273,7 @@ public class TestTimeUtil extends TestCase
         {
             TimeUtil.parseUserTime("8 Jan 1994 1500@GMT", null);
         }
-        catch (Exception e)
+        catch (InvalidDataException e)
         {
             fail("It should parse when time is '8 Jan 1994 1500' " + e.getMessage());
         }
@@ -282,7 +282,7 @@ public class TestTimeUtil extends TestCase
         {
             TimeUtil.parseUserTime("8 Jan 1994 15:00@GMT", null);
         }
-        catch (Exception e)
+        catch (InvalidDataException e)
         {
             fail("It should parse when time is '8 Jan 1994 15:00' " + e.getMessage());
         }
@@ -292,7 +292,7 @@ public class TestTimeUtil extends TestCase
             TimeUtil.parseUserTime("8 Jan 1999 XX:XX@GMT", null);
             fail("It should not parse for invalid time '8 Jan 1999 XX:XX'");
         }
-        catch (Exception e)
+        catch (InvalidDataException e)
         {
             //ok;
         }
