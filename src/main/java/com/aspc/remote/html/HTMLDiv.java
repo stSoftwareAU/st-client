@@ -41,6 +41,7 @@ import java.awt.Color;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -79,10 +80,11 @@ public class HTMLDiv extends HTMLContainer implements HandlesMouseEvents
      * @param id The identifier for the division
      * @param allowMixed allow mixed cause IDs
      */
-    public HTMLDiv(final String id, final boolean allowMixed)
+    public HTMLDiv(final @Nullable String id, final boolean allowMixed)
     {
         this.allowMixed = allowMixed;
         if( StringUtilities.notBlank(id)) {
+            assert id!=null;
             setId( id);
         }
     }
@@ -92,14 +94,15 @@ public class HTMLDiv extends HTMLContainer implements HandlesMouseEvents
      *
      * @param id The identifier for the division
      */
-    public HTMLDiv(final String id)
+    public HTMLDiv(final @Nullable String id)
     {
-  //      if( id.equalsIgnoreCase("DIV_PRINTBTN"))
-  //      {
-  //          System.out.print("abc");
-      //  }
+//        if( id!=null && id.equalsIgnoreCase("DIV_200240F8E"))
+//        {
+//            System.out.print("abc");
+//        }
         this.allowMixed = false;
         if( StringUtilities.notBlank(id)) {
+            assert id!=null;
             setId( id);
         }
     }
@@ -120,7 +123,7 @@ public class HTMLDiv extends HTMLContainer implements HandlesMouseEvents
      *
      * @param type the type
      */
-    public final void setType( final String type)
+    public final void setType( final @Nullable String type)
     {
         this.type=type;
     }
@@ -130,15 +133,16 @@ public class HTMLDiv extends HTMLContainer implements HandlesMouseEvents
      *
      * @param id The id of the component
      */
-    public final void setId( final String id)
+    public final void setId( final @Nonnull String id)
     {
         iSetId(id);
     }
 
     @Override
-    protected final void iSetId( final String id)
+    protected final void iSetId( final @Nonnull String id)
     {
-        assert id != null && id.length() > 0 : "invalid empty div id";
+        assert id != null;
+        assert id.length() > 0 : "invalid empty div id";
         if( allowMixed)
         {
             assert id.matches(VALID_NAME_REGEX): "invalid div ID " + id;
