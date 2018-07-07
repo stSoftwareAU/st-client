@@ -103,11 +103,15 @@ public enum Status
     /**
      * 204 No Content.
      * The server successfully processed the request, but is not returning any content. Usually used as a response to a successful delete request.
+     * 
+     * If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NO_CONTENT} then it is
+     * illegal for the body to contain anything. See https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5
      */
     C204_SUCCESS_NO_CONTENT(
         204, 
         "No Content", 
-        "The server successfully processed the request, but is not returning any content. Usually used as a response to a successful delete request.",
+        "The server successfully processed the request, but is not returning any content. Usually used as a response to a successful delete request.\n"+
+        "No body cotent will be returned See https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5",
         "https://tools.ietf.org/html/rfc7231#section-6.3.5"
     ),
     
@@ -226,12 +230,18 @@ public enum Status
     /**
      * 304 Not Modified.
      * 
-     * Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match. This means that there is no need to retransmit the resource, since the client still has a previously-downloaded copy.
+     * Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match. 
+     * This means that there is no need to retransmit the resource, since the client still has a previously-downloaded copy.
+     * 
+     * If the response code is {@link javax.servlet.http.HttpServletResponse#SC_NOT_MODIFIED} then it is
+     * illegal for the body to contain anything. See https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5
      */
     C304_NOT_MODIFIED(
         304, 
         "Not Modified", 
-        "Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match. This means that there is no need to retransmit the resource, since the client still has a previously-downloaded copy.",
+        "Indicates that the resource has not been modified since the version specified by the request headers If-Modified-Since or If-None-Match.\n"+
+        "This means that there is no need to retransmit the resource, since the client still has a previously-downloaded copy.\n"+
+        "No response body will be returned https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5",
         "https://tools.ietf.org/html/rfc7232#section-4.1"
     ),
     
@@ -946,6 +956,36 @@ public enum Status
      */
     public final @Nullable String reference;
 
+    /**
+     * Performs a number of checks to ensure response saneness according to the
+     * rules of RFC2616:
+     * <ol>
+     * <li>If the response code is
+     * {@link javax.servlet.http.HttpServletResponse#SC_NO_CONTENT} then it is
+     * illegal for the body to contain anything. See
+     * https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5
+     * 
+     * <li>If the response code is
+     * {@link javax.servlet.http.HttpServletResponse#SC_NOT_MODIFIED} then it is
+     * illegal for the body to contain anything. See
+     * https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.3.5
+     * </ol>
+     *
+     * @return true if the response should be 0, even if it is isn't.
+     */
+    @CheckReturnValue
+    public boolean shouldBodyBeZero() {
+        
+        switch( this)
+        {
+            case C204_SUCCESS_NO_CONTENT:
+            case C304_NOT_MODIFIED:
+                return true;
+            default:
+                return false;
+        }
+    }
+    
     /**
      * Find by status
      * @param status the integer status.

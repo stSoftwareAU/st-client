@@ -253,10 +253,14 @@ public final class Response
     public JSONObject getContentAsJSON() throws IOException
     {
         String text=getContentAsString();
-        if( text.startsWith("{"))
+        if( StringUtilities.isBlank(text))
+        {
+            return new JSONObject();
+        }
+        else if( text.startsWith("{"))
         {
             return new JSONObject( text);
-        }
+        }        
         else
         {
             throw new FileNotFoundException(text);

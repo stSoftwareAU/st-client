@@ -185,15 +185,20 @@ public class RestCallHTTP extends RestCall
             }
             String mimeType=c.getContentType();
             
-            byte array[]=new byte[10 * 1024];
-
+            long contentLength=c.getContentLengthLong();
+            long actualLength=0;
+            int arraySize=Math.max(1, (int)Math.min(10L *1024L, contentLength!=-1?contentLength: 10L * 1024));
+            byte array[]=new byte[arraySize];
+            
             while(true)
             {
                 int read = in.read(array);
                 if( read == -1) break;
-
+                actualLength+=read;
                 out.write(array, 0, read);
             }
+            assert contentLength==-1||contentLength==actualLength: "Expected content length: " + contentLength + " did not match actual: "+ actualLength;
+            
             out.close();
             out=null;
             in.close();
@@ -539,15 +544,20 @@ public class RestCallHTTP extends RestCall
                 in=c.getInputStream();
             }
             String mimeType=c.getContentType();
-            byte array[]=new byte[10 * 1024];
+            
+            long contentLength=c.getContentLengthLong();
+            long actualLength=0;
+            int arraySize=Math.max(1, (int)Math.min(10L *1024L, contentLength!=-1?contentLength: 10L * 1024));
+            byte array[]=new byte[arraySize];
 
             while(true)
             {
                 int read = in.read(array);
                 if( read == -1) break;
-
+                actualLength+=read;
                 out.write(array, 0, read);
             }
+            assert contentLength==-1||contentLength==actualLength: "Expected content length: " + contentLength + " did not match actual: "+ actualLength;
             
             in.close();
             in=null;
