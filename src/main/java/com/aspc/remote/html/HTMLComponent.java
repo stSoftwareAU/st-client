@@ -373,9 +373,10 @@ public abstract class HTMLComponent
         
         if( events == null) return false;
 
+        ClientBrowser clientBrowser = new ClientBrowser();
         for( HTMLEvent ev:  events)
         {
-            if( ev.getName(null).equals( eventName))
+            if( ev.getName(clientBrowser).equals( eventName))
             {
                 return true;
             } 
@@ -429,20 +430,20 @@ public abstract class HTMLComponent
 
                 if(browser.hasEventStopPropagation())
                 {
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onClickEvent, "if(event){event.stopPropagation();}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_CLICK_EVENT, "if(event){event.stopPropagation();}");
                     iAddEvent( me, null);
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onMouseDownEvent, "if(event){event.stopPropagation();}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_DOWN_EVENT, "if(event){event.stopPropagation();}");
                     iAddEvent( me, null);
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onMouseUpEvent, "if(event){event.stopPropagation();}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_UP_EVENT, "if(event){event.stopPropagation();}");
                     iAddEvent( me, null);
                 }
                 else
                 {
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onClickEvent, "if(event){event.cancelBubble=true;}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_CLICK_EVENT, "if(event){event.cancelBubble=true;}");
                     iAddEvent( me, null);
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onMouseDownEvent, "if(event){event.cancelBubble=true;}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_DOWN_EVENT, "if(event){event.cancelBubble=true;}");
                     iAddEvent( me, null);
-                    me = new HTMLMouseEvent( HTMLMouseEvent.onMouseUpEvent, "if(event){event.cancelBubble=true;}");
+                    me = new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_UP_EVENT, "if(event){event.cancelBubble=true;}");
                     iAddEvent( me, null);                
                 }
             }
@@ -1081,20 +1082,20 @@ public abstract class HTMLComponent
 
         HTMLMouseEvent me;
         me = new HTMLMouseEvent(
-            HTMLMouseEvent.onMouseUpEvent,
+            HTMLMouseEvent.ON_MOUSE_UP_EVENT,
             "doToolTipMouseIn( '')"
         );
         iAddEvent(me, null);
 
 
         me = new HTMLMouseEvent(
-            HTMLMouseEvent.onMouseOverEvent,
+            HTMLMouseEvent.ON_MOUSE_OVER_EVENT,
             "doToolTipMouseIn(  '" + toolTip + "', event)"
         );
         iAddEvent(me, null);
 
         me = new HTMLMouseEvent(
-            HTMLMouseEvent.onMouseOutEvent,
+            HTMLMouseEvent.ON_MOUSE_OUT_EVENT,
             "doToolTipMouseOut( )");
         iAddEvent(me, null);
         assert page!=null;

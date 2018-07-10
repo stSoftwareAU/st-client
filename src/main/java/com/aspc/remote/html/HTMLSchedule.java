@@ -532,7 +532,7 @@ public class HTMLSchedule extends HTMLComponent
 
             HTMLMouseEvent me;
             me = new HTMLMouseEvent(
-                        HTMLMouseEvent.onClickEvent,
+                        HTMLMouseEvent.ON_CLICK_EVENT,
                         "popup.mouseIn( '" + div.getId() + "', event)"
                         );
             mainTable.addCellEvent( me, row, x);
@@ -595,21 +595,6 @@ public class HTMLSchedule extends HTMLComponent
         div.setHeight( "103");
         div.setOverflow( "scroll");
 
-        /*HTMLMouseEvent me;
-        me = new HTMLMouseEvent(
-                HTMLMouseEvent.onMouseOverEvent,
-                "popup.mouseIn( '" + id + "', event)"
-                );
-
-        div.addMouseEvent(me);
-
-        me = new HTMLMouseEvent(
-                HTMLMouseEvent.onMouseOutEvent,
-                "popup.mouseOut( '" + id + "')"
-                );
-        div.addMouseEvent(me);
-        */
-        //div.setPosition( HTMLStyleSheet.POSITION_ABSOLUTE);
         HTMLTable table = new HTMLTable();
         table.setWidth( "300");
 

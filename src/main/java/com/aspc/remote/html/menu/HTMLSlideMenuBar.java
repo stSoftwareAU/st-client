@@ -140,7 +140,7 @@ public class HTMLSlideMenuBar extends HTMLMenuBar
 //                            strSelColor = makeColorID(selectionColor);  
 //                        } 
                         HTMLMouseEvent mouseClick4Id = new  HTMLMouseEvent(
-                            HTMLMouseEvent.onClickEvent,
+                            HTMLMouseEvent.ON_CLICK_EVENT,
                             "setSelectedMenu( '" + table.getId()  + "', '" + seq  + "')"
                         );     
                         menuDiv.addMouseEvent(mouseClick4Id);
@@ -287,7 +287,7 @@ public class HTMLSlideMenuBar extends HTMLMenuBar
         showMenuCmd.append( subMenu.getFullHeight());
         showMenuCmd.append( ");");
         HTMLMouseEvent mouseClickEvent = new  HTMLMouseEvent(
-            HTMLMouseEvent.onClickEvent,
+            HTMLMouseEvent.ON_CLICK_EVENT,
             showMenuCmd.toString()
         );
         menuDiv.addMouseEvent( mouseClickEvent);
@@ -318,7 +318,7 @@ public class HTMLSlideMenuBar extends HTMLMenuBar
         }
         
         HTMLMouseEvent mouseClickEvent = new  HTMLMouseEvent(
-            HTMLMouseEvent.onClickEvent,
+            HTMLMouseEvent.ON_CLICK_EVENT,
             href
         );
         menuDiv.addMouseEvent( mouseClickEvent);

@@ -874,7 +874,7 @@ public class HTMLButton extends HTMLComponent implements HandlesSingleClick
                 }
             }
 
-            if( iHasEvent(HTMLMouseEvent.onClickEvent))
+            if( iHasEvent(HTMLMouseEvent.ON_CLICK_EVENT))
             {
                 shouldSubmitForm=false;
             }
@@ -887,7 +887,7 @@ public class HTMLButton extends HTMLComponent implements HandlesSingleClick
                 {
 
                     HTMLMouseEvent unloadMe = new HTMLMouseEvent(
-                    HTMLMouseEvent.onClickEvent,
+                    HTMLMouseEvent.ON_CLICK_EVENT,
                         "javascript:allowUnload=true"
                     );
 
@@ -923,7 +923,7 @@ public class HTMLButton extends HTMLComponent implements HandlesSingleClick
             sb.append(";\n}\n");
             addJavaScript(functionCall, sb.toString());
             HTMLMouseEvent onClick = new HTMLMouseEvent(
-                HTMLMouseEvent.onClickEvent,
+                HTMLMouseEvent.ON_CLICK_EVENT,
                 "javascript:" + functionCall + "()"
             );
 
@@ -934,7 +934,7 @@ public class HTMLButton extends HTMLComponent implements HandlesSingleClick
         if( browser.isBrowserIE() && shouldSubmitForm == false && browser.getBrowserVersion() < 9)
         {
             HTMLMouseEvent onClick = new HTMLMouseEvent(
-                HTMLMouseEvent.onClickEvent,
+                HTMLMouseEvent.ON_CLICK_EVENT,
                 "return false"
             );
 

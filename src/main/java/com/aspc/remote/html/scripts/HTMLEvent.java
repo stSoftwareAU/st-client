@@ -59,12 +59,45 @@ public class HTMLEvent
         if( StringUtilities.isBlank(name)) throw new IllegalArgumentException("name is mandatory");
         /* blank is OK */
         if( call==null) throw new IllegalArgumentException("call is mandatory");
-        
+        assert validCall( call):"Invalid javascript call: " + call;
         this.name = name.trim();
         this.call = call;
         priority = 50;
     }
 
+    public static boolean validCall( final @Nonnull String call)
+    {
+        char lastQuote='\0';
+        boolean lastEscape=false;
+        for( char c:call.toCharArray())
+        {
+            if( lastEscape)
+            {
+                lastEscape=false;
+            }
+            else
+            {
+                if( c == '\\')
+                {
+                    lastEscape=true;
+                }
+                else if( c == lastQuote)
+                {
+                    lastQuote='\0';
+                }
+                else if( c == '\'' || c == '"')
+                {
+                    if( lastQuote=='\0')
+                    {
+                        lastQuote=c;
+                    }
+                }
+            }
+        }
+        
+        return lastEscape==false && lastQuote=='\0';
+    }
+    
     /**
      * The name of this event.
      *
@@ -72,7 +105,7 @@ public class HTMLEvent
      * @return The name
      */
     @Nonnull @CheckReturnValue
-    public String getName(final ClientBrowser browser)
+    public String getName(final @Nonnull ClientBrowser browser)
     {
         return name;
     }

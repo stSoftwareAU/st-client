@@ -94,7 +94,7 @@ public class HTMLPopupMenuBar extends HTMLMenuBar
                         page.addComponent( subMenuDiv);
                         
                         HTMLMouseEvent mouseOutEvent = new  HTMLMouseEvent(
-                                    HTMLMouseEvent.onMouseOutEvent,
+                                    HTMLMouseEvent.ON_MOUSE_OUT_EVENT,
                                     "popup.mouseOut()"
                                     ); 
                         subMenuDiv.addMouseEvent(mouseOutEvent);                    
@@ -103,7 +103,7 @@ public class HTMLPopupMenuBar extends HTMLMenuBar
                         
                         String strOffSetTop ="document.getElementById('" + menuDiv.getId() + "').clientHeight";
                         HTMLMouseEvent mouseOverEvent = new  HTMLMouseEvent(
-                                HTMLMouseEvent.onMouseOverEvent,
+                                HTMLMouseEvent.ON_MOUSE_OVER_EVENT,
                                 "popup.mouseIn( '" + subMenuDiv.getId() + "', '" + menuDiv.getId() + "'," + strOffSetTop + ",0)"
                                 );   
                         subMenuDiv.addMouseEvent(mouseOverEvent);    
@@ -211,7 +211,7 @@ public class HTMLPopupMenuBar extends HTMLMenuBar
         }
         
         HTMLMouseEvent mouseClickEvent = new  HTMLMouseEvent(
-            HTMLMouseEvent.onClickEvent,
+            HTMLMouseEvent.ON_CLICK_EVENT,
             href
         );
         menuDiv.addMouseEvent( mouseClickEvent);

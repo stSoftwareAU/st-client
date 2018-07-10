@@ -601,7 +601,7 @@ public class HTMLTextEditor extends HTMLTextArea
                 "plugin_insertdate_dateFormat :"+ "\"%Y-%m-%d\","+
                 "plugin_insertdate_timeFormat :"+ "\"%H:%M:%S\","+
                 "extended_valid_elements :"+
-                //"img[id|style|class|src|border|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],"
+
                 "\"a[id|class|name|href|target|title|onclick|style],"+
                 "hr[id|class|width|size|noshade],font[face|size|color|style],span[id|class|align|style]\""
             );

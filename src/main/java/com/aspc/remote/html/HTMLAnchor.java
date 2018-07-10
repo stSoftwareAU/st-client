@@ -853,7 +853,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
                 {
                     unloadAdded = true;
                     HTMLMouseEvent unloadMe = new HTMLMouseEvent(
-                        HTMLMouseEvent.onClickEvent,
+                        HTMLMouseEvent.ON_CLICK_EVENT,
                         "allowUnload=true"
                     );
 

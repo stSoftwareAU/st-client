@@ -201,12 +201,12 @@ public abstract class HTMLMenuBar extends HTMLMenuItem
         String strSelectedMenuId = "clickedDivId";
 
         HTMLMouseEvent mouseOverEvent4HightLight = new  HTMLMouseEvent(
-            HTMLMouseEvent.onMouseOverEvent,
+            HTMLMouseEvent.ON_MOUSE_OVER_EVENT,
             "doMenuRollover( '" + menubarId + "', '" + menuId + "', true, '" + strSelectedMenuId + "')"
         );
 
         HTMLMouseEvent mouseOutEvent4HightLight = new  HTMLMouseEvent(
-            HTMLMouseEvent.onMouseOutEvent,
+            HTMLMouseEvent.ON_MOUSE_OUT_EVENT,
             "doMenuRollover( '" + menubarId + "', '" +menuId + "', false, '" + strSelectedMenuId + "')"
         );
         menuDiv.addMouseEvent( mouseOverEvent4HightLight);

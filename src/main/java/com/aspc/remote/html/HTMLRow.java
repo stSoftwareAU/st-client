@@ -698,11 +698,11 @@ public final class HTMLRow extends HTMLContainer
 
             HTMLMouseEvent me;
 
-            me= new HTMLMouseEvent( HTMLMouseEvent.onMouseOverEvent, "setBGc( '" + id + "','" + makeColorID( highlightColor) + "')");
+            me= new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_OVER_EVENT, "setBGc( '" + id + "','" + makeColorID( highlightColor) + "')");
 
             addEvent( me, null);
 
-            me= new HTMLMouseEvent( HTMLMouseEvent.onMouseOutEvent, "setBGc( '" + id + "',null)");
+            me= new HTMLMouseEvent( HTMLMouseEvent.ON_MOUSE_OUT_EVENT, "setBGc( '" + id + "',null)");
 
             addEvent( me, null);
         }

@@ -128,8 +128,8 @@ public class HTMLPostItNote extends HTMLComponent
         table.setCellAlignment ("LEFT", 0, 0);
 
         HTMLAnchor anc = new HTMLAnchor("javascript:setStyleVisible('"+this.id+"', false)");
-        anc.addMouseEvent (new HTMLMouseEvent("onMouseOver","window.status='Close';return;"));
-        anc.addMouseEvent (new HTMLMouseEvent("onMouseOut","window.status='';return;"));
+//        anc.addMouseEvent (new HTMLMouseEvent("onMouseOver","window.status='Close';return;"));
+//        anc.addMouseEvent (new HTMLMouseEvent("onMouseOut","window.status='';return;"));
         anc.addMouseEvent (new HTMLMouseEvent("onClick","javascript:setStyleVisible('"+id+"',false)"));
         anc.showUnderline (false);
         anc.addText("=");

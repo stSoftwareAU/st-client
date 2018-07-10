@@ -33,6 +33,9 @@
  */
 package com.aspc.remote.html.scripts;
 import com.aspc.remote.html.*;
+import javax.annotation.CheckForNull;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 
 /**
  *  HTMLMouseEvent
@@ -46,39 +49,39 @@ public class HTMLMouseEvent extends HTMLEvent
     /**
      *
      */
-    public static final String onClickEvent     = "onClick";
+    public static final String ON_CLICK_EVENT     = "onClick";
     /**
      *
      */
-    public static final String onDblClickEvent  = "onDblClick";
+    public static final String ON_DOUBLE_CLICK_EVENT  = "onDblClick";
     /**
      *
      */
-    public static final String onMouseDownEvent = "onMouseDown";
+    public static final String ON_MOUSE_DOWN_EVENT = "onMouseDown";
     /**
      *
      */
-    public static final String onDropEvent      = "ondrop";
+    public static final String ON_DROP_EVENT      = "ondrop";
     /**
      *
      */
-    public static final String onDragOverEvent  = "ondragover";
+    public static final String ON_DRAG_OVER_EVENT  = "ondragover";
     /**
      *
      */
-    public static final String onMouseUpEvent   = "onMouseUp";
+    public static final String ON_MOUSE_UP_EVENT   = "onMouseUp";
     /**
      *
      */
-    public static final String onMouseMoveEvent = "onMouseMove";
+    public static final String ON_MOUSE_MOVE_EVENT = "onMouseMove";
     /**
      *
      */
-    public static final String onMouseOverEvent = "onMouseOver";
+    public static final String ON_MOUSE_OVER_EVENT = "onMouseOver";
     /**
      *
      */
-    public static final String onMouseOutEvent  = "onMouseOut";
+    public static final String ON_MOUSE_OUT_EVENT  = "onMouseOut";
 
     /**
      * 
@@ -94,7 +97,7 @@ public class HTMLMouseEvent extends HTMLEvent
             name.equalsIgnoreCase("nodragdrop")
         )
         {
-            super.name = onDropEvent;
+            super.name = ON_DROP_EVENT;
         }
     }
 
@@ -103,10 +106,10 @@ public class HTMLMouseEvent extends HTMLEvent
      * @param browser 
      * @return the value
      */
-    @Override
-    public String getName(ClientBrowser browser)
+    @Override @CheckReturnValue @Nonnull
+    public String getName(final @Nonnull ClientBrowser browser)
     {
-        if( name.equals( onDropEvent))
+        if( name.equals(ON_DROP_EVENT))
         {
             if( browser.isBrowserNETSCAPE())
             {
