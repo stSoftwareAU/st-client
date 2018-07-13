@@ -75,12 +75,13 @@ public class NetClientS3 implements NetClient
     private String baseDir;
     private String path;
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.net.NetClientS3");//#LOGGER-NOPMD
-    @Override
-    public boolean exists(String path) throws Exception {
+    @Override @CheckReturnValue
+    public boolean exists( final @Nonnull String path ) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private String makeURL( String relPath)
+    @CheckReturnValue @Nonnull
+    private String makeURL( final @Nonnull String relPath)
     {
         String tmpBaseDir=baseDir;
         if( StringUtilities.notBlank(path))
@@ -115,7 +116,6 @@ public class NetClientS3 implements NetClient
             .builder(url)
             .setMethod(Method.GET)
             .setMinCachePeriod(cachePeriod)
-//            .setBody(new File("/home/nigel/Pictures/smiling-star.png"),new ContentType("image/png"), DispositionType.ATTACHMENT)
             .setPlugin(new AWSReSTAuthorization(accessKeyID,secretAccessKey))
             .getResponseAndCheck()
             .getContentAsFile();
@@ -190,7 +190,7 @@ public class NetClientS3 implements NetClient
     }
 
     @Override
-    public void make(String url) throws Exception {
+    public void make(final @Nonnull String url) throws Exception {
 
         URLParser parser = new URLParser(url);
 
@@ -267,12 +267,7 @@ public class NetClientS3 implements NetClient
             host=host.substring(pos+1);
             pos=host.indexOf(".");
             String region = host.substring(3, pos);
-//            
-//            if( region.contains("amazonaws.com"))
-//            {
-//                region= region.substring(0, region.indexOf("."));
-//            }
-//            
+
             AmazonS3 s3client = AmazonS3ClientBuilder
                     .standard()
                     .withCredentials(awsCredentialsProvider)
@@ -285,13 +280,10 @@ public class NetClientS3 implements NetClient
                 {
                     path = path.substring(1);
                 }
-//                int pos = path.indexOf("/");
-//                String bucketName=path.substring(0, pos);
-//                String keyName=path.substring(pos + 1);
+                assert path!=null;
+                assert path.contains("//")==false: "Invalid path: " + path;
                 PutObjectResult pr = s3client.putObject(new PutObjectRequest(bucketName, path, call.getBody()));        
 
-//                LOGGER.info( pr.getETag());
-                
                  return Response.builder(Status.C200_SUCCESS_OK, ContentType.TEXT_PLAIN, pr.getETag()).make();
             }
             catch( AmazonServiceException ase)
