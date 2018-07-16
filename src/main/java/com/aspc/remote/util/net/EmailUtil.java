@@ -118,6 +118,28 @@ public final class EmailUtil
     private static final String EMAIL_REGEX = "^[A-Z0-9._%+\\-#'&]+@[A-Z0-9.-]+\\.[A-Z]+$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile( EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
 
+    public static Session makeSessionSMTP() throws InvalidDataException
+    {
+        ConnectionSecurity security=ConnectionSecurity.NONE;
+        
+        if( CProperties.findProperty("mail.smtp.starttls.enable").equalsIgnoreCase("true"))
+        {
+            security=ConnectionSecurity.STARTTLS;
+        }
+        else if( CProperties.findProperty("mail.smtp.ssl.enable").equalsIgnoreCase("true"))
+        {
+            security=ConnectionSecurity.SSL_TLS;
+        }
+        return makeSessionSMTP(
+            CProperties.getProperty("mail.smtp.host"),
+            Integer.parseInt(CProperties.getProperty("mail.smtp.port","-1")),
+            CProperties.getProperty("mail.smtp.user"),
+            CProperties.getProperty("mail.smtp.password"),
+            security
+        );
+    }
+
+
     @Nonnull @CheckReturnValue
     public static Session makeSessionSMTP(
         final String host, 
