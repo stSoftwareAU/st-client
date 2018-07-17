@@ -2494,6 +2494,7 @@ public final class StringUtilities
      * @return true 
      * @throws AssertionError 
      */
+    @CheckReturnValue
     public static boolean assertIllegalCharactersHTML( final @Nonnull String text)
     {
         try{
@@ -2501,7 +2502,9 @@ public final class StringUtilities
         }
         catch( IllegalArgumentException iae)
         {
-            throw new AssertionError(iae.getMessage());
+            assert false: iae.getMessage();
+            
+            return false;
         }
         return true;
     }

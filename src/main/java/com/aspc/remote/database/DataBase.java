@@ -661,7 +661,7 @@ public class DataBase
      *
      * @throws Exception a serious problem
      */
-    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch"})
+    @SuppressWarnings({"UseSpecificCatch", "BroadCatchBlock", "TooBroadCatch", "ResultOfMethodCallIgnored"})
     public synchronized void connect( ) throws Exception
     {
         if( shuttingDown) throw new IllegalStateException("database is shutting down");
@@ -1092,7 +1092,8 @@ public class DataBase
      * @param javaString the required encoding
      * @return the SQL value
      */
-    public @CheckReturnValue String encodeString( final @Nonnull String javaString)
+    @CheckReturnValue @Nonnull
+    public String encodeString( final @Nonnull String javaString)
     {
 //        assert javaString.matches("[\t\r\n -~]*"): "Invalid SQL value: " + StringUtilities.encode(javaString);
         String sqlString=javaString;
@@ -1184,6 +1185,7 @@ public class DataBase
         LinkManager.checkInClient( connection);
     }
     
+    @CheckReturnValue
     private boolean checkConnection( final @Nullable Connection connection)
     {
         if( connection == null) return true;

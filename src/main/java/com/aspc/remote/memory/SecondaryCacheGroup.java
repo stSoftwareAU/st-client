@@ -11,6 +11,8 @@
  */
 package com.aspc.remote.memory;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  The secondary cache group. The cache will be cleared at the group and child level. 
@@ -27,6 +29,7 @@ public interface SecondaryCacheGroup
      * 
      * @return the group key
      */
+    @CheckReturnValue @Nullable
     Object getSecondaryCacheGroupKey();
             
 }

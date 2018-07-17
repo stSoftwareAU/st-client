@@ -33,6 +33,8 @@
  */
 package com.aspc.remote.memory;
 
+import javax.annotation.CheckReturnValue;
+
 /**
  *  SizeOf interface
  *
@@ -45,8 +47,9 @@ package com.aspc.remote.memory;
 public interface SizeOf
 {
     /**
-     * What is the esitimated size of this object.
+     * What is the estimated size of this object.
      * @return The estimated size in bytes
      */
+    @CheckReturnValue
     public long estimatedMemoryInBytes();
 }

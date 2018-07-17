@@ -11,6 +11,9 @@
  */
 package com.aspc.remote.memory.internal;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
+
 /**
  *  Cache entry
  *
@@ -26,6 +29,7 @@ public interface InterfaceEntry
      * 
      * @return the next entry
      */
+    @CheckReturnValue @Nullable
     public InterfaceEntry next();
 
     /**
@@ -38,18 +42,20 @@ public interface InterfaceEntry
      * set the next entry
      * @param next the entry
      */
-    public void setNext(InterfaceEntry next);
+    public void setNext(@Nullable InterfaceEntry next);
 
     /**
      * 
      * @return get the object
      */
+    @CheckReturnValue @Nullable
     public Object get();
 
     /** 
      * The last time this entry was fetched
      * @return the data
      */
+    @CheckReturnValue
     public int getData();
 
     /**

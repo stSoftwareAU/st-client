@@ -15,6 +15,9 @@ import com.aspc.remote.util.misc.*;
 import java.util.concurrent.locks.Lock;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.memory.internal.*;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *  Cache Table is used to hold data cache which may be cleared independently by of the Memory
@@ -42,7 +45,7 @@ public final class ResetableCacheLongTable<V> extends CacheLongTable<V>
      * @param description The description of this cache table.
      * @param cost The relative cost.
      */
-    public ResetableCacheLongTable(final String description, final Cost cost)
+    public ResetableCacheLongTable(final @Nonnull String description, final @Nonnull Cost cost)
     {
         super( description, cost);
         data = createArray( INITIAL_CAPACITY);
@@ -54,6 +57,7 @@ public final class ResetableCacheLongTable<V> extends CacheLongTable<V>
      * @param key The key
      * @return The entry if found
      */
+    @CheckReturnValue @Nullable
     public ResetableCacheEntryLong getCacheEntry( final long key)
     {
         Lock l = rwLock.readLock();
@@ -92,7 +96,7 @@ public final class ResetableCacheLongTable<V> extends CacheLongTable<V>
      * @param next the next entry
      * @return the entry
      */
-    @Override
+    @Override @CheckReturnValue @Nonnull
     protected CacheEntryLong makeCacheEntryLong( final long key, final int hashCode, final Object referent, final InterfaceEntry next)
     {
         ResetableCacheEntryLong entry = new ResetableCacheEntryLong(key, hashCode, referent, next, getReadCheck());
@@ -105,8 +109,8 @@ public final class ResetableCacheLongTable<V> extends CacheLongTable<V>
      * @param size the new size of the array
      * @return the new array
      */
-    @Override
-    protected InterfaceEntry[] createArray( int size)
+    @Override @CheckReturnValue @Nonnull
+    protected InterfaceEntry[] createArray( final int size)
     {
         return new ResetableCacheEntryLong[size];
     }
@@ -115,6 +119,7 @@ public final class ResetableCacheLongTable<V> extends CacheLongTable<V>
      *
      * @return the read check
      */
+    @CheckReturnValue
     public int getReadCheck()
     {
         Lock l = rwLock.readLock();

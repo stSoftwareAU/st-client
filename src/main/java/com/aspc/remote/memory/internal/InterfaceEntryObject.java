@@ -11,6 +11,9 @@
  */
 package com.aspc.remote.memory.internal;
 
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+
 /**
  *  Cache entry
  *
@@ -26,5 +29,6 @@ public interface InterfaceEntryObject extends InterfaceEntry
      * the key
      * @return the key
      */
+    @CheckReturnValue @Nonnull
     public Object key();
 }

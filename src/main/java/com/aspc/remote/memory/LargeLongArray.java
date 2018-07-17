@@ -33,8 +33,7 @@ public class LargeLongArray
         
     private long[] lastSegment;
     private long lastOffset;
-//    private boolean blankValueUsed;
-//    private final long blankValue; 
+
     private int nextAppendPosition;
     
     private final Object sanity;
@@ -101,7 +100,6 @@ public class LargeLongArray
         this.inputShared=inputShared;
         this.outputShared=outputShared;
         this.sanity=sanity;
-//        this.blankValue=blankValue;
         
         this.nextAppendPosition=-1;
     }
@@ -189,7 +187,7 @@ public class LargeLongArray
             this.data=data;
         }
 
-        @Override
+        @Override @Nonnull @CheckReturnValue
         public String toString() {
             return "Builder{" + ", checkIfZero=" + checkIfZero + ", checkIfUnique=" + checkIfUnique + ", assertIfZero=" + assertIfZero + ", assertIfUnique=" + assertIfUnique + ", segmentSize=" + segmentSize + ", inputShared=" + inputShared + ", outputShared=" + outputShared + ", sanity=" + sanity + '}';
         }
@@ -199,29 +197,19 @@ public class LargeLongArray
          * @param on turns this feature on/off
          * @return this
          */
+        @Nonnull 
         public Builder validateNonZero( final boolean on)
         {
             checkIfZero=on;
             return this;
         }
-
-//        /* 
-//         * The value to use to mark a blank value.
-//        
-//         * @param the value to use for blank
-//         * @return this
-//         */
-//        public Builder setBlankValue( final long blankValue)
-//        {
-//            this.blankValue=blankValue;
-//            return this;
-//        }
         
         /**
          * Set the segment size to use when repacking.
          * @param size the segment size.
          * @return this
          */
+        @Nonnull 
         public Builder setSegmentSize( final @Nonnegative int size)
         {
             if( size<=0) throw new IllegalArgumentException("segment size must be greater than zero: " + size);
@@ -235,18 +223,21 @@ public class LargeLongArray
          * @param capacity the expected number of records.
          * @return this
          */
+        @Nonnull 
         public Builder setExpectedCapacity( final @Nonnegative int capacity)
         {
             if( capacity<0) throw new IllegalArgumentException("capacity must be non negative: " + capacity);
             segmentSize=Math.max(Math.min(capacity, DEFAULT_SEGMENT_SIZE), 1024);
             
             return this;
-        }        
+        }  
+        
         /**
          * Set the sanity call back object.
          * @param sanity the call back object.
          * @return this
          */
+        @Nonnull 
         public Builder setSanity( final Object sanity)
         {
             this.sanity=sanity;
@@ -260,6 +251,7 @@ public class LargeLongArray
          * @param on turns this feature on/off
          * @return this
          */
+        @Nonnull 
         public Builder validateUnique( final boolean on)
         {
             checkIfUnique=on;
@@ -272,6 +264,7 @@ public class LargeLongArray
          * @param on turns this feature on/off
          * @return this
          */
+        @Nonnull 
         public Builder assertNonZero( final boolean on)
         {
             assertIfZero=on;
@@ -283,6 +276,7 @@ public class LargeLongArray
          * @param on turns this feature on/off
          * @return this
          */
+        @Nonnull 
         public Builder assertUnique( final boolean on)
         {
             assertIfUnique=on;
@@ -294,6 +288,7 @@ public class LargeLongArray
          * @param on turns this feature on/off
          * @return this
          */
+        @Nonnull 
         public Builder setInputShared( final boolean on)
         {
             inputShared=on;
@@ -305,6 +300,7 @@ public class LargeLongArray
          * @param on turns this feature on/off (DEFAULT on)
          * @return this
          */
+        @Nonnull 
         public Builder setOutputShared( final boolean on)
         {
             outputShared=on;
@@ -315,6 +311,7 @@ public class LargeLongArray
          * Create the LargeLongArray
          * @return the new Large Long Array.
          */
+        @Nonnull @CheckReturnValue
         public LargeLongArray build()
         {
             Validator validator =null;
@@ -337,8 +334,7 @@ public class LargeLongArray
                 segmentSize, 
                 inputShared, 
                 outputShared, 
-                sanity//,
-//                blankValue
+                sanity
             );
         }
     }
@@ -491,19 +487,19 @@ public class LargeLongArray
         }
         lastSegment=null;
         lastOffset=-1;
-        //Correct the cache the value if needed.
+        /*Correct the cache the value if needed.*/
         if( sizeCache!=-1)
         {
             sizeCache+=1;
         }
     }
     
+    @Nonnull @CheckReturnValue
     private long[] makeAppendSegment()
     {
         long[] segment=new long[segmentSize];
         if( sanity instanceof SanityArrayCounter) ((SanityArrayCounter)sanity).sanityNewArray();
-//        blankValueUsed=true;
-//        Arrays.fill(segment, blankValue);
+
         nextAppendPosition=0;
         return segment;
     }
@@ -554,13 +550,7 @@ public class LargeLongArray
                     }
                     data[r]=replaceRows;
                     found=true;
-//                    if( validator!=null)
-//                    {
-//                        if( validator.checkIfUnique||validator.assertIfUnique)
-//                        {
-//                            break;
-//                        }
-//                    }
+
                     r--;
                     break;
                 }
@@ -579,7 +569,6 @@ public class LargeLongArray
         if( found)
         {
             sizeCache=-1;
-//            nextAppendPosition=-1;
         }
         return found;
     }
@@ -632,6 +621,8 @@ public class LargeLongArray
         }
                 
     }
+    
+    @Nonnull @CheckReturnValue
     private long[][] repack(final boolean forceCopy)
     {
         trimAppendData();
@@ -719,7 +710,7 @@ public class LargeLongArray
         if( pos >= size() || pos <0)
         {
             String msg="can not get position " + pos;
-//            assert false: msg;
+
             throw new IllegalArgumentException( msg);
         }
 
@@ -782,7 +773,6 @@ public class LargeLongArray
     
     public int replace( final long from, final long to)
     {
-        //if( value == blankValue) throw new IllegalArgumentException( "can not set magic blank value of: " + value + "@" + pos);
         if( validator!=null)
         {
             if( to==0)
@@ -861,7 +851,7 @@ public class LargeLongArray
     public long set( final @Nonnegative long pos, final long value)
     {
         if( pos<0)throw new IllegalArgumentException("position must be non negative: " + pos);
-        //if( value == blankValue) throw new IllegalArgumentException( "can not set magic blank value of: " + value + "@" + pos);
+        
         if( validator!=null)
         {
             if( value==0)
@@ -925,7 +915,7 @@ public class LargeLongArray
         }
 
         String msg="can not set position " + pos;
-//        assert false: msg;
+
         throw new IllegalArgumentException( msg);
     }
     

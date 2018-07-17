@@ -12,6 +12,9 @@
 package com.aspc.remote.memory;
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  *  This is a hacked version of HashMap for longs only keys. It prevents us from having to
@@ -31,25 +34,27 @@ public class FasterWeakHashMap extends WeakHashMap
      *
      * @param initialCapacity the initial capacity of the HashMap.
      */
-    public FasterWeakHashMap(int initialCapacity)
+    public FasterWeakHashMap(final int initialCapacity)
     {
         super( initialCapacity);
     }
     
     /**
      * call super and clear cache
-     * @param key teh key to put
+     * @param key the key to put
      * @param value the value to be place.
      * @return the removed value.
      */
-    @Override
-    public Object put(Object key, Object value) 
+    @Override @Nullable
+    public Object put(final Object key, final Object value) 
     {
         Object previous;
         previous = super.put( key, value);
         
-        // We must always clear as the keys are held weak reference which 
-        // is per object the put is done by equals()
+        /*
+         * We must always clear as the keys are held weak reference which 
+         * is per object the put is done by equals()
+         */
         cacheKeyReferences=null;
         
         return previous;
@@ -60,7 +65,7 @@ public class FasterWeakHashMap extends WeakHashMap
      * @param key the key to remove
      * @return the removed value.
      */
-    @Override
+    @Override @Nullable
     public Object remove(Object key) 
     {
         Object previous;
@@ -90,6 +95,7 @@ public class FasterWeakHashMap extends WeakHashMap
      * list of keys and weak references.
      * @return the weak reference keys
      */
+    @CheckReturnValue @Nonnull
     public WeakReference[] listKeyReferences()
     {
         if( cacheKeyReferences == null )

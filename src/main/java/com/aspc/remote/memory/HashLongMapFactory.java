@@ -15,6 +15,8 @@ import com.aspc.developer.ThreadCop;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 
 /**
  *  Factory for creating hash long map
@@ -46,6 +48,7 @@ public final class HashLongMapFactory
      * create a new hash long map
      * @return the new map
      */
+    @CheckReturnValue @Nonnull
     public static HashLongMap create()
     {
         try
@@ -63,6 +66,7 @@ public final class HashLongMapFactory
      * @param expectedItems store at least this number of items
      * @return the new map
      */
+    @CheckReturnValue @Nonnull
     public static HashLongMap create(final int expectedItems)
     {
         try

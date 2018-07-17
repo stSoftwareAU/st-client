@@ -382,7 +382,7 @@ public class CacheLongTable<V> extends CacheTableTemplate<V>
      * @param key The key
      * @return The object if found
      */
-    @Nullable
+    @Nullable @CheckReturnValue
     public V get( final long key)
     {
         Lock l = rwLock.readLock();
@@ -433,7 +433,7 @@ public class CacheLongTable<V> extends CacheTableTemplate<V>
      * @throws Exception NotFoundException if the object is known not to exist.
      * @return The found object.
      */
-    @Nullable
+    @Nullable @CheckReturnValue
     public V find( final long key) throws Exception
     {
         Object o;
@@ -554,6 +554,7 @@ public class CacheLongTable<V> extends CacheTableTemplate<V>
      * @param next the next entry
      * @return the entry
      */
+    @CheckReturnValue @Nonnull
     protected CacheEntryLong makeCacheEntryLong( final long key, final int hashCode, final Object referent, final InterfaceEntry next)
     {
         return new CacheEntryLong(key, hashCode, referent, next);

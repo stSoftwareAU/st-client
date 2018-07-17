@@ -41,7 +41,7 @@ package com.aspc.remote.task;
  * @author dj53590
  * @since June 3, 2005
  */
-public class TaskMode
+public interface TaskMode
 {
     /**
      * LIVE MODE

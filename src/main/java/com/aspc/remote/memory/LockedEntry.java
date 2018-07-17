@@ -14,6 +14,7 @@ package com.aspc.remote.memory;//NOPMD
 import java.lang.ref.WeakReference;
 import com.aspc.remote.memory.internal.*;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nullable;
 
 /**
  *  Cache entry
@@ -76,7 +77,7 @@ public abstract class LockedEntry extends WeakReference implements InterfaceEntr
      * 
      * @return true if there is a hard reference. 
      */
-    @Override
+    @Override @CheckReturnValue
     public boolean hasHardReference()
     {
         return hardReference != null;
@@ -87,7 +88,7 @@ public abstract class LockedEntry extends WeakReference implements InterfaceEntr
      * @param entry the next entry
      */
     @Override
-    public void setNext( final InterfaceEntry entry)
+    public void setNext( final @Nullable InterfaceEntry entry)
     {
         nextEntry = entry;
     }
@@ -96,7 +97,7 @@ public abstract class LockedEntry extends WeakReference implements InterfaceEntr
      * 
      * @return the next entry
      */
-    @Override
+    @Override @CheckReturnValue @Nullable
     public InterfaceEntry next() 
     {
         return nextEntry;
@@ -147,7 +148,7 @@ public abstract class LockedEntry extends WeakReference implements InterfaceEntr
      * 
      * @return the data.
      */
-    @Override
+    @Override @CheckReturnValue
     public int getData() 
     {
         return data;
