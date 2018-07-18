@@ -117,7 +117,7 @@ public final class ReSTUtil
      * https://perishablepress.com/stop-using-unsafe-characters-in-urls/
      * 
      * @param url the URL to check
-     * @param checkUrlLength
+     * @param checkUrlLength check the URL is less than the maximum safe length ( 2048)
      */
     public static void checkURL( final @Nonnull String url, final boolean checkUrlLength) throws IllegalArgumentException
     {
@@ -190,12 +190,6 @@ public final class ReSTUtil
             {
                 throw new IllegalArgumentException( "ReST URL query should be encoded: " + StringUtilities.stripPasswordFromURL(url));
             }
-
-//            String ref = tmpURL.getRef();
-//            if( ref != null )
-//            {
-//                throw new IllegalArgumentException( "ReST URL query should NOT have a anchor : " + ref);
-//            }
         }
         catch( MalformedURLException me)
         {
@@ -271,7 +265,6 @@ public final class ReSTUtil
         final @Nullable String agent
     )
     {
-        //if( transport == null ) throw new IllegalArgumentException("transport is null");
         if( url == null ) throw new IllegalArgumentException("url is null");
         String tmpURL=url.toString();
         if( StringUtilities.notBlank(agent))
