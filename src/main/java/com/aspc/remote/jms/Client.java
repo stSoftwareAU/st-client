@@ -630,7 +630,7 @@ public abstract class Client implements ExceptionListener,ShutdownListener//, Tr
                     }
                     catch(NamingException e)
                     {
-                        LOGGER.warn( "could not create topic", e);
+                        LOGGER.debug( "find topic", e);
                     }
 
                     if (topic == null)
