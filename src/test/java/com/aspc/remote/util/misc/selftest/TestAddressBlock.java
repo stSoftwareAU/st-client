@@ -185,6 +185,7 @@ public class TestAddressBlock extends TestCase
     public void testKnownCleanIP() throws Exception
     {
         String list[]={
+//            "120.17.130.198", // Vodafone 
             "101.0.69.242",
             "101.0.69.243",
             "101.0.96.194",

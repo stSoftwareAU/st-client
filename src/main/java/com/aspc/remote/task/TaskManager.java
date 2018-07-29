@@ -40,6 +40,7 @@ import com.aspc.remote.jdbc.Executor;
 import com.aspc.remote.jdbc.ExecutorPool;
 import com.aspc.remote.jdbc.SoapResultSet;
 import com.aspc.remote.util.misc.TimeUtil;
+import java.sql.SQLException;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 
@@ -133,7 +134,7 @@ public class TaskManager
                 {
                     srs.close();
                 }
-                catch( Exception e )
+                catch( SQLException e )
                 {
                     // We can continue from this error.
                     LOGGER.warn( "could not close result set", e);
@@ -201,15 +202,15 @@ public class TaskManager
         }
         finally
         {
-            if( srs != null )
+            if( srs != null)
             {
                 try
                 {
                     srs.close();
                 }
-                catch( Exception e )
+                catch( SQLException e )
                 {
-                    ; // must be already closed
+                    // must be already closed
                 }
             }
             pool.release( executor );
@@ -282,9 +283,9 @@ public class TaskManager
                     {
                         srs.close();
                     }
-                    catch( Exception e )
+                    catch( SQLException e )
                     {
-                        ; // must be already closed
+                         // must be already closed
                     }
                 }
 
@@ -346,9 +347,9 @@ public class TaskManager
                 {
                     srs.close();
                 }
-                catch( Exception e )
+                catch( SQLException e )
                 {
-                    ; // must be already closed
+                     // must be already closed
                 }
             }
 
@@ -366,6 +367,7 @@ public class TaskManager
         }
         return alive;
     }
+    
     /**
      * Calls TASK SESSION using the session id and the transaction id from TASK NEXT
      * @return String session if mode is live
@@ -412,9 +414,9 @@ public class TaskManager
                 {
                     srs.close();
                 }
-                catch( Exception e )
+                catch( SQLException e )
                 {
-                    ; // must be already closed
+                     // must be already closed
                 }
             }
 
@@ -525,9 +527,9 @@ public class TaskManager
                 {
                     srs.close();
                 }
-                catch( Exception e )
+                catch( SQLException e )
                 {
-                    ; // must be already closed
+                    // must be already closed
                 }
             }
 
