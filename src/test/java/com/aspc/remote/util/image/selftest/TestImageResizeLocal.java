@@ -42,12 +42,9 @@ import junit.textui.TestRunner;
 
 import com.aspc.remote.util.misc.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URLConnection;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.logging.Log;
@@ -175,18 +172,9 @@ public class TestImageResizeLocal extends TestCase
     {
         File tmpFile=File.createTempFile("non-image", ".txt",FileUtil.makeQuarantineDirectory());
         try{
-            FileWriter fw = null;
             try
-            {
-                fw = new FileWriter( tmpFile);
+            (FileWriter fw = new FileWriter( tmpFile)) {
                 fw.write("Hello World");
-            }
-            finally
-            {
-                if(fw != null)
-                {
-                    fw.close();
-                }
             }
             try
             {
@@ -259,203 +247,203 @@ public class TestImageResizeLocal extends TestCase
         }
     }
 
-    private void process(
-        final File srcFile,
-        final int w,
-        final int h,
-        final String requiredFormat,
-        final int mw,
-        final int mh,
-        final float quality,
-        final int dpi
-    ) throws IOException
-    {
-        ImageResize ir = new ImageResize( srcFile);
-        ir.setWidth(w);
-        ir.setHeight(h);
-        ir.setDPI(dpi);
-        if(quality>0 )
-        {
-            ir.setQuality((int)(quality * 100));
-        }
-        ir.setMaxWidth(mw);
-        ir.setMaxHeight(mh);
-        ir.setFormat(requiredFormat);
-
-        File process = ir.process();
-
-        String mimeType = ir.getMimeType();
-
-        String format;
-        if(mimeType.endsWith("png"))
-        {
-            format="png";
-        }
-        else if(mimeType.endsWith("jpg")||mimeType.endsWith("jpeg"))
-        {
-            format="jpg";
-        }
-        else if(mimeType.endsWith("gif"))
-        {
-            format="gif";
-        }
-        else if(mimeType.endsWith("bmp"))
-        {
-            format="bmp";
-        }
-        else if(mimeType.endsWith("ico"))
-        {
-            format="ico";
-        }
-        else
-        {
-            throw new IOException( "unknown type " + mimeType);
-        }
-        String name = srcFile.getName();
-        int pos = name.lastIndexOf(".");
-        String fn = name.substring(0, pos) + "(";
-
-        boolean start=false;
-        if( w >=0)
-        {
-            fn += "width=" + w;
-            start=true;
-        }
-
-        if( h >= 0)
-        {
-            if( start) fn += "&";
-            start=true;
-
-            fn += "height=" + h;
-        }
-        if( StringUtilities.notBlank(requiredFormat))
-        {
-            if( start) fn += "&";
-            start=true;
-
-            fn += "format=" + requiredFormat;
-        }
-        if( mw >= 0)
-        {
-            if( start) fn += "&";
-            start=true;
-
-            fn += "max-width=" + mw;
-        }
-        if( mh >= 0)
-        {
-            if( start) fn += "&";
-            start=true;
-
-            fn += "max-height=" + mh;
-        }
-        if( dpi >= 0)
-        {
-            if( start) fn += "&";
-            start=true;
-
-            fn += "dpi=" + dpi;
-        }
-        if( quality>0)
-        {
-            if( start) fn += "&";
-         //   start=true;
-
-            fn += "quality=" + (int)(quality * 100);
-        }
-
-        fn += ")." + format;
-
-        File targetFile=new File( srcFile.getParentFile(), fn);
-
-        FileUtil.copy(process, targetFile);
-        BufferedImage orginalImage=null;
-        try
-        {
-            orginalImage = ImageIO.read(srcFile);
-        }
-        catch( IllegalArgumentException e)
-        {
-            LOGGER.info( "could not read orginal file", e);
-        }
-        BufferedImage targetImage ;
-
-        targetImage = ImageIO.read(targetFile);
-
-        assertNotNull(targetFile.toString(), targetImage);
-
-        if( w >0 )
-        {
-            assertEquals( "check width", w, targetImage.getWidth());
-        }
-
-        if( h >0 )
-        {
-            assertEquals( "check height", h, targetImage.getHeight());
-        }
-
-        if( h<=0 && w <= 0 && mh > 0 && mh < targetImage.getHeight())
-        {
-            fail( targetImage.getHeight() + " greater than max height " + mh);
-        }
-
-        if( mw > 0 && mw < targetImage.getWidth())
-        {
-            fail( targetImage.getWidth() + " greater than max width " + mw);
-        }
-
-        if(orginalImage!=null && mh >0 && mw <= 0 && w <=0 && mh < orginalImage.getHeight())
-        {
-            if( orginalImage.getWidth() <= targetImage.getWidth())
-            {
-                fail( "should have scaled down image when filtered by max-height");
-            }
-        }
-
-        if(orginalImage!=null && mw >0 && mh <= 0 && h <=0 && mw < orginalImage.getWidth())
-        {
-            if( orginalImage.getHeight()<= targetImage.getHeight())
-            {
-                fail( "should have scaled down image when filtered by max-width");
-            }
-        }
-
-        int srcDPI = ImageUtil.getDPI(srcFile);
-        int checkDPI;
-        if( dpi > 0)
-        {
-            checkDPI=dpi;
-        }
-        else
-        {
-            checkDPI=srcDPI;
-        }
-        int targetDPI = ImageUtil.getDPI(targetFile);
-        if( format.equals( "gif") == false &&format.equals( "bmp") == false && checkDPI != targetDPI)
-        {
-            fail( "Should not have changed the DPI " + checkDPI + "->" + targetDPI);
-        }
-
-        if( format.equals( "bmp") == false)
-        {
-            BufferedInputStream is = null;
-            try
-            {
-                is = new BufferedInputStream(new FileInputStream(targetFile));
-                String guessMimeType = URLConnection.guessContentTypeFromStream(is);
-                if(guessMimeType == null)
-                {
-                    fail( "could not read file " + targetFile);
-                }
-            }
-            finally
-            {
-                if(is != null)
-                {
-                    is.close();
-                }
-            }
-        }
-    }
+//    private void process(
+//        final File srcFile,
+//        final int w,
+//        final int h,
+//        final String requiredFormat,
+//        final int mw,
+//        final int mh,
+//        final float quality,
+//        final int dpi
+//    ) throws IOException
+//    {
+//        ImageResize ir = new ImageResize( srcFile);
+//        ir.setWidth(w);
+//        ir.setHeight(h);
+//        ir.setDPI(dpi);
+//        if(quality>0 )
+//        {
+//            ir.setQuality((int)(quality * 100));
+//        }
+//        ir.setMaxWidth(mw);
+//        ir.setMaxHeight(mh);
+//        ir.setFormat(requiredFormat);
+//
+//        File process = ir.process();
+//
+//        String mimeType = ir.getMimeType();
+//
+//        String format;
+//        if(mimeType.endsWith("png"))
+//        {
+//            format="png";
+//        }
+//        else if(mimeType.endsWith("jpg")||mimeType.endsWith("jpeg"))
+//        {
+//            format="jpg";
+//        }
+//        else if(mimeType.endsWith("gif"))
+//        {
+//            format="gif";
+//        }
+//        else if(mimeType.endsWith("bmp"))
+//        {
+//            format="bmp";
+//        }
+//        else if(mimeType.endsWith("ico"))
+//        {
+//            format="ico";
+//        }
+//        else
+//        {
+//            throw new IOException( "unknown type " + mimeType);
+//        }
+//        String name = srcFile.getName();
+//        int pos = name.lastIndexOf(".");
+//        String fn = name.substring(0, pos) + "(";
+//
+//        boolean start=false;
+//        if( w >=0)
+//        {
+//            fn += "width=" + w;
+//            start=true;
+//        }
+//
+//        if( h >= 0)
+//        {
+//            if( start) fn += "&";
+//            start=true;
+//
+//            fn += "height=" + h;
+//        }
+//        if( StringUtilities.notBlank(requiredFormat))
+//        {
+//            if( start) fn += "&";
+//            start=true;
+//
+//            fn += "format=" + requiredFormat;
+//        }
+//        if( mw >= 0)
+//        {
+//            if( start) fn += "&";
+//            start=true;
+//
+//            fn += "max-width=" + mw;
+//        }
+//        if( mh >= 0)
+//        {
+//            if( start) fn += "&";
+//            start=true;
+//
+//            fn += "max-height=" + mh;
+//        }
+//        if( dpi >= 0)
+//        {
+//            if( start) fn += "&";
+//            start=true;
+//
+//            fn += "dpi=" + dpi;
+//        }
+//        if( quality>0)
+//        {
+//            if( start) fn += "&";
+//         //   start=true;
+//
+//            fn += "quality=" + (int)(quality * 100);
+//        }
+//
+//        fn += ")." + format;
+//
+//        File targetFile=new File( srcFile.getParentFile(), fn);
+//
+//        FileUtil.copy(process, targetFile);
+//        BufferedImage orginalImage=null;
+//        try
+//        {
+//            orginalImage = ImageIO.read(srcFile);
+//        }
+//        catch( IllegalArgumentException e)
+//        {
+//            LOGGER.info( "could not read orginal file", e);
+//        }
+//        BufferedImage targetImage ;
+//
+//        targetImage = ImageIO.read(targetFile);
+//
+//        assertNotNull(targetFile.toString(), targetImage);
+//
+//        if( w >0 )
+//        {
+//            assertEquals( "check width", w, targetImage.getWidth());
+//        }
+//
+//        if( h >0 )
+//        {
+//            assertEquals( "check height", h, targetImage.getHeight());
+//        }
+//
+//        if( h<=0 && w <= 0 && mh > 0 && mh < targetImage.getHeight())
+//        {
+//            fail( targetImage.getHeight() + " greater than max height " + mh);
+//        }
+//
+//        if( mw > 0 && mw < targetImage.getWidth())
+//        {
+//            fail( targetImage.getWidth() + " greater than max width " + mw);
+//        }
+//
+//        if(orginalImage!=null && mh >0 && mw <= 0 && w <=0 && mh < orginalImage.getHeight())
+//        {
+//            if( orginalImage.getWidth() <= targetImage.getWidth())
+//            {
+//                fail( "should have scaled down image when filtered by max-height");
+//            }
+//        }
+//
+//        if(orginalImage!=null && mw >0 && mh <= 0 && h <=0 && mw < orginalImage.getWidth())
+//        {
+//            if( orginalImage.getHeight()<= targetImage.getHeight())
+//            {
+//                fail( "should have scaled down image when filtered by max-width");
+//            }
+//        }
+//
+//        int srcDPI = ImageUtil.getDPI(srcFile);
+//        int checkDPI;
+//        if( dpi > 0)
+//        {
+//            checkDPI=dpi;
+//        }
+//        else
+//        {
+//            checkDPI=srcDPI;
+//        }
+//        int targetDPI = ImageUtil.getDPI(targetFile);
+//        if( format.equals( "gif") == false &&format.equals( "bmp") == false && checkDPI != targetDPI)
+//        {
+//            fail( "Should not have changed the DPI " + checkDPI + "->" + targetDPI);
+//        }
+//
+//        if( format.equals( "bmp") == false)
+//        {
+//            BufferedInputStream is = null;
+//            try
+//            {
+//                is = new BufferedInputStream(new FileInputStream(targetFile));
+//                String guessMimeType = URLConnection.guessContentTypeFromStream(is);
+//                if(guessMimeType == null)
+//                {
+//                    fail( "could not read file " + targetFile);
+//                }
+//            }
+//            finally
+//            {
+//                if(is != null)
+//                {
+//                    is.close();
+//                }
+//            }
+//        }
+//    }
 }
