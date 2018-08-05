@@ -755,15 +755,22 @@ public final class ReST
             {
                 args=new LinkedHashMap<>();
             }
-            String values[]= new String[]{value};                
-            
-            args.put(name, values);
+            if( value==null)
+            {
+                args.remove(name);
+            }
+            else
+            {
+                String values[]= new String[]{value};                
+
+                args.put(name, values);
+            }
             
             return this;
         }
         
         /**
-         * set a boolean parameter
+         * set a Boolean parameter
          * @param name the name of the parameter
          * @param value the value
          * @return this
@@ -928,7 +935,7 @@ public final class ReST
             return ReSTUtil.makeFileName(makeRealURL(), plugin, agent);
         }
         
-        public static URL correctURL(final URL url)
+        public static @Nonnull @CheckReturnValue URL correctURL(final @Nonnull URL url)
         {
             URL realURL=url;
             String checkURL =realURL.toString();
@@ -1118,10 +1125,9 @@ public final class ReST
             return r;
         }
         
-        @CheckReturnValue
+        @CheckReturnValue @Nullable
         private Response makeCacheResponse(final @Nonnull File propertiesFile, final @Nonnull AtomicLong TTL)
         {
-//            long tmpCacheTimeToLiveMs=minCacheTimeToLiveMs;
             if( propertiesFile.exists()) {
                 Properties p = new Properties();
                 try {
@@ -1144,12 +1150,10 @@ public final class ReST
                                     if (tmpCS.equals(sha1)) {
                                         String mimetype = p.getProperty(RestTransport.MIME_TYPE);
                                         Status status = Status.find(Integer.parseInt(p.getProperty(RestTransport.STATUS, "200")));
-//                                        String cacheControl=null;
                                         if (status.isError()) {
                                             TTL.set(errorCacheTimeToLiveMs);
                                         } else {
                                             TTL.set(minCacheTimeToLiveMs);
-//                                            cacheControl=p.getProperty("cache-control");
                                             if (StringUtilities.notBlank(cacheControl)) {
                                                 if (cacheControl.contains("max-age")) {
                                                     int equalsPos = cacheControl.indexOf("=");
@@ -1184,25 +1188,20 @@ public final class ReST
                                         return rb.make();
 
                                     } else {
-//                                        tmpCacheTimeToLiveMs = -1;
                                         LOGGER.warn("Cache SHA1 was: " + tmpCS + "expected: " + sha1);
                                     }
                                 } else {
-//                                    tmpCacheTimeToLiveMs = -1;
                                     LOGGER.warn("No cache file missing " + cachedFile);
                                 }
                             } else {
-//                                tmpCacheTimeToLiveMs = -1;
                                 LOGGER.warn("No cache file specified ");
                             }
                         } else {
-//                            tmpCacheTimeToLiveMs = -1;
                             LOGGER.warn("No SHA1");
                         }
                     }
                 } catch (IOException io) {
                     LOGGER.warn("could not load ", io);
-//                    tmpCacheTimeToLiveMs = -1;
                 }
             }
             
@@ -1277,7 +1276,6 @@ public final class ReST
             
             AtomicLong tmpCacheTimeToLiveMS=new AtomicLong(-1);
             rr=makeCacheResponse( propertiesFile, tmpCacheTimeToLiveMS);
-//            if( rr!=null) return rr;
 
             long modTS=propertiesFile.lastModified();
             long expireTS=modTS+tmpCacheTimeToLiveMS.get();
