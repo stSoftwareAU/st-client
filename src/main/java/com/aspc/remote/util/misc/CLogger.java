@@ -313,7 +313,7 @@ public final class CLogger
     }
 
     /**
-     * throws as a runtime exception
+     * throws as a run time exception
      * @param e the exception
      * @return never actually returns.
      */
@@ -346,7 +346,7 @@ public final class CLogger
     }
 
     /**
-     * throws as a runtime exception
+     * throws as a run time exception
      * @param e the exception
      * @return doesn't ever return. 
      * @throws Exception the exception
