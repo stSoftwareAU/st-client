@@ -1578,7 +1578,18 @@ public class TestStringUtilities extends TestCase
             assertEquals("character '" + (char)c + "' dec: " + c, expected, got);
         }
     }
-            
+    public void testInvalidXML()
+    {
+        String checks[]={
+//            "Hello -- World"
+        };
+        
+        for( String check: checks)
+        {
+            assertFalse( check, StringUtilities.checkXML(check));        
+        }
+    } 
+    
     public void testXML2()
     {
         assertTrue( "valid XML", StringUtilities.checkXML("\\'; DROP TABLE users; --"));
@@ -1595,6 +1606,10 @@ public class TestStringUtilities extends TestCase
                     break;
                 }
             }
+//            if( inject.contains("--"))
+//            {
+//                expected=false;
+//            }
             boolean got=StringUtilities.checkXML(inject);
             
             assertEquals(inject, expected, got);

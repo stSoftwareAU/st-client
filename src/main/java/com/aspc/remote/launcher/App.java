@@ -35,6 +35,7 @@ package com.aspc.remote.launcher;
 
 import com.aspc.remote.application.AppCmdLine;
 import com.aspc.remote.util.misc.*;
+import javax.annotation.Nonnull;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.commons.cli.CommandLine;
@@ -79,7 +80,7 @@ public class App extends AppCmdLine implements BuildListener
      * @throws Exception a serious problem.
      */
     @Override
-    public void handleCommandLine(CommandLine line) throws Exception
+    public void handleCommandLine( final @Nonnull CommandLine line) throws Exception
     {
         super.handleCommandLine(line);
 

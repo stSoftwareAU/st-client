@@ -40,6 +40,7 @@ import com.aspc.remote.application.DBaseCmdLine;
 import com.aspc.remote.util.misc.*;
 import java.io.File;
 import java.io.FileWriter;
+import javax.annotation.Nonnull;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -83,7 +84,7 @@ public class AppReadDB extends DBaseCmdLine
      * @throws Exception a serious problem
      */
     @Override
-    public void handleCommandLine( final CommandLine line) throws Exception
+    public void handleCommandLine( final @Nonnull CommandLine line) throws Exception
     {
         super.handleCommandLine( line);
 

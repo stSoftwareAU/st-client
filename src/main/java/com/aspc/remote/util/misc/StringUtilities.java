@@ -4111,7 +4111,8 @@ public final class StringUtilities
     }
 
     /**
-     * check all characters are valid XML characters.
+     * Check all characters are valid XML characters.
+     * 
      * @param text the text to check
      * @return true if all valid or text is NULL.
      */    

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
@@ -41,7 +42,7 @@ public class MakeBM  extends AppCmdLine
 
     private File dir;
     @Override
-    public void handleCommandLine(final CommandLine line) throws Exception {
+    public void handleCommandLine( final @Nonnull CommandLine line) throws Exception {
         super.handleCommandLine(line);
 
         String tmp=line.getOptionValue('i');

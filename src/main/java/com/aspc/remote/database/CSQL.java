@@ -1139,7 +1139,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
 
     @Nullable @CheckReturnValue
     @SuppressWarnings({"ThrowableResultIgnored", "ConvertToStringSwitch"})
-    private SQLException convertException( final Throwable e)
+    private SQLException convertException( final @Nonnull Throwable e)
     {
         String type = dataBase.getType();
         if( type.equals( DataBase.TYPE_ORACLE))

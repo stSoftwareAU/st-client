@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
@@ -59,7 +60,7 @@ public class ScanGCLog  extends AppCmdLine
     private long timeStep;
     private File dir;
     @Override
-    public void handleCommandLine(final CommandLine line) throws Exception {
+    public void handleCommandLine( final @Nonnull CommandLine line) throws Exception {
         super.handleCommandLine(line);
 
         inFileList=line.getOptionValue('i');

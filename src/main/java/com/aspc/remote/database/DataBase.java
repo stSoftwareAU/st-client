@@ -319,14 +319,14 @@ public class DataBase
     @CheckReturnValue
     public int getMaxPreparedStatements()
     {
-       // if( type.equals(TYPE_HSQLDB))
-      //  {
-      //      return 10;
-      //  }
-      //  else
-      //  {
+        if( type.equals(TYPE_HSQLDB))
+        {
+            return 100;
+        }
+        else
+        {
             return 1000;
-       // }
+        }
     }
 
     /**
