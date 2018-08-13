@@ -46,7 +46,7 @@
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="runtime->master"/>
         <dependency org="org.ow2.asm" name="asm" rev="5.0.4" conf="runtime->master"/>
         <dependency org="org.ow2.asm" name="asm-tree" rev="5.0.4" conf="runtime->master"/>
-        <dependency org="org.apache.tomcat" name="tomcat-catalina" rev="8.0.32" conf="runtime->master"/>
+        <dependency org="org.apache.tomcat" name="tomcat-catalina" rev="8.5.32" conf="runtime->master"/>
         <dependency org="commons-transaction" name="commons-transaction" rev="1.2" conf="runtime->master"/>        
         <dependency org="commons-pool" name="commons-pool" rev="1.6" conf="runtime->master"/>
         <dependency org="org.apache.commons" name="commons-lang3" rev="3.4" conf="runtime->master"/>
