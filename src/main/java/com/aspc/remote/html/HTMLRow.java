@@ -830,7 +830,7 @@ public final class HTMLRow extends HTMLContainer
                         key;
 
                 key = event.getName(browser).trim().toUpperCase();
-                call = (String)tmpTable.get(key);
+                call = tmpTable.get(key);
 
                 if( call == null)
                 {
