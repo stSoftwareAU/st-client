@@ -1157,13 +1157,13 @@ public final class MemoryManager
                     long maxWaitTime;
                     long used = getTotalUsed();
 
-                    if( used > 2 * 1024 * 1024 * 1024)
+                    if( used > 2L * 1024L * 1024L * 1024L)
                     {
-                        maxWaitTime = 30 * 1000;
+                        maxWaitTime = 30L * 1000L;
                     }
                     else
                     {
-                        maxWaitTime = 10 * 1000;
+                        maxWaitTime = 10L * 1000L;
                     }
 
                     WeakReference wf=null;

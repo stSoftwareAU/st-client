@@ -166,8 +166,12 @@ public class TestNotModified extends TestCase
             fw.write("Hello world");
         }
 
-        Response rr4=call.getResponseAndCheck();
+        Response rr4=call.getResponse();
 
+        if( rr4.status.isError())
+        {
+            rr4=call.getResponse();
+        }
         assertEquals( "data match", data, rr4.getContentAsString());
         assertEquals( "mime type", mimeType, rr4.mimeType);
         assertEquals( "status", Status.C200_SUCCESS_OK, rr4.status);
