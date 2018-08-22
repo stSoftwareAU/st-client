@@ -344,7 +344,43 @@ public final class EmailUtil
         String message = checkMX(domain, hostCache);
         if (message != null)
         {
-            throw new InvalidDataException(message);
+            String tempDomain=domain;
+            
+            while( true)
+            {
+                String[] domainSplit = tempDomain.split("\\.");
+                if( domainSplit.length>2)
+                {
+                    String subDomain=null;
+                    for( int pos=1;pos<domainSplit.length;pos++)
+                    {
+                        if( subDomain!=null)
+                        {
+                            subDomain+="." + domainSplit[pos];
+                        }
+                        else
+                        {
+                            subDomain=domainSplit[pos];
+                        }
+                    }
+                    
+                    assert subDomain!=null;
+                    message = checkMX(subDomain, hostCache);
+                    
+                    if(message==null)break;
+                    
+                    tempDomain=subDomain;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            
+            if( message!=null)
+            {
+                throw new InvalidDataException(message);
+            }
         }
     }
 

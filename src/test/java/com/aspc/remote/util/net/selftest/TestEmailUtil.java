@@ -150,6 +150,7 @@ public class TestEmailUtil extends TestCase
             "bob@optusnet.com.au",
             "niceandsimple@example.com",
             "very.common@example.com",
+            "invoices@morningstar.couphost.com",
             "a.little.lengthy.but.fine@dept.stsoftware.com",
             "disposable.style.email.with+symbol@example.com",
 

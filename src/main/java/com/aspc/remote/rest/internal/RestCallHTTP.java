@@ -127,6 +127,7 @@ public class RestCallHTTP extends RestCall
             c.setRequestMethod(method.name());
             NetUrl.relaxSSLConnection(c);
             c.setDoOutput(false);
+            
             if( plugin instanceof ReSTAuthorizationInterface)
             {
                 ((ReSTAuthorizationInterface)plugin).setRequestProperty( c);

@@ -34,6 +34,7 @@
 package com.aspc.remote.util.net;
 
 import com.aspc.remote.util.misc.CLogger;
+import java.io.IOException;
 import java.nio.channels.FileChannel;
 import org.apache.commons.logging.Log;
 
@@ -84,11 +85,12 @@ public class ProgressMonitor implements Runnable
      * monitor the transfer
      */
     @Override
+    @SuppressWarnings("SleepWhileInLoop")
     public void run()
     {            
         while (true)
         {
-            long fetchedBytes = 0;
+            long fetchedBytes;
 
             try
             {
@@ -97,7 +99,7 @@ public class ProgressMonitor implements Runnable
 
                 Thread.sleep(checkInterval);
             }
-            catch(Exception ex)
+            catch(IOException | InterruptedException ex)
             {
                 LOGGER.info("Progress bar monitor was unable to run");
                 break;
@@ -117,7 +119,7 @@ public class ProgressMonitor implements Runnable
     /**
      * Sends an updated download status to the listener.
      * @param listener The listener
-     * @param update The percentage of a file being transfered
+     * @param update The percentage of a file being transferred
      */
     private void sendUpdate(IClientListener listener, int update)
     {
