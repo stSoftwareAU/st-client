@@ -38,7 +38,7 @@ import com.aspc.remote.rest.Status;
 /**
  *  ReST exception
  *
- *  <i>THREAD MODE: readonly.</i>
+ *  <i>THREAD MODE: read only.</i>
  *
  *  @author      Lei Gao
  *  @since       7 April, 2015

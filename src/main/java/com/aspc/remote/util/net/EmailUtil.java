@@ -365,6 +365,11 @@ public final class EmailUtil
                     }
                     
                     assert subDomain!=null;
+                    
+                    if( subDomain.matches("[0-9a-zA-Z]{0,3}\\.[0-9a-zA-Z]{0,3}"))
+                    {
+                        break;
+                    }
                     message = checkMX(subDomain, hostCache);
                     
                     if(message==null)break;

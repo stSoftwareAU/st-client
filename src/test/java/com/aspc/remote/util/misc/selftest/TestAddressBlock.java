@@ -186,16 +186,7 @@ public class TestAddressBlock extends TestCase
     {
         String list[]={
 //            "120.17.130.198", // Vodafone 
-            "101.0.69.242",
-            "101.0.69.243",
-            "101.0.96.194",
-            "101.0.96.195",
-            "101.0.96.196",
-            "101.0.96.197",
-            "101.0.107.40",
-            "101.0.107.41",
-            "101.0.107.42",
-            "101.0.107.43",
+            "103.17.17.34"
         };
         AddressBlock bl = AddressBlock.builder().create();
 

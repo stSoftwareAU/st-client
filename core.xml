@@ -155,8 +155,9 @@
         </condition>
         <property name="_max_memory" value=""/>
         <property name="_error_file" value="${LOG_DIR}/${APP_NAME}.hotspot"/>
-        <property name="_hprof_file" value="${LOG_DIR}/${APP_NAME}.hprof"/>
-        <property name="MEM_OOME" value="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${_hprof_file} -XX:ErrorFile=${_error_file} "/>
+        <!--<property name="_hprof_file" value="${LOG_DIR}/${APP_NAME}.hprof"/>-->
+        <!--<property name="MEM_OOME" value="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=${_hprof_file} -XX:ErrorFile=${_error_file} "/>-->
+        <property name="MEM_OOME" value="-XX:ErrorFile=${_error_file} "/>
         <property name="MEM_ARGS" value="${MEM_MODE}${_max_memory}${_start_memory}${MEM_OOME}"/>
 
         <!--
@@ -242,8 +243,8 @@
         <move file="${_error_file}" tofile="${LOG_DIR}/${APP_NAME}.hotspot.bak" overwrite="true" quiet="true" failonerror="false" />
         <delete file="${_error_file}" failonerror="false"/>
         
-        <move file="${_hprof_file}" tofile="${LOG_DIR}/${APP_NAME}.hprof.bak" overwrite="true" quiet="true" failonerror="false" />
-        <delete file="${__hprof_file}" failonerror="false"/>
+<!--        <move file="${_hprof_file}" tofile="${LOG_DIR}/${APP_NAME}.hprof.bak" overwrite="true" quiet="true" failonerror="false" />
+        <delete file="${__hprof_file}" failonerror="false"/>-->
         
         <mkdir dir="${LOG_DIR}/gc"/>
         
@@ -272,7 +273,7 @@
         </condition>
         <property name="_crash_on_oome" value=""/>
         
-        <condition property="ON_ERROR" value="${_crash_on_oome}-XX:OnError=&quot;tail --lines=100 ${LOG_DIR}/${APP_NAME}.out ${_error_file}|mail --subject '${APP_NAME} crash (pid %p)' --to support@stsoftware.com.au&quot; ">
+        <condition property="ON_ERROR" value="${_crash_on_oome}-XX:OnError=&quot;tail --lines=100 ${LOG_DIR}/${APP_NAME}.out ${_error_file}|mail -s '${APP_NAME} crash (pid %p)' support@stsoftware.com.au&quot; ">
             <os family="unix" />
         </condition>
         <property name="ON_ERROR" value=""/>

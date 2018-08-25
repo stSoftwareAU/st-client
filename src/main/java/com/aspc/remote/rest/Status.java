@@ -805,12 +805,12 @@ public enum Status
     /**
      * 510 Not Extended (RFC 2774).
      * 
-     * Further extensions to the request are required for the server to fulfil it.
+     * Further extensions to the request are required for the server to fulfill it.
      */
     C510_NOT_EXTENDED(
         510, 
         "Not Extended (RFC 2774)",
-        "Further extensions to the request are required for the server to fulfil it.",
+        "Further extensions to the request are required for the server to fulfill it.",
         "https://tools.ietf.org/html/rfc2774#section-7"
     ),
         
