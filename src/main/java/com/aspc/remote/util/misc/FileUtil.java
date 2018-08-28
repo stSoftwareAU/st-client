@@ -328,7 +328,13 @@ public final class FileUtil
             else if( name.endsWith(".ico"))
             {
                 type="image/vnd.microsoft.icon";
-            }            
+            }       
+            else if( name.endsWith(".pdf"))
+            {
+                // http://www.rfc-editor.org/rfc/rfc3778.txt
+                 
+                type="application/pdf";
+            }  
         }
 
         if( "application/msword".equalsIgnoreCase(type))
