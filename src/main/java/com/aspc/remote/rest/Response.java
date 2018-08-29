@@ -50,6 +50,7 @@ import java.util.Date;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 
@@ -355,10 +356,33 @@ public final class Response
                 ReSTException re2=new ReSTException( re.status, data, re);
                 throw re2;
             }
-            else
+            else if( ContentType.APPLICATION_JSON.matches(mimeType) && StringUtilities.notBlank(data) && data.startsWith("{") && data.endsWith("}"))
             {
-                throw re;
+                JSONObject json=new JSONObject(data);
+                JSONArray errorArray = json.optJSONArray("errors");
+                if( errorArray!=null && errorArray.length()>0)
+                {
+                    JSONObject errorJSON=errorArray.optJSONObject(0);
+                    if( errorJSON!=null)
+                    {
+                        String message = errorJSON.optString("message", "");
+
+                        if( StringUtilities.notBlank(message))
+                        {
+                            ReSTException re2=new ReSTException( re.status, message, re);
+                            throw re2;
+                        }
+                    }
+//                    else
+//                    {
+//                        throw re;
+//                    }
+                }
             }
+//            else
+//            {
+            throw re;
+//            }
         }
     }
 }
