@@ -114,7 +114,7 @@ public class Formula
 
             return eval;
         }
-        catch( Throwable se)
+        catch( ScriptException se)
         {
             Throwable t = se.getCause();
             if( t instanceof Exception )
