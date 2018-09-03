@@ -402,7 +402,7 @@ public abstract class Client implements ExceptionListener,ShutdownListener//, Tr
     /**
      * Are we currently connected.
      *
-     * @return ture if connected
+     * @return true if connected
      */
     public boolean isConnected()
     {

@@ -82,7 +82,7 @@ public class RelaxedCommandLineParser extends GnuParser
 
     /**
      * make as using legacy args
-     * @param flag ture if using legacy args
+     * @param flag true if using legacy args
      */
     public void setLegacyArgs( final boolean flag)
     {
