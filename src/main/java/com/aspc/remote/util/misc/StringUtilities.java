@@ -3759,9 +3759,10 @@ public final class StringUtilities
      * @throws java.lang.RuntimeException
      * @return the value
      */
-    @CheckReturnValue
-    public static String decode(final String str)
+    @CheckReturnValue @Nonnull
+    public static String decode(final @Nonnull String str)
     {
+        assert str!=null;
         /*
          * The need for speed.
          */
@@ -3790,8 +3791,8 @@ public final class StringUtilities
      * @return the value
      */
     @SuppressWarnings({"ValueOfIncrementOrDecrementUsed", "AssignmentToForLoopParameter"})
-    @CheckReturnValue
-    public static byte[] decodeToBytes(final String str)
+    @CheckReturnValue @Nonnull
+    public static byte[] decodeToBytes(final @Nonnull String str)
     {
         byte array[],
                 output[];
@@ -3879,10 +3880,10 @@ public final class StringUtilities
      * @param obj
      * @return the value
      */
-    @CheckReturnValue
-    public static String obscure(Object obj)
+    @CheckReturnValue @Nonnull
+    public static String obscure(final @Nullable Object obj)
     {
-        if (isBlank(obj))
+        if (obj==null ||isBlank(obj))
         {
             return "";
         }
@@ -3906,7 +3907,7 @@ public final class StringUtilities
      * @param padStr the string to pad with. 
      * @return the value the resulting value which will always be expected length long. 
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnull
     public static String rightPad(final @Nonnull String strToPad, final @Nonnegative int len, final @Nonnull String padStr)
     {
         if( strToPad == null) throw new IllegalArgumentException( "strToPad is mandatory");

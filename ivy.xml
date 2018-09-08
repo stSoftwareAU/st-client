@@ -202,10 +202,11 @@
         <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.4.0"/>-->
 
     <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sns -->
-    <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.264"/>
-    <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.264"/>
+    <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.402"/>
+    <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.402"/>
     <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core -->
-    <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.264"/>
+    <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.402"/>
+    <!--<dependency org="com.amazonaws" name="aws-java-sdk-secretsmanager" rev="1.11.402"/>-->
 
     <!--<dependency org="com.amazonaws" name="amazon-sqs-java-messaging-lib" rev="1.0.4"/>-->
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->

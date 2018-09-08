@@ -127,7 +127,7 @@ public class TestHTMLAnchor extends TestCase
             "/report/generic?CLASS_NAME=Award&LAYERID=3102&HEX_USER=61646D696E3A61646D696E&SEARCH_ORDERBY=Award:code.[IndustrialInstrumentFiles:industrialInstrumentId].file.name&SEARCH_ORDERBY_LABEL=true",
             "/report/generic?EMBEDDED=YES&ROWID=8592220881&SCREEN_KEY=1208021%402%7e170%401&LAYERID=110&HEX_USER=757365723A61626331323334353637&SEARCH_ORDERBY=DBEmail:recipientsHTML{limit='5'}&SEARCH_ORDERBY_LABEL=true",
             "/screen/dataentry?CLASS_KEY=2256@1~1@1&LAYERID=110&SFIELD_contact=$Contact:contactId$",
-
+            "PETA: Seaworld's Use of Whales Violates the 13th Amendment.",
             "https://https://www.jobtrack.com.au/ical/7d00030d/LZGL-1ELK-S7DD-AE8L-1BH0.ics",
             "https://http://www.jobtrack.com.au/ical/7d00030d/LZGL-1ELK-S7DD-AE8L-1BH0.ics",
             "/report_explorer/transfer?ESEARCHOR1=ESEARCHAND|Task%3apercUntilClosed|NE|100|ESEARCHAND|Task%3astartDate|GE|01+Jul+2015+00%3a00|ESEARCHAND|Task%3aendDate|LT|31+Jul+2015+23%3a59|ESEARCHAND|Task%3aassignTo|IS|1%40110%7e12%401|ESEARCHAND|Task%3atype|NE|OPEN%5fENDED%5fACTIVITY|ESEARCHAND|Activity%3aattendeeConfirmed|EQ|TRUE&EFIELD_sortDesc=&SCREEN_KEY=146017@2~170@1&EFIELD_sortField=&FORMAT=CSV&EFIELD_name=Open%20Tasks/Events&CLASS_KEY=1321@2~1@1&TS=1436320751634&ADD_VALUES=@@@@@@@@@@@@@",
@@ -140,6 +140,7 @@ public class TestHTMLAnchor extends TestCase
         {
             if( HTMLAnchor.validateHREF(url))
             {
+//                HTMLAnchor.validateHREF(url);
                 fail( "Should NOT be valid " + url);
             }
         }

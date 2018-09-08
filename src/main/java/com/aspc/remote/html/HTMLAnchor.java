@@ -147,11 +147,12 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
             {
                 return false;
             }
-            
+            String path=href;
             int qPos=href.indexOf("?");
             if( qPos!=-1)
             {
                 String query=href.substring(qPos + 1);
+                path=href.substring(0, qPos);
                 for( String par:query.split("&"))
                 {
                     int vPos=par.indexOf("=");
@@ -181,6 +182,11 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
                         }
                     }
                 }
+            }
+            if( StringUtilities.isNotEncoded(path.replace("/", "_")))
+            {
+                LOGGER.warn( "Unencoded path: '" +path + "'");
+                return false;
             }
             return true;
         }
