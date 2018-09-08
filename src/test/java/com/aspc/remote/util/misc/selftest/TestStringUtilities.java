@@ -2994,24 +2994,24 @@ public class TestStringUtilities extends TestCase
         assertFalse( "Invalid number of items returned when looking for " + value + " at " + pos, valueList.length < pos + 1);
         assertEquals( "Unexpected value: ", value, valueList[pos]);
     }
-
-    /**
-     * Tests the <code>indexOfIgnoreCase</code> method of the <code>StringUtilities</code> class.
-     */
-    public void testIndexOfIgnoreCase()
-    {
-        ArrayList<Object[]> testCases = new ArrayList<>();
-
-        testCases.add( new Object[] { 0, "AbcDEFxxx", "aBc" } );
-        testCases.add( new Object[] { 0, "AbcDEFxxxabc", "abc" } );
-        testCases.add( new Object[] { -1, "AbDEFxxxab", "abc" } );
-        testCases.add( new Object[] { 2, "deAbCfg", "aBC" } );
-
-        testCases.stream().forEach((testCase) -> {
-            assertEquals( "Index of " + testCase[2] + " in " + testCase[1] + " should be " + testCase[0], testCase[0],
-                    StringUtilities.indexOfIgnoreCase( (String) testCase[1], (String) testCase[2] ) );
-        });
-    }
+//
+//    /**
+//     * Tests the <code>indexOfIgnoreCase</code> method of the <code>StringUtilities</code> class.
+//     */
+//    public void testIndexOfIgnoreCase()
+//    {
+//        ArrayList<Object[]> testCases = new ArrayList<>();
+//
+//        testCases.add( new Object[] { 0, "AbcDEFxxx", "aBc" } );
+//        testCases.add( new Object[] { 0, "AbcDEFxxxabc", "abc" } );
+//        testCases.add( new Object[] { -1, "AbDEFxxxab", "abc" } );
+//        testCases.add( new Object[] { 2, "deAbCfg", "aBC" } );
+//
+//        testCases.stream().forEach((testCase) -> {
+//            assertEquals( "Index of " + testCase[2] + " in " + testCase[1] + " should be " + testCase[0], testCase[0],
+//                    StringUtilities.indexOfIgnoreCase( (String) testCase[1], (String) testCase[2] ) );
+//        });
+//    }
 
     public void testCapitalizeWordsInString()
     {

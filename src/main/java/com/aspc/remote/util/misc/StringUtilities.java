@@ -3931,14 +3931,14 @@ public final class StringUtilities
      * @throws Exception a serious exception
      */
     @Nonnull @CheckReturnValue
-    public static String compressB91(final String text) throws Exception
+    public static String compressB91(final @Nonnull String text) throws Exception
     {
         byte[] data = compressToBytes(text);
         return encodeBase91(data);
     }
 
     /**
-     * decompress a string with gzip to a normal native java string
+     * decompress a string with GZIP to a normal native java string
      * @param compressedData ASCII string to be decompressed
      * @return original string
      * @throws Exception a serious exception
@@ -4067,10 +4067,10 @@ public final class StringUtilities
     /**
      * Encode a normal string UTF8 and then base 64
      * @param normalString normal Java String
-     * @return utf8 and base64 encoded string.
+     * @return UTF8 and base64 encoded string.
      */
-    @CheckReturnValue
-    public static String encodeUTF8base64( final String normalString)
+    @CheckReturnValue @Nonnull
+    public static String encodeUTF8base64( final @Nonnull String normalString)
     {
         String utf8=encodeUTF8(normalString);
         String encoded64=encodeBase64(utf8);
@@ -4081,10 +4081,10 @@ public final class StringUtilities
     /**
      * decode a normal string from UTF8 & base 64 String.
      * @param base64utf8 a String that is first UTF8 and then base64
-     * @return utf8 and base64 encoded string.
+     * @return UTF8 and base64 encoded string.
      */
-    @CheckReturnValue
-    public static String decodeUTF8base64( final String base64utf8)
+    @CheckReturnValue @Nonnull
+    public static String decodeUTF8base64( final @Nonnull String base64utf8)
     {
         String utf8=decodeBase64(base64utf8);
         String normal=decodeUTF8(utf8);
@@ -4098,7 +4098,7 @@ public final class StringUtilities
      * @return true if all valid
      */
     @CheckReturnValue
-    public static boolean checkUnicode( final String text)
+    public static boolean checkUnicode( final @Nonnull String text)
     {
         for( char c : text.toCharArray())
         {
@@ -4141,7 +4141,7 @@ public final class StringUtilities
     @CheckReturnValue
     public static boolean checkXML( final int c)
     {
-        return (c == 0x9) ||
+        return  (c == 0x9) ||
                 (c == 0xA) ||
                 (c == 0xD) ||
                 ((c >= 0x20) && (c <= 0xD7FF)) ||
@@ -4150,7 +4150,7 @@ public final class StringUtilities
     }
     
     @CheckReturnValue
-    public static boolean check8Bit( final String text)
+    public static boolean check8Bit( final @Nonnull String text)
     {
         for( char c : text.toCharArray())
         {
@@ -4169,8 +4169,8 @@ public final class StringUtilities
      * @return the value
      */
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
-    @CheckReturnValue
-    public static String encodeBase64(final String szSrc)
+    @CheckReturnValue @Nonnull
+    public static String encodeBase64(final @Nonnull String szSrc)
     {
         assert check8Bit( szSrc): "not 8 but chars " + szSrc;
         byte[] bytes = szSrc.getBytes(StandardCharsets.UTF_8);
@@ -4211,10 +4211,10 @@ public final class StringUtilities
      * @param input the byte array to encode
      */
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
-    @CheckReturnValue
-    public static byte[] encodeBase64(final byte[] input)
+    @CheckReturnValue @Nonnull
+    public static byte[] encodeBase64(final @Nonnull byte[] input)
     {
-        isEmpty(input);
+        checkNotEmpty(input);
 
         int full24 = (input.length / 3);
         int partial = (input.length % 3);
@@ -4279,10 +4279,10 @@ public final class StringUtilities
      * @return byte[] the decoded byte array
      */
     @SuppressWarnings("ValueOfIncrementOrDecrementUsed")
-    @CheckReturnValue
-    public static byte[] decodeBase64(final byte[] input)
+    @CheckReturnValue @Nonnull
+    public static byte[] decodeBase64(final @Nonnull byte[] input)
     {
-        isEmpty(input);
+        checkNotEmpty(input);
 
         int pad = 0;
         for (int i = (input.length - 1); i >= 0 && input[i--] == BASE64BYTES[ 64];)
@@ -4381,7 +4381,7 @@ public final class StringUtilities
         return result;
     }
 
-    private static void isEmpty(final byte[] input) throws IllegalArgumentException
+    private static void checkNotEmpty(final @Nullable byte[] input) throws IllegalArgumentException
     {
         if (input == null)
         {
@@ -4399,8 +4399,8 @@ public final class StringUtilities
      * @param b byte array
      * @return hex string
      */
-    @CheckReturnValue
-    public static String byteArrayToHexString(byte[] b)
+    @CheckReturnValue @Nonnull
+    public static String byteArrayToHexString(final @Nonnull byte[] b)
     {
         String result = "";
         for(int i = 0; i < b.length; i++)
@@ -4415,8 +4415,8 @@ public final class StringUtilities
      * @param szSrc
      * @return the value
      */
-    @CheckReturnValue
-    public static String encodeHex(String szSrc)
+    @CheckReturnValue @Nonnull
+    public static String encodeHex(final @Nonnull String szSrc)
     {
         StringBuilder sResult = new StringBuilder(szSrc.length() * 2);
 
@@ -4440,8 +4440,8 @@ public final class StringUtilities
      * @param szSrc
      * @return the value
      */
-    @CheckReturnValue
-    public static String decodeHex(String szSrc)
+    @CheckReturnValue @Nullable
+    public static String decodeHex(final @Nullable String szSrc)
     {
         if (szSrc == null)
         {
@@ -4497,10 +4497,10 @@ public final class StringUtilities
      * Checks if the query string is in the given list
      * @param lst the list to search
      * @param qry the query string
-     * @return boolean true if the query string is in the list of strings, false otherwise
+     * @return Boolean true if the query string is in the list of strings, false otherwise
      */
     @CheckReturnValue
-    public static boolean inList(final String[] lst, final String qry)
+    public static boolean inList(final @Nullable String[] lst, final @Nullable String qry)
     {
         boolean found = false;
 
@@ -4520,38 +4520,13 @@ public final class StringUtilities
     }
 
     /**
-     * Determines whether 1.4. version is enabled.
-     * @param version
-     * @return true if enabled false otherwise
-     */
-    @CheckReturnValue
-    public static boolean is14Enabled(String version)
-    {
-        boolean isEnabled = false;
-
-        if (version != null &&
-                version.length() > 2 &&
-                version.equalsIgnoreCase("null") == false)
-        {
-            int upper = Integer.parseInt(Character.toString(version.charAt(0)));
-            int lower = Integer.parseInt(Character.toString(version.charAt(2)));
-
-            if (upper >= 1 && lower >= 4)
-            {
-                isEnabled = true;
-            }
-        }
-        return isEnabled;
-    }
-
-    /**
      * Converts and array of bytes to a hexadecimal string, two characters per byte
      *
      * @return String the hexadecimal representation
      * @param bytes the bytes to convert
      */
-    @CheckReturnValue
-    public static String toHexString(final byte[] bytes)
+    @CheckReturnValue @Nonnull
+    public static String toHexString(final @Nonnull byte[] bytes)
     {
         StringBuilder hexString = new StringBuilder(bytes.length * 2);
 
@@ -4577,8 +4552,8 @@ public final class StringUtilities
     }
     *///LEGACY_END
 
-    @CheckReturnValue
-    public static String join(final String fieldDelim, List list)
+    @CheckReturnValue @Nonnull
+    public static String join(final @Nonnull String fieldDelim,final @Nonnull List list)
     {
         StringBuilder sb=new StringBuilder();
         list.stream().forEach((v) -> {
@@ -4599,8 +4574,8 @@ public final class StringUtilities
      * @return String[] - list of String values
      */
     @SuppressWarnings("null")
-    @CheckReturnValue
-    public static String[] split(final String values, final char fieldDelim, final char quote)
+    @CheckReturnValue @Nonnull
+    public static String[] split(final @Nonnull String values, final char fieldDelim, final char quote)
     {
         String temp = values.trim();
         ArrayList fieldArray = new ArrayList();
@@ -4696,27 +4671,27 @@ public final class StringUtilities
     /**
      * Capitalizes the first character IN EACH WORD of the specified string.
      *
-     * @param string the name to capitalize
+     * @param words the name to capitalize
      * @return The specified string with the first letter capitalized.
      */
-    @CheckReturnValue
-    public static String capitalizeWordsInString(String string)
+    @CheckReturnValue @Nonnull
+    public static String capitalizeWordsInString(final @Nonnull String words)
     {
-          char[] chars = string.toLowerCase().toCharArray();
-          boolean found = false;
-          for (int i = 0; i < chars.length; i++)
-          {
-              if (!found && Character.isLetter(chars[i]))
-              {
-                  chars[i] = Character.toUpperCase(chars[i]);
-                  found = true;
-              }
-              else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'' || chars[i]=='-')  // You can add other chars here
-              {
-                 found = false;
-              }
-      }
-      return String.valueOf(chars);
+        char[] chars = words.toLowerCase().toCharArray();
+        boolean found = false;
+        for (int i = 0; i < chars.length; i++)
+        {
+            if (!found && Character.isLetter(chars[i]))
+            {
+                chars[i] = Character.toUpperCase(chars[i]);
+                found = true;
+            }
+            else if (Character.isWhitespace(chars[i]) || chars[i]=='.' || chars[i]=='\'' || chars[i]=='-')  // You can add other chars here
+            {
+               found = false;
+            }
+        }
+        return String.valueOf(chars);
     }
 
     /**
@@ -4725,9 +4700,10 @@ public final class StringUtilities
      * @param str the name to capitalize
      * @return The specified string with the first letter capitalized.
      */
-    @CheckReturnValue
-    public static String capitalize(final String str)
+    @CheckReturnValue @Nonnull
+    public static String capitalize(final @Nonnull String str)
     {
+        assert str!=null;
         if (isBlank(str))
         {
             return str;
@@ -4739,35 +4715,35 @@ public final class StringUtilities
         return firstLetter.toUpperCase() + remainder;
     }
 
-    /**
-     * Returns the index within the first string of the first occurrence of the
-     * second string, ignoring case considerations.
-     * The integer returned is the smallest value <i>k</i> such that:
-     * <blockquote><pre>
-     * string1.toUpperCase().startsWith(string2.toUpperCase(), <i>k</i>)
-     * </pre></blockquote>
-     * is <code>true</code>.
-     *
-     * @param string1 the string for which to be searched.
-     * @param string2 the string for which to search.
-     * @return if the second string occurs as a substring within the first string,
-     *         then the index of the first character of the first such substring is returned;
-     *         if it does not occur as a substring, -1 is returned.
-     */
-    @CheckReturnValue
-    public static int indexOfIgnoreCase(String string1, String string2)
-    {
-        return string1.toUpperCase().indexOf(string2.toUpperCase());
-    }
+//    /**
+//     * Returns the index within the first string of the first occurrence of the
+//     * second string, ignoring case considerations.
+//     * The integer returned is the smallest value <i>k</i> such that:
+//     * <blockquote><pre>
+//     * string1.toUpperCase().startsWith(string2.toUpperCase(), <i>k</i>)
+//     * </pre></blockquote>
+//     * is <code>true</code>.
+//     *
+//     * @param string1 the string for which to be searched.
+//     * @param string2 the string for which to search.
+//     * @return if the second string occurs as a substring within the first string,
+//     *         then the index of the first character of the first such substring is returned;
+//     *         if it does not occur as a substring, -1 is returned.
+//     */
+//    @CheckReturnValue
+//    public static int indexOfIgnoreCase(final String string1, String string2)
+//    {
+//        return string1.toUpperCase().indexOf(string2.toUpperCase());
+//    }
 
     /**
      * check if password have sequential characters.
      *
      * @param password the password to check
-     * @return boolean value
+     * @return Boolean value
      */
     @CheckReturnValue
-    public static boolean passwordHaveSequentialCharacters(final String password)
+    public static boolean passwordHaveSequentialCharacters(final @Nonnull String password)
     {
         return passwordHaveSequentialCharacters(password, true, true, PASSWORD_SEQUENTIAL_LENGTH);
     }
@@ -4779,11 +4755,11 @@ public final class StringUtilities
      * @param repeat
      * @param descend
      * @param limit
-     * @return boolean value
+     * @return Boolean value
      */
     @CheckReturnValue
     public static boolean passwordHaveSequentialCharacters(
-        final String password,
+        final @Nullable String password,
         boolean repeat,
         boolean descend,
         int limit
@@ -4791,6 +4767,7 @@ public final class StringUtilities
     {
         if (isBlank( password ) == false)
         {
+            assert password!=null;
             char passwordArray[] = password.trim().toCharArray();
             int old = passwordArray[0];
             int countUp = 1;
@@ -4849,7 +4826,7 @@ public final class StringUtilities
      * @return true if there is a possible rude word.
      */
     @CheckReturnValue
-    public static boolean containsRudeWord( final String word)
+    public static boolean containsRudeWord( final @Nonnull String word)
     {
         String tmpWord=word.toLowerCase();
         String list[]={
@@ -4878,8 +4855,8 @@ public final class StringUtilities
      * @param valueToClean - the String that we want to clean
      * @return new clean value
      */
-    @CheckReturnValue
-    public static String cleanNumberString(final String valueToClean)
+    @CheckReturnValue @Nonnull
+    public static String cleanNumberString(final @Nonnull String valueToClean)
     {
         int len = valueToClean.length();
         boolean needed = false;
@@ -4912,7 +4889,7 @@ public final class StringUtilities
      * @return true if the value contains only numbers
      */
     @CheckReturnValue
-    public static boolean isNumber(String value)
+    public static boolean isNumber(final @Nonnull String value)
     {
         if (value.length() == 0)
         {
@@ -4936,7 +4913,7 @@ public final class StringUtilities
      * @return the value
      */
     @CheckReturnValue
-    public static boolean isValidPhoneNumber(final String phone)
+    public static boolean isValidPhoneNumber(final @Nonnull String phone)
     {
         boolean valid = PHONE_REGEX.matcher(phone).matches();
 
@@ -4957,8 +4934,8 @@ public final class StringUtilities
      * @param value the string
      * @return escaped string
      */
-    @CheckReturnValue
-    public static String escape(final String value)
+    @CheckReturnValue @Nullable
+    public static String escape(final @Nullable String value)
     {
         if (value == null || value.length() == 0)
         {
@@ -4983,15 +4960,15 @@ public final class StringUtilities
     }
 
      /**
-     * Appends param and value to the given url.
+     * Appends parameter and value to the given URL.
      *
      * @param uri
      * @param param
      * @param value the value
      * @return the value
      */
-    @CheckReturnValue
-    public static String appendURLParam(final String uri, final String param, final String value)
+    @CheckReturnValue @Nonnull
+    public static String appendURLParam(final @Nonnull String uri, final @Nonnull String param, final @Nonnull String value)
     {
         StringBuilder urlString = new StringBuilder(uri);
         if (!uri.contains("?"))

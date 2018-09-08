@@ -91,6 +91,7 @@ public class TestHTMLAnchor extends TestCase
     {
 
         String checks[]={
+            "mailto:support@stsoftware.com.au?subject=Bug+Report%3a+invalid+href+mailto%3arick%40stsoftware%2ecom%2eau&body=%0aException+Type%3a+java%2elang%2eAssertionError%0aUser%3a+scan%40aspecthuntley%5fprod%0aThe+request+URI%3a+http%3a%2f%2flocalhost%3a1251%2fsummary%2fgeneric%3fUC%3d86%26CLASS%5fKEY%3d50%401%7e1%401%26ROWID%3d5373004109924%26LAYERID%3d1251%26UE%3d55F714A0%0aThe+exception+message%3a+invalid+href+mailto%3arick%40stsoftware%2ecom%2eau",
             "/report_explorer/transfer?ESEARCHOR1=ESEARCHAND%7cTask%3apercUntilClosed%7cNE%7c100%7cESEARCHAND%7cTask%3astartDate%7cGE%7c01+Jul+2015+00%3a00%7cESEARCHAND%7cTask%3aendDate%7cLT%7c31+Jul+2015+23%3a59%7cESEARCHAND%7cTask%3aassignTo%7cIS%7c1%40110%7e12%401%7cESEARCHAND%7cTask%3atype%7cNE%7cOPEN%5fENDED%5fACTIVITY%7cESEARCHAND%7cActivity%3aattendeeConfirmed%7cEQ%7cTRUE&EFIELD_sortDesc=&SCREEN_KEY=146017@2~170@1&EFIELD_sortField=&FORMAT=CSV&EFIELD_name=Open%20Tasks/Events&CLASS_KEY=1321@2~1@1&TS=1436320751634&ADD_VALUES=@@@@@@@@@@@@@",
             "/explorer/transfer/docs/Membership/Audit/ExportAudit_2015-07-18+10%3a35.csv?DOC_KEY=89@170~632@1",
             "http://stSoftware.com.au/site/ST/article?",
@@ -115,6 +116,7 @@ public class TestHTMLAnchor extends TestCase
         {
             if( HTMLAnchor.validateHREF(url)==false)
             {
+                HTMLAnchor.validateHREF(url);
                 fail( "Should be valid " + url);
             }
         }
@@ -140,7 +142,7 @@ public class TestHTMLAnchor extends TestCase
         {
             if( HTMLAnchor.validateHREF(url))
             {
-//                HTMLAnchor.validateHREF(url);
+                HTMLAnchor.validateHREF(url);
                 fail( "Should NOT be valid " + url);
             }
         }

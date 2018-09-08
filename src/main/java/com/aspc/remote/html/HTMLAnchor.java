@@ -33,10 +33,13 @@
  */
 package com.aspc.remote.html;
 
+import com.aspc.remote.database.InvalidDataException;
 import com.aspc.remote.html.internal.HTMLAbstractAnchor;
 import com.aspc.remote.html.scripts.HTMLMouseEvent;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.StringUtilities;
+import com.aspc.remote.util.net.EmailUtil;
+
 import java.util.StringTokenizer;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -183,7 +186,26 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
                     }
                 }
             }
-            if( StringUtilities.isNotEncoded(path.replace("/", "_")))
+            
+            if( path.matches("mailto:.*"))
+            {
+                String email=path.substring(7);
+                Boolean disableMX=EmailUtil.DISABLE_MX_LOOPUP.get();
+                try{
+                    EmailUtil.DISABLE_MX_LOOPUP.set(true);
+                    EmailUtil.validate(email, null);
+                }
+                catch( InvalidDataException e)
+                {
+                    LOGGER.warn( "Invalid email: '" +email + "' in " + href);
+                    return false;
+                }
+                finally
+                {
+                    EmailUtil.DISABLE_MX_LOOPUP.set(disableMX!=null?disableMX:Boolean.FALSE);
+                }
+            }
+            else if( StringUtilities.isNotEncoded(path.replace("/", "_")))
             {
                 LOGGER.warn( "Unencoded path: '" +path + "'");
                 return false;
@@ -268,7 +290,6 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
     {
         if( validateHREF(href)==false)
         {
-            validateHREF(href);
             LOGGER.info( href);
         }
         assert validateHREF(href): "invalid href " + href;
