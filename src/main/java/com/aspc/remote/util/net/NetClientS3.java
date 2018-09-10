@@ -227,7 +227,7 @@ public class NetClientS3 implements NetClient
         private final String accessKeyID;
         private final String secretAccessKey;
 
-        public SendToAWS(final String accessKeyID, final String secretAccessKey) {
+        public SendToAWS(final @Nonnull String accessKeyID, final @Nonnull String secretAccessKey) {
             this.accessKeyID=accessKeyID;
             this.secretAccessKey=secretAccessKey;
         }
@@ -263,16 +263,24 @@ public class NetClientS3 implements NetClient
             String host = url.getHost();
             
             int pos=host.indexOf(".");
+            if( pos==-1)
+            {
+                throw new IllegalArgumentException("no bucket name");
+            }
             String bucketName=host.substring(0, pos);
             host=host.substring(pos+1);
             pos=host.indexOf(".");
+            if( pos==-1)
+            {
+                throw new IllegalArgumentException("no region");
+            }
             String region = host.substring(3, pos);
 
             AmazonS3 s3client = AmazonS3ClientBuilder
-                    .standard()
-                    .withCredentials(awsCredentialsProvider)
-                    .withRegion(region)
-                    .build();
+                .standard()
+                .withCredentials(awsCredentialsProvider)
+                .withRegion(region)
+                .build();
             
             try{
                 String path=url.getPath();
@@ -284,7 +292,7 @@ public class NetClientS3 implements NetClient
                 assert path.contains("//")==false: "Invalid path: " + path;
                 PutObjectResult pr = s3client.putObject(new PutObjectRequest(bucketName, path, call.getBody()));        
 
-                 return Response.builder(Status.C200_SUCCESS_OK, ContentType.TEXT_PLAIN, pr.getETag()).make();
+                return Response.builder(Status.C200_SUCCESS_OK, ContentType.TEXT_PLAIN, pr.getETag()).make();
             }
             catch( AmazonServiceException ase)
             {
