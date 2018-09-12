@@ -92,6 +92,11 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
     private static final @RegEx String REGEX_GLOBAL_KEY="([0-9]{9,20}|([0-9a-zA-Z_/:\\+\\(\\)\\-\\.]|%(2[bBfFaA]|3[aA])){1,250}@[0-9]{1,10})~[0-9]{1,10}@[0-9]{1,10}";
     public static boolean validateHREF( final @Nonnull String href)
     {
+//        if( StringUtilities.isBlank(href))
+//        {
+//            LOGGER.warn( "Blank HREF");
+//            return false;            
+//        }
         if( href.matches(".*%[^0-9a-fA-F](|[^0-9a-fA-F]).*"))
         {
             LOGGER.warn( "Invalid characters in URL: " + href);
@@ -290,7 +295,7 @@ public class HTMLAnchor extends HTMLContainer implements HTMLAbstractAnchor
     {
         if( validateHREF(href)==false)
         {
-            LOGGER.info( href);
+            LOGGER.info( "Invalid: " + href);
         }
         assert validateHREF(href): "invalid href " + href;
         this.href = href;
