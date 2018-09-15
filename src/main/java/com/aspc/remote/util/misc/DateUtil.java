@@ -77,6 +77,11 @@ public final class DateUtil
      * User date YESTERDAY
      */
     public static final String TYPE_YESTERDAY="YESTERDAY";
+    
+    /**
+     * User date Last year
+     */
+    public static final String TYPE_LAST_YEAR="LAST_YEAR";
 
     /**
      * get the date difference with the default time zone. Use the

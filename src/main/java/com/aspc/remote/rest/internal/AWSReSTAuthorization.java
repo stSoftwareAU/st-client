@@ -70,7 +70,7 @@ public final class AWSReSTAuthorization implements ReSTAuthorizationInterface
     }
 
     @Override
-    public ReSTAuthorizationInterface setRequestProperty(URLConnection c) {
+    public ReSTAuthorizationInterface setRequestProperty(final @Nonnull URLConnection c) {
         HttpURLConnection http=(HttpURLConnection)c;
         String method = http.getRequestMethod();
 

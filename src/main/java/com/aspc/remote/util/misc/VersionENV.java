@@ -185,6 +185,7 @@ public class VersionENV
      * @param version the version, ZERO means default
      * @return the previous version
      */
+    @Nonnegative
     public int setDataBaseVersion( final @Nonnegative int version)
     {
         int tmpVersion=version;
@@ -232,7 +233,7 @@ public class VersionENV
      *
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public int calculateVersion()
     {
         int tmpEnv=environmentVersion.get();

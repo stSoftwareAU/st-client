@@ -389,6 +389,12 @@ public final class TimeUtil
         {
             return DateUtil.getYesterday( tz);
         }
+        else if( dateString.equals(DateUtil.TYPE_LAST_YEAR))
+        {
+            Date lastYear= addDurationToDate(DateUtil.getToday(tz), "-1 Year", tz);
+            assert lastYear!=null;
+            return lastYear;
+        }
 
         // Try 1500 or 150000
         int len = tempDateString.length();

@@ -34,6 +34,7 @@
 package com.aspc.remote.database.internal;
 
 import java.sql.*;
+import javax.annotation.Nonnull;
 
 /**
  *  Results loader
@@ -51,5 +52,5 @@ public interface ResultsLoader
      * @return the number of rows loaded.
      * @throws Exception Exception A serious problem
      */
-    public int loadResults( final Statement stmt) throws Exception;
+    public int loadResults( final @Nonnull Statement stmt) throws Exception;
 }
