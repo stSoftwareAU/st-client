@@ -535,12 +535,13 @@ public final class MemoryManager
         oTotal = getTotalMemory();
         oFree  = getFreeMemory();
 
-        long used = oTotal - oFree;
         long max = getTotalMemory();
         if( oTotal < max)
         {
             oFree += max - oTotal;
         }
+
+        long used = oTotal - oFree;
 
         StopWatch sw=new StopWatch(true);
 
@@ -594,6 +595,49 @@ public final class MemoryManager
         return cleared;
     }
 
+    /**
+     *  0 - 4GB -  1MB
+     *      8GB -  2MB
+     *     16GB -  4MB
+     *     32GB -  8MB
+     *     64GB - 16MB
+     *    64GB+ - 32MB
+     * 
+     * https://stackoverflow.com/questions/46786601/how-to-know-region-size-used-of-g1-garbage-collector
+     * 
+     * @return the estimated region size. 
+     */
+    @CheckReturnValue @Nonnegative
+    public static int jvmG1HeapRegionSize()
+    {
+        long max=jvmMaxMemory();
+        
+        if( max < 4L * 1024L * 1024L *1024L)
+        {
+            return 1024 * 1024;
+        }
+        else if( max < 8L * 1024L * 1024L *1024L)
+        {
+            return 2 * 1024 * 1024;
+        }
+        else if( max < 16L * 1024L * 1024L *1024L )
+        {
+            return 4 * 1024 * 1024;
+        }
+        else if( max < 32L * 1024L * 1024L *1024L)
+        {
+            return 8 * 1024 * 1024;
+        }
+        else if( max < 64L * 1024L * 1024L *1024L)
+        {
+            return 16 * 1024 * 1024;
+        }
+        else
+        {
+            return 32 * 1024 * 1024;
+        }
+    }
+    
     /**
      * Get the JVM max memory ( when will we get a out of memory error)
      *

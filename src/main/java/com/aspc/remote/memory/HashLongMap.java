@@ -96,6 +96,7 @@ public interface HashLongMap<T> extends InterfaceSizeOf, Cloneable
      * create an array of arrays for the keys. 
      * @return the data array.
      */
+    @CheckReturnValue @Nonnull
     public long[][] getKeyData();
     
     /**
@@ -137,7 +138,7 @@ public interface HashLongMap<T> extends InterfaceSizeOf, Cloneable
      * @return the value to which this map maps the specified key.
      * @param key key whose associated value is to be returned.
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     public T get(long key);
 
     /** 

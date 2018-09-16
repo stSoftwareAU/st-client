@@ -177,7 +177,7 @@ public class LargeLongArray
         private boolean checkIfUnique;
         private boolean assertIfZero;
         private boolean assertIfUnique;
-        public static final int DEFAULT_SEGMENT_SIZE=16*1024*1024/64;
+        public static final int DEFAULT_SEGMENT_SIZE=MemoryManager.jvmG1HeapRegionSize()/64;
         private int segmentSize=DEFAULT_SEGMENT_SIZE;
         private boolean inputShared=true;
         private boolean outputShared=true;
