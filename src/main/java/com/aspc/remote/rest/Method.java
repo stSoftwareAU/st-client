@@ -1,6 +1,7 @@
 package com.aspc.remote.rest;
 
 import com.aspc.remote.util.misc.CLogger;
+import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 
 /**
@@ -95,7 +96,7 @@ public enum Method
 
     public final String label;
 
-    private Method( final String label)
+    private Method( final @Nonnull String label)
     {
         this.label=label;
     }
