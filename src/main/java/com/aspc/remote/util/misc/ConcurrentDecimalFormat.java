@@ -72,7 +72,7 @@ public final class ConcurrentDecimalFormat
     /**
      * format the number
      * @param number the number to format
-     * @return the formated string
+     * @return the formatted string
      */
     @Nonnull @CheckReturnValue
     public String format( final @Nonnull Object number)
