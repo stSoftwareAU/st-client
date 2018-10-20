@@ -675,19 +675,25 @@
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-s3</artifactId>
-      <version>1.11.402</version>
+      <version>1.11.431</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-sns</artifactId>
-      <version>1.11.402</version>
+      <version>1.11.431</version>
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-core</artifactId>
-      <version>1.11.402</version>
+      <version>1.11.431</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-api-gateway</artifactId>
+      <version>1.11.431</version>
       <optional>true</optional>
     </dependency>
     <dependency>
