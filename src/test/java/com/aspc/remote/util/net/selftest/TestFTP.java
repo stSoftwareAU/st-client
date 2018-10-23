@@ -32,6 +32,9 @@
  *  Australia.
  */
 package com.aspc.remote.util.net.selftest;
+import com.aspc.remote.database.selftest.DBTestUnit;
+import com.aspc.remote.rest.ReST;
+import com.aspc.remote.rest.Response;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.net.NetUtil;
@@ -59,6 +62,17 @@ public class TestFTP extends TestCase
     @SuppressWarnings("SleepWhileInLoop")
     public void testConnect() throws Exception
     {
+        Response r = ReST.builder("http://speedtest.tele2.net/").getResponse();
+        
+        if( r.status.isError())
+        {
+            LOGGER.warn("Could not connect:" + r.status);
+            
+//            if( DBTestUnit.hideKnownErrors())
+//            {
+                return;
+//            }
+        }
         for( int attempts=0;true;attempts++)
         {
             String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
