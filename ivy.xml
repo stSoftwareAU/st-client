@@ -123,7 +123,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="runtime->master"/>
 
         <!-- Deprecated -->        
-        <dependency org="org.apache.axis" name="axis" rev="1.4" conf="runtime->master"/>
+        <!--<dependency org="org.apache.axis" name="axis" rev="1.4" conf="runtime->master"/>-->
         
         <!-- Morningstar requires do not remove -->
         <!--<dependency org="org.apache.axis2" name="axis2" rev="1.7.0" conf="runtime->master"/>-->
