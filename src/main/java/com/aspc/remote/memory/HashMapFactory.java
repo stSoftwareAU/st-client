@@ -82,7 +82,7 @@ public class HashMapFactory
      * @return the hash map
      */
     @CheckReturnValue @Nonnull
-    public static HashMap create(final ThreadCop.MODE mode)
+    public static HashMap create(final @Nonnull ThreadCop.MODE mode)
     {
         if( ENABLE_THREAD_COP)
         {
