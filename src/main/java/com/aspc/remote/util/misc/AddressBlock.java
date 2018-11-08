@@ -94,7 +94,7 @@ public final class AddressBlock
         return details!=null;
     }
 
-    private @CheckReturnValue DNSBL fetchDetails( final String ip)
+    private @CheckReturnValue @Nullable DNSBL fetchDetails( final String ip)
     {
         DNSBL details=cache.get(ip);
 
@@ -319,13 +319,13 @@ public final class AddressBlock
             this.ictx=ictx;
         }
 
-        @Override
+        @Override @Nonnull
         public DNSBL call() throws Exception
         {
             String[] parts = ip.split("\\.");
             String reversedAddress = parts[3] + "." + parts[2] + "." + parts[1] + "." + parts[0];
             DNSBL details=null;
-            boolean issueFound=false;
+            boolean dnsIssueFound=false;
             boolean someClean=false;
             for (String service : dnsbls)
             {
@@ -337,15 +337,17 @@ public final class AddressBlock
                     attributes = ictx.getAttributes(reversedAddress + "." + service, RECORD_TYPES);
                     attribute = attributes.get("TXT");
 
-                    String reason = "blocked by " + service;
                     if (attribute != null)
                     {
-                        String temp=attribute.toString();
-                        if( StringUtilities.notBlank(temp)) reason=temp;
-                    }
-                    details=new DNSBL(reason, 24 * 60 * 60 * 1000);
+                        String temp=String.valueOf(attribute.get());
+                        if( StringUtilities.notBlank(temp)) 
+                        {
+                            String reason = "blocked by " + service + " because: " + temp;
+                            details=new DNSBL(reason, 24 * 60 * 60 * 1000);
 
-                    break;
+                            break;
+                        }
+                    }
                 }
                 catch (NameNotFoundException e)
                 {
@@ -356,7 +358,7 @@ public final class AddressBlock
                 {
                     //LOGGER.warn( ip, e);
 
-                    issueFound=true;
+                    dnsIssueFound=true;
                 }
             }
 
@@ -364,7 +366,7 @@ public final class AddressBlock
             {
                 long cachePeriod=24 * 60 * 60 * 1000;
 
-                if( issueFound)
+                if( dnsIssueFound)
                 {
                     if( someClean)
                     {

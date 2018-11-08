@@ -152,7 +152,7 @@ public class ReSTTask
             int count=CURRENT_CALL_COUNT.incrementAndGet();
             COUNTER_CONDITION.signalAll();
             assert count>=0: "Counter should never be negative was: " + count;
-            assert count <= MAX_ASYNC_REST_CALLS: "Counter should never be more than the max ASYNC rest calls was: " + count;
+//            assert count <= MAX_ASYNC_REST_CALLS: "Counter should never be more than the max ASYNC rest calls was: " + count;
         }
         finally
         {

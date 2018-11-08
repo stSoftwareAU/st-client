@@ -33,6 +33,7 @@
  */
 package com.aspc.remote.util.misc.selftest;
 
+import com.aspc.remote.database.selftest.DBTestUnit;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -161,6 +162,7 @@ public class TestAddressBlock extends TestCase
     public void testKnownBotIP() throws Exception
     {
         String list[]={
+            "86.102.33.187"
 //            "222.186.34.23"
 //            "146.0.73.133",
         //    "89.248.172.204"
@@ -172,6 +174,15 @@ public class TestAddressBlock extends TestCase
         {
             String reason = bl.getReason(ip, 60000);
 
+            if( DBTestUnit.hideKnownErrors())
+            {
+                if( StringUtilities.isBlank(reason))
+                {
+                    LOGGER.info( "Should be blocked: " + ip);
+                    continue;
+                }
+            }
+                  
             assertTrue("Should be bad " + ip, StringUtilities.notBlank(reason));
             assertTrue( "Should know about " + ip, bl.knowsIP(ip));
         }
