@@ -124,7 +124,7 @@ public class TestImageResize extends TestCase
 
     public void testScaleJPG()throws Exception 
     {
-        File srcFile=load( "scaleJPG", "https://aspc.jobtrack.com.au/docs/web/images/avatar/Tina_2010%5B1%5D.jpg?height=100");
+        File srcFile=load( "scaleJPG", "https://aspc.jobtrack.com.au/docs/web/images/avatar/Tina_2010.jpg?height=100");
            
         BufferedImage targetImage ;
                 
