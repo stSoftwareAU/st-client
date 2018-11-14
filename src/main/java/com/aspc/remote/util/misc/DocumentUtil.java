@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Templates;
 import javax.xml.transform.Transformer;
@@ -113,10 +114,10 @@ public final class DocumentUtil
     /**
      * returns the current builder for this thread
      * @return the current document builder
-     * @throws java.lang.Exception a serious problem
+     * @throws javax.xml.parsers.ParserConfigurationException a serious problem
      */
     @CheckReturnValue @Nonnull
-    public static DocumentBuilder getBuilder() throws Exception
+    public static DocumentBuilder getBuilder() throws ParserConfigurationException
     {
         return getBuilder(PARSER.DEFAULT);
     }
@@ -125,10 +126,10 @@ public final class DocumentUtil
      * returns the current builder for this thread
      * @param parser the parser to use. 
      * @return the current document builder
-     * @throws java.lang.Exception a serious problem
+     * @throws javax.xml.parsers.ParserConfigurationException a serious problem
      */
     @CheckReturnValue @Nonnull
-    public static DocumentBuilder getBuilder( @Nonnull final PARSER parser) throws Exception
+    public static DocumentBuilder getBuilder( @Nonnull final PARSER parser) throws ParserConfigurationException
     {
         switch (parser) {
             case DEFAULT:
@@ -460,10 +461,10 @@ public final class DocumentUtil
     /**
      * Create a new XML document
      * @return the new blank document
-     * @throws java.lang.Exception a serious problem
+     * @throws javax.xml.parsers.ParserConfigurationException a serious problem
      */
     @CheckReturnValue @Nonnull
-    public static Document newDocument() throws Exception
+    public static Document newDocument() throws ParserConfigurationException
     {
         DocumentBuilder builder = getBuilder();
 
