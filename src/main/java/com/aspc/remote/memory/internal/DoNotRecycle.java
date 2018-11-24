@@ -1,12 +1,12 @@
 /*
- *  Copyright (c) 2000-2004 ASP Converters pty ltd
+ *  Copyright (c) 2000-2004stSoftware pty ltd
  *
  *  www.stSoftware.com.au
  *
  *  All Rights Reserved.
  *
  *  This software is the proprietary information of
- *  ASP Converters Pty Ltd.
+ * stSoftware pty ltd.
  *  Use is subject to license terms.
  */
 package com.aspc.remote.memory.internal;

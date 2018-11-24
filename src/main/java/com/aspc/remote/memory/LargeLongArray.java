@@ -1,12 +1,12 @@
 /*
- *  Copyright (c) 1999-2004 ASP Converters pty ltd
+ *  Copyright (c) 1999-2004stSoftware pty ltd
  *
  *  www.stSoftware.com.au
  *
  *  All Rights Reserved.
  *
  *  This software is the proprietary information of
- *  ASP Converters Pty Ltd.
+ * stSoftware pty ltd.
  *  Use is subject to license terms.
  */
 package com.aspc.remote.memory;
@@ -16,6 +16,7 @@ import java.util.Arrays;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Handle very large long arrays. 
@@ -52,8 +53,9 @@ public class LargeLongArray
      * @return the factory
      */
     @CheckReturnValue @Nonnull
-    public static Builder factory(final long data[][])
+    public static Builder factory(final @Nonnull long data[][])
     {
+        assert data!=null;
         return new Builder(data);
     }
     
@@ -63,9 +65,9 @@ public class LargeLongArray
      * @return the factory
      */
     @CheckReturnValue @Nonnull
-    public static Builder factory(final long rows[])
+    public static Builder factory(final @Nullable long rows[])
     {
-        if( rows == null)
+        if( rows == null || rows.length==0)
         {
             long data[][]={};
             return new Builder(data);
@@ -86,7 +88,7 @@ public class LargeLongArray
     }
     
     private LargeLongArray(
-        final long data[][], 
+        final @Nonnull long data[][], 
         final Validator validator, 
         final int segmentSize, 
         final boolean inputShared, 
@@ -94,6 +96,7 @@ public class LargeLongArray
         final Object sanity
     )
     {
+        assert data!=null;
         this.data=data;
 
         this.validator=validator;
@@ -183,8 +186,9 @@ public class LargeLongArray
         private boolean outputShared=true;
         private Object sanity;
 
-        private Builder( final long data[][])
+        private Builder( final @Nonnull long data[][])
         {
+            assert data!=null;
             this.data=data;
         }
 
@@ -239,7 +243,7 @@ public class LargeLongArray
          * @return this
          */
         @Nonnull 
-        public Builder setSanity( final Object sanity)
+        public Builder setSanity( final @Nullable Object sanity)
         {
             this.sanity=sanity;
             
@@ -595,6 +599,7 @@ public class LargeLongArray
             }
             sizeCache=counter;
         }
+        assert sizeCache>=0;
         return sizeCache;
     }
     
