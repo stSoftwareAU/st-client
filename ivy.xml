@@ -224,5 +224,17 @@
     <version>1.0.4</version>
     <type>jar</type>
   </dependency>-->
+  
+  <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
+    <dependency org="javax.xml.ws" name="jaxws-api" rev="2.3.1"/>
+<!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+<dependency org="javax.xml.bind" name="jaxb-api" rev="2.4.0-b180830.0359"/>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+<dependency org="org.openjfx" name="javafx-swing" rev="12-ea+2"/>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
+<dependency org="org.openjfx" name="javafx-base" rev="12-ea+2"/>
+<!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
+<dependency org="org.openjfx" name="javafx-web" rev="12-ea+2"/>
+
     </dependencies>
 </ivy-module>

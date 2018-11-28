@@ -53,6 +53,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.apache.commons.logging.Log;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -191,7 +192,7 @@ public class ExtDBSyncHandler implements TaskHandler
      * the external database based on the field mappings.
      * see TaskHandler.handleTask for more information
      *
-     * @param executor an Executor object for running sql
+     * @param executor an Executor object for running SQL
      * @param transid the transaction id for this notification
      * @param transRecord the transaction record for this transaction id
      * @throws Exception A serious error
@@ -239,7 +240,7 @@ public class ExtDBSyncHandler implements TaskHandler
                     // Retrieve list of changes
                     HashMap valMap = getFldValueMap( executor,  destDb, transid, rowID, tableDef, action, ta);
 
-                    if( valMap != null && ! valMap.isEmpty())
+                    if( ! valMap.isEmpty())
                     {
                         updateItem = getUpdateHandler( tableDef, transid, action, valMap, executor );
                     }
@@ -425,7 +426,7 @@ public class ExtDBSyncHandler implements TaskHandler
      * @param file - file to be loaded
      * @throws Exception A serious error
      */
-    public void loadDoc( File file) throws Exception
+    public void loadDoc( final @Nonnull File file) throws Exception
     {
         /**
          * load the properties
@@ -574,7 +575,8 @@ public class ExtDBSyncHandler implements TaskHandler
      * @param name - name of database to be retrieved
      * @return - Database if one is found otherwise null
      */
-    protected DataBase getDataBase( final String name)
+    @CheckReturnValue @Nonnull 
+    protected DataBase getDataBase( final @Nonnull String name)
     {
         DataBase db = databases.get( name);
         return db;
@@ -585,7 +587,8 @@ public class ExtDBSyncHandler implements TaskHandler
      * @param name the database
      * @return the mode
      */
-    protected String getMode( final String name)
+    @CheckReturnValue @Nullable  
+    protected String getMode( final @Nonnull String name)
     {
         return transactionMode.get(name);
     }
@@ -594,7 +597,7 @@ public class ExtDBSyncHandler implements TaskHandler
      * Adds a new Database to the list of databases
      * @param name - Name used to retrieve the database
      * @param type - type of database, i.e. POSTGRESQL
-     * @param url - server/database url
+     * @param url - server/database URL
      * @param user - user name
      * @param pass - password of user
      * @param mode the mode ACID
@@ -748,6 +751,7 @@ public class ExtDBSyncHandler implements TaskHandler
      * @return map
      * @throws Exception A serious error
      */
+    @CheckReturnValue @Nonnull
     protected HashMap getFldValueMap(
         Executor executor,
         DataBase db,
@@ -889,10 +893,10 @@ public class ExtDBSyncHandler implements TaskHandler
                     }
                 }
             }
-            else
-            {
-                LOGGER.error( "No objects found matching conditions. " + sb);
-            }
+//            else
+//            {
+//                LOGGER.error( "No objects found matching conditions. " + sb);
+//            }
         }
         catch( Exception e)
         {
@@ -913,7 +917,7 @@ public class ExtDBSyncHandler implements TaskHandler
                 }
             }
         }
-
+        assert sqlValueMap!=null;
         return sqlValueMap;
     }
 
