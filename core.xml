@@ -285,7 +285,7 @@
         
         <!--<property name="DEBUG_ARGS" value="-XX:+PrintStringDeduplicationStatistics -XX:+PrintFlagsFinal "/>-->
         <property name="DEBUG_ARGS" value=""/>
-        <property name="TRACE_ARGS" value="-verbose:gc -XX:-PrintCommandLineFlags  ${DEBUG_ARGS}-XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -Xloggc:${LOG_DIR}/gc/${APP_NAME}.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10M ${ON_ERROR}"/>
+        <property name="TRACE_ARGS" value="-verbose:gc -XX:-PrintCommandLineFlags  ${DEBUG_ARGS} -Xloggc:${LOG_DIR}/gc/${APP_NAME}.log ${ON_ERROR}"/>
 
         <!--
             JMX Arguments
