@@ -38,7 +38,11 @@ import java.util.*;
 import java.sql.Connection;
 import com.aspc.remote.util.misc.*;
 import java.sql.SQLException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
@@ -66,10 +70,12 @@ public class LinkConnection
     private long        checkedOutTime,
                         checkedOutCounter,
                         lastAccess,
-                        maxIdle;
+                        maxAgeSeconds,
+                        maxIdleSeconds;
 
     private final String id;
-
+    private final long birthMS=System.currentTimeMillis();
+    
     private boolean markedAsClosed;
     private final LinkType type;
     private final ReadWriteLock rw=new ReentrantReadWriteLock();
@@ -91,7 +97,7 @@ public class LinkConnection
         }
         type = lt;
         lastAccess = System.currentTimeMillis();
-        maxIdle = -1;
+        maxIdleSeconds = -1;
         this.client = client;
         id = "" + COUNTER.incrementAndGet();
     }
@@ -141,7 +147,17 @@ public class LinkConnection
      */
     public void setMaxIdle( final long secs)
     {
-        maxIdle = secs;
+        maxIdleSeconds = secs;
+    }
+    
+    /**
+     * The maximum age of the connection. 
+     *
+     * @param secs the max age in seconds. 
+     */
+    public void setMaxAge( final long secs)
+    {
+        maxAgeSeconds = secs;
     }
 
     /**
@@ -349,12 +365,22 @@ public class LinkConnection
             throw new Exception( "Marked as closed '" + client + "' ");
         }
 
-        if( maxIdle != -1)
+        if( maxAgeSeconds > 0)
         {
             long now;
             now = System.currentTimeMillis();
 
-            if( now - lastAccess > maxIdle * 1000)//MT WARN: Unsynchronized
+            if( birthMS + maxAgeSeconds*1000L > now)
+            {
+                throw new TimeoutException("Connection too old");
+            }
+        }
+        if( maxIdleSeconds >0)
+        {
+            long now;
+            now = System.currentTimeMillis();
+
+            if( now - lastAccess > maxIdleSeconds * 1000)//MT WARN: Unsynchronized
             {
                 throw new TimeoutException("Max idle");
             }
@@ -363,7 +389,9 @@ public class LinkConnection
         if( client instanceof Connection)
         {
             Connection connection=(Connection)client;
-            if( connection.isValid(30)==false)
+            Callable <Boolean> call=() -> connection.isValid(30);
+            ForkJoinTask<Boolean> task = ForkJoinPool.commonPool().submit( call );
+            if( task.get(60, TimeUnit.SECONDS)==false)
             {
                 throw new SQLException("connection no longer valid");
             }

@@ -934,6 +934,7 @@ public class DataBase
             if( type.equals(TYPE_HSQLDB) == false)
             {
                 lc.setMaxIdle(5 * 60);
+                lc.setMaxAge(9 * 60);
             }
 
             LinkManager.addConnection(key, lc);
