@@ -239,6 +239,7 @@ public class LinkType
             LOGGER.warn( "re-trying checkout " + attempts + " of 30 delay: " + TimeUtil.getDiff(start));
         }
 
+        assert connection!=null;
         return connection;
     }
 
@@ -465,6 +466,7 @@ public class LinkType
         return maxReserve;
     }
 
+    @CheckReturnValue @Nonnegative 
     private int calMaximumReserve()
     {
         int tmpMaxReserve = getMaximumReserve();
@@ -481,6 +483,7 @@ public class LinkType
             }
         }
 
+        assert tmpMaxReserve>=0;
         return tmpMaxReserve;
     }
 

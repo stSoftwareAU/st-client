@@ -884,15 +884,6 @@ public class DataBase
                     driverMajorVersion = md.getDriverMajorVersion();
                     driverMinorVersion = md.getDriverMinorVersion();
 
-                    if( type.equals(TYPE_ORACLE) )
-                    {
-                        String str = System.getProperty("DATABASE." + type + ".MAX_REUSE");
-                        if( StringUtilities.isBlank(str) == false)
-                        {
-                            lt.setMaximumReuse(Integer.parseInt(str));
-                        }
-                    }
-
                     maxStatementLength = md.getMaxStatementLength();
                     if( maxStatementLength <= 0)
                     {
@@ -905,14 +896,25 @@ public class DataBase
                 }
 
                 validateVersion();
-
+                
+                String str = System.getProperty("DATABASE." + type + ".MAX_REUSE");
+                if( StringUtilities.isBlank(str) == false)
+                {
+                    lt.setMaximumReuse(Integer.parseInt(str));
+                }
                 if( max < 1 || max > 100) max = 100;
 
                 max = Integer.parseInt( CProperties.getProperty("MAX_DBCONNECTIONS", "" + max));
 
-                lt.setMaximumReserve(20);
-
                 lt.setMaximumConnections( max);
+                String tmp=System.getProperty("DATABASE.MAX_RESERVE");
+                int maxReserve=20;
+                if( tmp!=null && tmp.matches("[0-9]+"))
+                {
+                    maxReserve=Integer.parseInt(tmp);
+                }
+                lt.setMaximumReserve(maxReserve);
+
                 lt.setMinimumConnections(0);
                 LinkManager.addType(lt);
             }
