@@ -134,9 +134,9 @@
         <dependency org="org.apache.axis2" name="axis2-xmlbeans" rev="1.7.0" conf="runtime->master"/>
 
         <!-- JDBC --> 
-        <!--dependency org="mysql" name="mysql-connector-java" rev="5.1.38" conf="runtime->master"/-->
-        <dependency org="mysql" name="mysql-connector-java" rev="6.0.6" conf="runtime->master"/>
-        
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency org="mysql" name="mysql-connector-java" rev="8.0.13"/>
+
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency org="org.postgresql" name="postgresql" rev="42.2.2"/>
 
