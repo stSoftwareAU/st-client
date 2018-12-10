@@ -935,8 +935,9 @@ public class DataBase
 
             if( type.equals(TYPE_HSQLDB) == false)
             {
-                lc.setMaxIdle(5 * 60);
-                lc.setMaxAge(9 * 60);
+                // Reduced for Aurora. 
+                lc.setMaxIdle(2 * 60);
+                lc.setMaxAge(5 * 60);
             }
 
             LinkManager.addConnection(key, lc);
@@ -1486,6 +1487,11 @@ public class DataBase
 
         ASSERT_ENABLE=enabled;
         Shutdown.init();
+        
+        // Sets internal TTL to match the Aurora RO Endpoint TTL
+        java.security.Security.setProperty("networkaddress.cache.ttl" , "1");
+        // If the lookup fails, default to something like small to retry
+        java.security.Security.setProperty("networkaddress.cache.negative.ttl" , "3");
     }
 
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.database.DataBase");//#LOGGER-NOPMD
