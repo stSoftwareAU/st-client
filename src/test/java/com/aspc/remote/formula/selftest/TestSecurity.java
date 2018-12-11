@@ -18,6 +18,7 @@ import com.aspc.remote.util.misc.ServerSecurityManager;
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -68,6 +69,7 @@ public class TestSecurity extends TestCase
      *
      * @throws Exception a serious problem
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void testNoJavaAccess() throws Exception
     {
         //LOGGER.info(File.listRoots()[0]);
@@ -118,7 +120,7 @@ public class TestSecurity extends TestCase
                 fail( "not a number " + val2);
             }
         }
-        catch( Exception e)
+        catch( ScriptException e)
         {
             LOGGER.info( "this is good", e);
         }

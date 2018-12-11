@@ -1489,7 +1489,7 @@ public class DataBase
         Shutdown.init();
         
         // Sets internal TTL to match the Aurora RO Endpoint TTL
-        java.security.Security.setProperty("networkaddress.cache.ttl" , "1");
+        java.security.Security.setProperty("networkaddress.cache.ttl" , "10");
         // If the lookup fails, default to something like small to retry
         java.security.Security.setProperty("networkaddress.cache.negative.ttl" , "3");
     }

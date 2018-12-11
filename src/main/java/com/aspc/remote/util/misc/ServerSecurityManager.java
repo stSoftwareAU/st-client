@@ -37,6 +37,8 @@ import java.io.FilePermission;
 import java.lang.reflect.ReflectPermission;
 import java.security.Permission;
 import java.util.PropertyPermission;
+import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 
 /**
@@ -50,8 +52,6 @@ import org.apache.commons.logging.Log;
  */
 public final class ServerSecurityManager extends SecurityManager
 {
-   // private boolean throwExceptionOnRuntimeDotExec;
-
     private static final int MODE_NONE=0;
     private static final int MODE_SCRIPT=1;
     private static final int MODE_XLST=2;
@@ -68,21 +68,12 @@ public final class ServerSecurityManager extends SecurityManager
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.misc.ServerSecurityManager");//#LOGGER-NOPMD
 
     /**
-     * throw an exception of Runtime.exec is called otherwise warn
-     * @param flag turn on/off
-     *
-    public void setThrowExceptionOnRuntimeDotExec( final boolean flag)
-    {
-        throwExceptionOnRuntimeDotExec=flag;
-    }
-    */
-
-    /**
      * turn on/off user script permission restrictions
      * @param flag turn on/off
      * @return the previous value.
      */
-    public static boolean modeUserScriptAccess( boolean flag)
+    @CheckReturnValue
+    public static boolean modeUserScriptAccess( final boolean flag)
     {
         Integer current = USER_ACCESS.get();
         if( flag)
@@ -102,7 +93,8 @@ public final class ServerSecurityManager extends SecurityManager
      * @param flag turn on/off
      * @return the previous value.
      */
-    public static boolean modeUserXlstAccess( boolean flag)
+    @CheckReturnValue
+    public static boolean modeUserXlstAccess( final boolean flag)
     {
         Integer current = USER_ACCESS.get();
         if( flag)
@@ -118,27 +110,12 @@ public final class ServerSecurityManager extends SecurityManager
     }
 
     /**
-     * We never want to allow the server to call Runtime.exec() as it doubles the
-     * memory required by the server and causes massive performance issues.
-     *
-    @Override
-    public void checkExec(String cmd)
-    {
-        SecurityException mayNeverBeCalledByServer= new SecurityException( "can not call Runtime.exec (" + cmd + ")");
-        LOGGER.fatal( "disabled by the ServerSecurityManager", mayNeverBeCalledByServer);
-
-        if( throwExceptionOnRuntimeDotExec)
-        {
-            throw mayNeverBeCalledByServer;
-        }
-    }*/
-
-    /**
      * All other permissions are allowed.
      */
     @Override
-    public void checkPermission(final Permission perm)
+    public void checkPermission(final @Nonnull Permission perm)
     {
+        if( perm == null) throw new IllegalArgumentException("perm is Mandatory");
         Integer current = USER_ACCESS.get();
         if( current == MODE_SCRIPT)
         {
@@ -185,6 +162,7 @@ public final class ServerSecurityManager extends SecurityManager
                     name.startsWith("accessClassInPackage.sun.text.")||
                     name.startsWith("accessClassInPackage.sun.util.resources")||
                     name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm")||
+                    name.startsWith("accessClassInPackage.jdk.internal.misc")||
                     name.equals("accessDeclaredMembers")
                 )
                 {
@@ -316,13 +294,8 @@ public final class ServerSecurityManager extends SecurityManager
      * All other permissions are allowed.
      */
     @Override
-    public void checkPermission(Permission perm, Object context)
+    public void checkPermission(final @Nonnull Permission perm, Object context)
     {
         checkPermission(perm);
-    }
-
-    static
-    {
-        LOGGER.info( "Server Security Manager $Revision: 1.22 $ ");//#NOSYNC
     }
 }
