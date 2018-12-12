@@ -157,6 +157,7 @@ public final class ServerSecurityManager extends SecurityManager
                 if(
                     name.equalsIgnoreCase("nashorn.createGlobal") ||
                     name.equals("createClassLoader")||
+                    name.equals("getClassLoader")||
                     name.startsWith("accessClassInPackage.sun.reflect") ||
                     name.startsWith("accessClassInPackage.jdk.nashorn.") ||
                     name.startsWith("accessClassInPackage.sun.text.")||
