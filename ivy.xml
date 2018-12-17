@@ -78,9 +78,9 @@
         <dependency org="org.apache.poi" name="ooxml-schemas" rev="1.1" conf="runtime->master"/>
         <dependency org="org.apache.xmlbeans" name="xmlbeans" rev="2.6.0" conf="runtime->master"/>
         
-        <dependency org="org.apache.pdfbox" name="pdfbox" rev="2.0.11" conf="runtime->master"/>
+        <dependency org="org.apache.pdfbox" name="pdfbox" rev="2.0.13" conf="runtime->master"/>
         <!-- https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox -->
-        <dependency org="org.apache.pdfbox" name="fontbox" rev="2.0.11"/>
+        <dependency org="org.apache.pdfbox" name="fontbox" rev="2.0.13"/>
 
                 
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.1" conf="runtime->master"/>
