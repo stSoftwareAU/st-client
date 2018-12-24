@@ -169,7 +169,7 @@ public class ScriptLink extends JavaScript
          * add crossorigin="anonymous" property for the script link if the domain support cross domain script request,
          * so that our st-error could track the details of the javascript error instead of just log a useless "Script error." message
          */
-        if(knownSupportCORS(tmpURL))
+        if(supportsAnonymousCORS(tmpURL))
         {
             buffer.append(" crossorigin=\"anonymous\"");
         }
@@ -181,9 +181,9 @@ public class ScriptLink extends JavaScript
         }
     }
     
-    private boolean knownSupportCORS(final @Nonnull String tmpURL)
+    private boolean supportsAnonymousCORS(final @Nonnull String tmpURL)
     {
-        for(String domain : DOMAIN_SUPPORT_CORS)
+        for(String domain : DOMAIN_SUPPORT_ANONYMOUS_CORS)
         {
             if(tmpURL.contains(domain))
             {
@@ -196,8 +196,8 @@ public class ScriptLink extends JavaScript
     /**
      * these domain support cross-domain script
      */
-    private static final String[] DOMAIN_SUPPORT_CORS = {
-        "//cdnjs.cloudflare.com/",
+    private static final String[] DOMAIN_SUPPORT_ANONYMOUS_CORS = {
+//        "//cdnjs.cloudflare.com/",
         "//maxcdn.bootstrapcdn.com/",
         "//ajax.googleapis.com/"
     };
