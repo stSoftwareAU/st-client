@@ -830,12 +830,13 @@ public class HTMLInput extends  HTMLFormComponent implements HandlesSingleClick
     {
         if( invisibleFg == false)
         {
-            if (useAutoCompleter && disabledFg == false && browser.canHandleGWT())
+            if (useAutoCompleter && disabledFg == false)// && browser.canHandleGWT())
             {
                 HTMLPage page = getParentPage();
                 assert page!=null;
+                //TODO:JSX
                 page.addGWT("com.aspc.gwt.autocompleter.AutoCompleter");
-
+                
                 String counter = page.getFlag("AutoCompleter:counter");
                 int tmpID = 1;
 
