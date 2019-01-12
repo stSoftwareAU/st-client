@@ -89,7 +89,9 @@ public class TestURL extends TestCase
     public void testGood() throws Exception
     {
         String urls[]={
-            "https://2c0v5zq4w9.execute-api.ap-southeast-2.amazonaws.com/default"
+            "https://2c0v5zq4w9.execute-api.ap-southeast-2.amazonaws.com/default",
+            "https://2222.execute-api.ap-southeast-2.amazonaws.com/default",
+            "http://192.168.1.1:8080"
         };
 
         for( String url: urls)
@@ -102,14 +104,18 @@ public class TestURL extends TestCase
     public void testBad() throws Exception
     {
         String urls[]={
-            "http://999.127.127.102:8080"
+            "http://999.127.127.102:8080",
+            "http://2398423432",
+            "http://192.168.1",
+            "http://192.168.1.1.1",
+            "http://192.168.1..1"
         };
 
         for( String url: urls)
         {
             try{
                 ReSTUtil.checkURL(url);
-                fail( url);
+                fail( "should be bad " + url);
             }
             catch( IllegalArgumentException e)
             {

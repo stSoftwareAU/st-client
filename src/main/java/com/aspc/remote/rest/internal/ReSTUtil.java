@@ -152,7 +152,7 @@ public final class ReSTUtil
                 throw new IllegalArgumentException( "URL invalid host (" + host +"): " + StringUtilities.stripPasswordFromURL(url));
             }
 
-            if( host.matches("([0-9]+\\.)+.*"))
+            if( host.matches("([0-9]+\\.?)+")) //matches all numeric host or multiple numbers separated by '.'
             {
                 String ips[]=host.split("\\.");
                 if( ips.length != 4)
