@@ -799,6 +799,21 @@ public final class ReST
             return setParameter(name, Long.toString(value));
         }
         
+        /**
+         * check if a parameter is set
+         * @param name the name of the parameter
+         * @return true if the parameter was set (could be set to an empty String)
+         */
+        public boolean hasParameter(final @Nonnull String name)
+        {
+            if( args==null)
+            {
+                return false;
+            }
+            String values[] = args.get(name);
+            return values != null && values.length > 0;
+        }
+        
         /** 
          * Return the current parameter values.
          * @param name the parameter name
