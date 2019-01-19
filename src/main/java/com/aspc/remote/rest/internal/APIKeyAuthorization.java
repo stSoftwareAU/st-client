@@ -33,22 +33,11 @@
  */
 package com.aspc.remote.rest.internal;
 
-import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.StringUtilities;
-import com.aspc.remote.util.misc.TimeUtil;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Calculate the AWS authorization header. 

@@ -123,6 +123,7 @@ public class RestCallHTTP extends RestCall
             if( timeoutMS>0)
             {
                 c.setReadTimeout(timeoutMS);
+//                c.setConnectTimeout(timeoutMS);
             }
             c.setRequestMethod(method.name());
             NetUrl.relaxSSLConnection(c);
@@ -243,7 +244,15 @@ public class RestCallHTTP extends RestCall
                 case C302_REDIRECT_FOUND:
                 case C303_REDIRECT_SEE_OTHER:
                     redirection=c.getHeaderField(HEADER_LOCATION);
-                    p.setProperty(HEADER_LOCATION, redirection);
+                    if( StringUtilities.isBlank(redirection))
+                    {
+                        LOGGER.warn( status + " without redirection");
+                        status=Status.C508_LOOP_DETECTED;
+                    }
+                    else
+                    {
+                        p.setProperty(HEADER_LOCATION, redirection);
+                    }
             }
                    
             String tmpCS=new String( StringUtilities.encodeBase64( FileUtil.generateSHA1(tmpFile)));
