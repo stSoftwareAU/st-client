@@ -54,7 +54,7 @@ public class CProcess
      * 
      * @param cmds 
      */
-    public CProcess(String cmds[])
+    public CProcess(final String cmds[])
     {
         this.cmds = cmds;
         timeout = 3600;
@@ -197,7 +197,7 @@ class ProcessRunner extends Thread
         {
             process.waitFor( );
         }
-        catch( Exception e)
+        catch( InterruptedException e)
         {
             exception = e;
         }

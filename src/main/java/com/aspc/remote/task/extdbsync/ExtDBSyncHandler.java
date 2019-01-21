@@ -893,10 +893,10 @@ public class ExtDBSyncHandler implements TaskHandler
                     }
                 }
             }
-//            else
-//            {
-//                LOGGER.error( "No objects found matching conditions. " + sb);
-//            }
+            else
+            {
+                sqlValueMap = HashMapFactory.create();
+            }
         }
         catch( Exception e)
         {
