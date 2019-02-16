@@ -236,6 +236,63 @@ public final class StringUtilities
        }
        return roman;
     }
+    
+    private static int byteToInt( byte b)
+    {
+        return (int)b & 0xFF;
+    }
+    
+    /**
+     * Encode bytes using 32 safe characters.
+     * 
+     * @param orgArray
+     * @return 
+     */
+    @CheckReturnValue @Nonnull
+    public static String encode32( @Nonnull final byte orgArray[])
+    {
+        final String cipher = "0123456789ABCDEFGHJKLMNPRSTVWXYZ";
+        byte array[] = orgArray;
+
+        StringBuilder res = new StringBuilder();
+
+        // Xor each byte
+        for ( int i=0 ; i < array.length -1 ; i++ )
+        {
+            int t = byteToInt(array[i]);
+            t = t ^ 0xab;
+            array[i] = (byte)t;
+        }
+
+        int len = (array.length)*8;
+        for ( int bitPos=0; bitPos < len; bitPos+=5 )
+        {
+            // Find byte in array that contains bit position
+            int bytePos = bitPos/8;
+
+            // Determine starting bit position within this byte
+            int startBitPos = bitPos%8;
+
+            int r;
+
+            // Create an int out of the next two bytes
+            r = byteToInt(array[bytePos]);
+            if( bytePos < array.length-1)
+            {
+                r = r | ( byteToInt(array[bytePos+1]) << 8);
+            }
+
+            // remove bits either side of 5 bits that we want
+            r = r >> startBitPos; //moves first bit to beginning of int
+
+            // Move excess bits off the end
+            r = r & 0x001f;
+
+            res.append( cipher.charAt( r));
+        }
+
+        return res.toString();
+    }
 
     /*
      * The Roman number with the given representation.
