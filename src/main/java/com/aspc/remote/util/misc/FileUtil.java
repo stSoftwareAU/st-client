@@ -1631,6 +1631,7 @@ public final class FileUtil
         }
         finally
         {
+            IOException lastIssue=null;
             try
             {
                 if( in != null )
@@ -1641,6 +1642,7 @@ public final class FileUtil
             catch(IOException e)
             {
                 LOGGER.warn("Exception causing when closing input stream " + in , e );
+                lastIssue=e;
             }
 
             try
@@ -1653,6 +1655,7 @@ public final class FileUtil
             catch(IOException e)
             {
                 LOGGER.warn("Exception causing when closing output stream " + gos , e );
+                lastIssue=e;
             }
 
             try
@@ -1665,6 +1668,7 @@ public final class FileUtil
             catch(IOException e)
             {
                 LOGGER.warn("Exception causing when closing output stream " + bo , e );
+                lastIssue=e;
             }
 
             try
@@ -1677,6 +1681,12 @@ public final class FileUtil
             catch(IOException e)
             {
                 LOGGER.warn("Exception causing when closing ouput stream " + out , e );
+                lastIssue=e;
+            }
+            
+            if( lastIssue !=null)
+            {
+                throw lastIssue;
             }
         }
         replaceTargetWithTempFile( tempFile, targetFile);
