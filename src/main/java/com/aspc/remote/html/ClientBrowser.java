@@ -519,8 +519,13 @@ public class ClientBrowser
                 agent.contains("IPOD")
             )
             {
+                String versionKey = "VERSION/";
+                if(agent.contains("VERSION/") == false && agent.contains("CRIOS/"))
+                {
+                    versionKey = "CRIOS/";
+                }
                 name = BROWSER_IPHONE;
-                makeVersion( "VERSION/");
+                makeVersion( versionKey);
                 isMobile=true;
                 os=OS_MAC;
             }
@@ -528,10 +533,15 @@ public class ClientBrowser
                 agent.contains("IPAD")
             )
             {
+                String versionKey = "VERSION/";
+                if(agent.contains("VERSION/") == false && agent.contains("CRIOS/"))
+                {
+                    versionKey = "CRIOS/";
+                }
                 name = BROWSER_IPAD;
                 isTablet=true;
                 os=OS_MAC;
-                makeVersion( "VERSION/");
+                makeVersion( versionKey);
             }
             else if(
                 agent.contains(BROWSER_FIREFOX)

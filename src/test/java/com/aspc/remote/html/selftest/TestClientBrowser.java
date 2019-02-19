@@ -744,7 +744,8 @@ public class TestClientBrowser extends TestCase
             "Mozilla/5.0 (iPad; U; CPU OS 4_3_5 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8L1 Safari/6533.18.5",
             "Mozilla/5.0 (iPad; U; CPU OS 4_3_2 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8H7 Safari/6533.18.5",
             "Mozilla/5.0 (iPad; CPU OS 5_0_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A405 Safari/7534.48.3",
-            "Mozilla/5.0 (iPad; U; CPU OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
+            "Mozilla/5.0 (iPad; U; CPU OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5",
+            "MOZILLA/5.0 (IPAD; CPU OS 12_1 LIKE MAC OS X) APPLEWEBKIT/605.1.15 (KHTML, LIKE GECKO) CRIOS/72.0.3626.101"
 
         };
         
@@ -793,6 +794,7 @@ public class TestClientBrowser extends TestCase
             {"MOZILLA/5.0 (X11; LINUX X86_64) APPLEWEBKIT/535.16 (KHTML, LIKE GECKO) CHROME/18.0.1003.1 SAFARI/535.16", "18.0"},
             {"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.120 Safari/535.2","15.0"},
             {"Mozilla/5.0 (iPad; U; CPU OS 4_3_5 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8L1 Safari/6533.18.5", "5.0"},
+            {"MOZILLA/5.0 (IPAD; CPU OS 12_1 LIKE MAC OS X) APPLEWEBKIT/605.1.15 (KHTML, LIKE GECKO) CRIOS/72.0.3626.101", "72.0"},
             {"Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; Tablet PC 2.0; InfoPath.2; .NET4.0C)","8.0"},
             {"Mozilla/5.0 (Linux; U; Android 2.3.3; en-us; sdk Build/GRI34) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1","533.1"},
             {"MOZILLA/5.0 (WINDOWS NT 6.3; WOW64; TRIDENT/7.0; TOUCH; RV:11.0) LIKE GECKO", "11.0"} //IE11
