@@ -1274,6 +1274,9 @@ public final class FileUtil
     @CheckReturnValue @Nonnull
     public static byte[] generateDigest( final @Nonnull File file, final String algorithum) throws IOException
     {
+        if( file == null) throw new IllegalArgumentException("File is mandatory");
+        if( file.canRead()==false) throw new IOException("File " + file + " can not be read");
+
         MessageDigest md;
         try
         {
