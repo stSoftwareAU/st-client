@@ -740,12 +740,13 @@ public final class CSQL extends SResultSet implements ResultsLoader
      * executeQuery and executeUpdate methods. JDBC driver implementations may also apply this limit to ResultSet
      * methods (consult your driver vendor documentation for details).
      *
-     * @param seconds the new query timeout limit in seconds; zero means there is no limit
+     * @param seconds the new query timeout limit in seconds; ZERO means there is no limit
      * @return this
      */
     @Nonnull
-    public CSQL setQueryTimeOutSeconds( final int seconds)
+    public CSQL setQueryTimeOutSeconds( final @Nonnegative int seconds)
     {
+        if( seconds<0) throw new IllegalArgumentException("Seconds should be non negative was: " + seconds);
         queryTimeOutSeconds=seconds;
         return this;
     }
@@ -2550,7 +2551,9 @@ public final class CSQL extends SResultSet implements ResultsLoader
         try
         {
             String temp = System.getProperty( PROPERTY_DEFAULT_QUERY_TIMEOUT_SECONDS, "" + defaultTimeoutSecs);
-            defaultTimeoutSecs= Integer.parseInt(temp);
+            int tempTimeout= Integer.parseInt(temp);
+            assert tempTimeout>=0: PROPERTY_DEFAULT_QUERY_TIMEOUT_SECONDS + " was: " + temp;
+            defaultTimeoutSecs=tempTimeout;
         }
         finally
         {
