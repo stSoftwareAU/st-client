@@ -820,13 +820,27 @@ public final class CSQL extends SResultSet implements ResultsLoader
             }
             else
             {
-                conn = dataBase.checkOutConnection();
-
-                if( readonly==null)
+                for( int attempts=0;true;attempts++)
                 {
-                    if( dataBase.protection==DataBase.Protection.SELECT_READONLY_BY_DEFAULT)
+                    try
                     {
-                        if( sqlType == Type.SELECT)
+                        conn = dataBase.checkOutConnection();
+
+                        if( readonly==null)
+                        {
+                            if( dataBase.protection==DataBase.Protection.SELECT_READONLY_BY_DEFAULT)
+                            {
+                                if( sqlType == Type.SELECT)
+                                {
+                                    if( conn.isReadOnly()==false)
+                                    {
+                                        conn.setReadOnly(true);
+                                        turnOffReadOnly=true;
+                                    }
+                                }
+                            }
+                        }
+                        else if( readonly )
                         {
                             if( conn.isReadOnly()==false)
                             {
@@ -834,20 +848,20 @@ public final class CSQL extends SResultSet implements ResultsLoader
                                 turnOffReadOnly=true;
                             }
                         }
-                    }
-                }
-                else if( readonly )
-                {
-                    if( conn.isReadOnly()==false)
-                    {
-                        conn.setReadOnly(true);
-                        turnOffReadOnly=true;
-                    }
-                }
 
-                if( turnOffReadOnly == false && query )
-                {
-                    turnOffAutoCommit=true;
+                        if( turnOffReadOnly == false && query )
+                        {
+                            turnOffAutoCommit=true;
+                        }
+                        break;
+                    }
+                    catch( Exception e)
+                    {
+                        LOGGER.warn( "Could not turn on readonly for " + conn, e);
+                        LinkManager.killClient(conn);
+
+                        if( attempts > 3) throw e;
+                    }
                 }
             }
 
