@@ -1719,7 +1719,7 @@ public final class StringUtilities
             String utf8 = buffer.toString();
 
             String data = decodeUTF8(utf8);
-
+            assert data!=null;
             return data;
         }
         else if (type.equalsIgnoreCase(COMPRESSION_DEFLATE))
@@ -1749,7 +1749,7 @@ public final class StringUtilities
             String utf8 = buffer.toString();
 
             String data = decodeUTF8(utf8);
-
+            assert data!=null;
             return data;
         }
         else
@@ -3056,7 +3056,7 @@ public final class StringUtilities
      * @param utf8
      * @return the value
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nullable
     public static String decodeUTF8(final @Nullable String utf8)
     {
         if (utf8 == null || isBlank(utf8))
@@ -3082,6 +3082,9 @@ public final class StringUtilities
         {
             return utf8;
         }
+
+        assert checkPossibleUTF8(utf8):utf8;
+
         byte b[] = new byte[utf8.length()];
 
         for (int i = 0; i < b.length; i++)
@@ -3397,13 +3400,13 @@ public final class StringUtilities
      * @return the value
      */
     @CheckReturnValue @Nonnull
-    public static String encodeUTF8(String doubleByteStr)
+    public static String encodeUTF8(final @Nonnull String doubleByteStr)
     {
         if (isBlank(doubleByteStr))
         {
             return doubleByteStr;
         }
-        assert checkUnicode( doubleByteStr): "contains invalid " + doubleByteStr;
+//        assert checkUnicode( doubleByteStr): "contains invalid " + doubleByteStr;
 
         byte array[];
 
@@ -4145,7 +4148,7 @@ public final class StringUtilities
     {
         String utf8=decodeBase64(base64utf8);
         String normal=decodeUTF8(utf8);
-
+        assert normal!=null;
         return normal;
     }
 
@@ -4155,7 +4158,7 @@ public final class StringUtilities
      * @return true if all valid
      */
     @CheckReturnValue
-    public static boolean checkUnicode( final @Nonnull String text)
+    private static boolean checkPossibleUTF8( final @Nonnull String text)
     {
         for( char c : text.toCharArray())
         {

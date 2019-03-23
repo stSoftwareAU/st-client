@@ -45,7 +45,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.regex.Pattern;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -87,7 +86,7 @@ public class TestStringUtilities extends TestCase
     public static void main(String[] args)
     {
         Test test = suite();
-//        test = TestSuite.createTest(TestStringUtilities.class, "testLikeBad");
+//        test = TestSuite.createTest(TestStringUtilities.class, "testRangeUTF8");
         TestRunner.run(test);
         QueueLog.flush(60000);
     }
@@ -2130,6 +2129,26 @@ public class TestStringUtilities extends TestCase
             }
         }
     }
+    
+    /**
+     * Tests base64 string encode/decode with utf-8
+     * @throws Exception a test failure
+     */
+    public void testUnicodeSmileyFace() throws Exception
+    {
+        String symbol =new String(Character.toChars( 0x1f600));
+
+        String utf8 = StringUtilities.encodeUTF8( symbol);
+
+        String encoded = StringUtilities.encodeBase64( utf8);
+        String decoded = StringUtilities.decodeBase64( encoded);
+
+        assertEquals("decoded base 64", utf8, decoded);
+
+        String result = StringUtilities.decodeUTF8( decoded);
+
+        assertEquals("decoded UTF8", symbol, result);
+    }
 
     /**
      * Tests base64 string encode/decode with utf-8
@@ -2169,25 +2188,26 @@ public class TestStringUtilities extends TestCase
         //boolean fail=false;
         for( Character c=0; c < Character.MAX_VALUE;c++)
         {
-            char a[]={c};
-            String s=new String( a);
-            if( StringUtilities.checkUnicode(s))
+            if( Character.isSurrogate(c)) continue;
+            
+            String s=new String( Character.toChars(c));
+            String utf8 = StringUtilities.encodeUTF8(s);
+            String decode = StringUtilities.decodeUTF8(utf8);
+
+            if( s.equals(decode) == false)
             {
-                String utf8 = StringUtilities.encodeUTF8(s);
-                String decode = StringUtilities.decodeUTF8(utf8);
+                String msg=(int)c + " " + Integer.toHexString(c) + " FAIL";
+                fail(  msg);
 
-                if( s.equals(decode) == false)
-                {
-                    fail( (int)c + " " + Integer.toHexString(c) + " FAIL" );
-                }
+            }
 
-                String base64utf8 = StringUtilities.encodeUTF8base64(s);
-                decode = StringUtilities.decodeUTF8base64(base64utf8);
+            String base64utf8 = StringUtilities.encodeUTF8base64(s);
+            decode = StringUtilities.decodeUTF8base64(base64utf8);
 
-                if( s.equals(decode) == false)
-                {
-                    fail( (int)c + " " + Integer.toHexString(c) + " FAIL" );
-                }
+            if( s.equals(decode) == false)
+            {
+                String msg=(int)c + " " + Integer.toHexString(c) + " FAIL";
+                fail(  msg);
             }
         }
     }
@@ -2218,10 +2238,11 @@ public class TestStringUtilities extends TestCase
         //boolean fail=false;
         for( Character c=0; c < Character.MAX_VALUE;c++)
         {
-            char a[]={c};
-            String s=new String( a);
-            if( StringUtilities.checkUnicode(s))
-            {
+            if( Character.isSurrogate(c)) continue;
+//            char a[]={c};
+            String s=new String( Character.toChars(c));
+//            if( StringUtilities.checkUnicode(s))
+//            {
                 ByteBuffer encode = StandardCharsets.UTF_8.encode(s);
                 String decode = StandardCharsets.UTF_8.decode(encode).toString();
 
@@ -2230,7 +2251,7 @@ public class TestStringUtilities extends TestCase
                     fail( (int)c + " " + Integer.toHexString(c) + " FAIL" );
                 }
             }
-        }
+//        }
     }
 
     /**
@@ -2238,24 +2259,24 @@ public class TestStringUtilities extends TestCase
      *
      * @throws Exception a test failure
      */
-    public void testInjectionStringValid() throws Exception
-    {
-        HashSet<String> set=new HashSet();
-        
-        String[] sqlInjectionStrings = DBTestUnit.getSQLInjectionStrings();
-
-        for( String injectionString: sqlInjectionStrings)
-        {
-//            if( String)
-            if(set.contains(injectionString))
-            {
-                fail( "duplicate: " + injectionString);
-            }
-            set.add(injectionString);
-            
-            assertTrue(injectionString, StringUtilities.checkUnicode(injectionString));
-        }
-    }
+//    public void testInjectionStringValid() throws Exception
+//    {
+//        HashSet<String> set=new HashSet();
+//        
+//        String[] sqlInjectionStrings = DBTestUnit.getSQLInjectionStrings();
+//
+//        for( String injectionString: sqlInjectionStrings)
+//        {
+////            if( String)
+//            if(set.contains(injectionString))
+//            {
+//                fail( "duplicate: " + injectionString);
+//            }
+//            set.add(injectionString);
+//            
+//            assertTrue(injectionString, StringUtilities.checkUnicode(injectionString));
+//        }
+//    }
 
 
     /**

@@ -41,7 +41,12 @@
         <dependency org="com.googlecode.htmlcompressor" name="htmlcompressor" rev="1.5.2" conf="runtime->master"/>
 
         <dependency org="com.lowagie" name="itext" rev="2.1.7" conf="runtime->master"/>
-        <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.4" conf="runtime->master"/>
+        <!--<dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.4" conf="runtime->master"/>-->
+        <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+        <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.5.6" conf="runtime->master">
+            <artifact name="groovy-all" type="pom" ext="pom"/>
+        </dependency>
+
         <dependency org="org.apache.activemq" name="activemq-client" rev="5.15.8"/>
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->master"/>
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.26" conf="runtime->master"/>
@@ -102,7 +107,6 @@
         <dependency org="net.sf.jtidy" name="jtidy" rev="r938" conf="runtime->master"/>
         <dependency org="nu.validator.htmlparser" name="htmlparser" rev="1.4" conf="runtime->master"/>
         <dependency org="javax.xml" name="jaxrpc-api" rev="1.1" conf="runtime->master"/>
-        <!--<dependency org="javax.xml" name="jaxrpc-api" rev="1.1.3"/>-->
         
         <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.0-rc1"/>
