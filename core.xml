@@ -239,14 +239,14 @@
                 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:PrintCMSStatistics=1 -XX:+PrintGCApplicationStoppedTime
                 http://www.slideshare.net/SimoneBordet/g1-garbage-collector-details-and-tuning
         -->
-        <delete file="${LOG_DIR}/gc/${APP_NAME}.log" failonerror="false"/>
+        <!--<delete file="${LOG_DIR}/gc/${APP_NAME}.log" failonerror="false"/>-->
         <move file="${_error_file}" tofile="${LOG_DIR}/${APP_NAME}.hotspot.bak" overwrite="true" quiet="true" failonerror="false" />
         <delete file="${_error_file}" failonerror="false"/>
         
 <!--        <move file="${_hprof_file}" tofile="${LOG_DIR}/${APP_NAME}.hprof.bak" overwrite="true" quiet="true" failonerror="false" />
         <delete file="${__hprof_file}" failonerror="false"/>-->
         
-        <mkdir dir="${LOG_DIR}/gc"/>
+        <!--<mkdir dir="${LOG_DIR}/gc"/>-->
         
         <!--
         Crash on Out Of Memory Error 
@@ -285,7 +285,8 @@
         
         <!--<property name="DEBUG_ARGS" value="-XX:+PrintStringDeduplicationStatistics -XX:+PrintFlagsFinal "/>-->
         <property name="DEBUG_ARGS" value=""/>
-        <property name="TRACE_ARGS" value="-verbose:gc -XX:-PrintCommandLineFlags  ${DEBUG_ARGS} -Xloggc:${LOG_DIR}/gc/${APP_NAME}.log ${ON_ERROR}"/>
+        <property name="TRACE_ARGS" value="${DEBUG_ARGS} ${ON_ERROR}"/>
+        <!--<property name="TRACE_ARGS" value="-verbose:gc -XX:-PrintCommandLineFlags  ${DEBUG_ARGS} -Xloggc:${LOG_DIR}/gc/${APP_NAME}.log ${ON_ERROR}"/>-->
 
         <!--
             JMX Arguments
