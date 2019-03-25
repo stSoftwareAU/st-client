@@ -164,6 +164,7 @@ public final class ServerSecurityManager extends SecurityManager
                     name.startsWith("accessClassInPackage.sun.util.resources")||
                     name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm")||
                     name.startsWith("accessClassInPackage.jdk.internal.misc")||
+                    name.equals("accessSystemModules") ||
                     name.equals("accessDeclaredMembers")
                 )
                 {
