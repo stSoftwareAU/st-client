@@ -21,12 +21,16 @@
         <property name="LOG_DIR" value="${log.dir}"/>
         <!-- Memory over 4 gigs requires 64 bit mode -->
         <condition property="MEM_MODE" value="-d64 ">
-            <or>
-                <matches pattern="[4-9]G" string="${MAX_MEMORY}" casesensitive="false"/>
-                <matches pattern="[0-9]+[0-9]G" string="${MAX_MEMORY}" casesensitive="false"/>
-                <matches pattern="[4-9][0-9][0-9][0-9]M" string="${MAX_MEMORY}" casesensitive="false"/>
-                <matches pattern="[0-9]+[0-9][0-9][0-9][0-9]M" string="${MAX_MEMORY}" casesensitive="false"/>
-            </or>
+            <and>
+                <!-- http://bugs.java.com/view_bug.do?bug_id=JDK-8180286 -->
+                <equals arg1="${ant.java.version}" arg2="1.8"/>
+                <or>
+                    <matches pattern="[4-9]G" string="${MAX_MEMORY}" casesensitive="false"/>
+                    <matches pattern="[0-9]+[0-9]G" string="${MAX_MEMORY}" casesensitive="false"/>
+                    <matches pattern="[4-9][0-9][0-9][0-9]M" string="${MAX_MEMORY}" casesensitive="false"/>
+                    <matches pattern="[0-9]+[0-9][0-9][0-9][0-9]M" string="${MAX_MEMORY}" casesensitive="false"/>
+                </or>
+            </and>
         </condition>
         <property name="MEM_MODE" value=""/>
 

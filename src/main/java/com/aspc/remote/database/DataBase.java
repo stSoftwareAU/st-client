@@ -1328,7 +1328,18 @@ public class DataBase
                     "Connecting " + key,
                     null
                 );
-                connect( );
+                try{
+                    connect( );
+                }
+                catch( SQLRecoverableException re)
+                {
+                    CLogger.schedule(
+                        LOGGER,
+                        "warn",
+                        "Connecting " + key,
+                        re
+                    );                    
+                }
             }
         }
         assert connection!=null: "must have a connection";

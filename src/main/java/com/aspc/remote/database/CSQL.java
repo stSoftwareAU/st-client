@@ -484,7 +484,30 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 try
                 {
                     threadConn.commit();
-                    threadConn.setAutoCommit( true);
+
+                    for( int attempts=0;true;attempts++)
+                    {
+                        try{
+                            threadConn.setAutoCommit( true);
+                            break;
+                        }
+                        catch( SQLRecoverableException re)
+                        {
+                            if( attempts <6 )
+                            {
+                                CLogger.schedule(
+                                    LOGGER,
+                                    "warn",
+                                    "resetting auto commit",
+                                    re
+                                );
+                            }
+                            else
+                            {
+                                throw re;
+                            }
+                        }
+                    }
 
                     current.remove( dataBase);
                     dataBase.checkInConnection(threadConn);
@@ -763,7 +786,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
         executeSql( inSql, false);
     }
 
-    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "null", "UseSpecificCatch"})
+    @SuppressWarnings({"BroadCatchBlock", "TooBroadCatch", "null", "UseSpecificCatch", "SleepWhileInLoop"})
     private void executeSql( final Object inObj, final boolean query) throws SQLException
     {
         if( Thread.currentThread().isInterrupted())
@@ -870,7 +893,9 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 throw new Exception( "Error (CSQL) - No data base connection");
             }
 
-            String dbType = dataBase.getType();
+            String type = dataBase.getType();
+
+//            String dbType = dataBase.getType();
             if( turnOffAutoCommit)
             {
                 conn.setAutoCommit(false);
@@ -894,10 +919,14 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 stmt = conn.createStatement();
             }
 
-//            if (!dbType.equalsIgnoreCase(DataBase.TYPE_POSTGRESQL))
-//            {
-                stmt.setQueryTimeout(queryTimeOutSeconds);
-//            }
+            if (queryTimeOutSeconds>0)
+            {
+//                if( type.startsWith( DataBase.TYPE_MYSQL) == false)
+//                {
+                    // Causing NullPointerException com.mysql.cj.AbstractQuery.stopQueryTimer as of 2 April 2019
+                    stmt.setQueryTimeout(queryTimeOutSeconds);
+//                }
+            }
             theSql  = (String)inObj;
 
             String aSql = theSql.trim();
@@ -916,7 +945,6 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 aSql = removeComments( aSql);
             }
 
-            String type = dataBase.getType();
 
             if( type.equals( DataBase.TYPE_SYBASE) == true)
             {
@@ -1083,13 +1111,37 @@ public final class CSQL extends SResultSet implements ResultsLoader
         {
             if( realError == false)
             {
-                if( turnOffAutoCommit )
+                for( int attempts=0;true;attempts++)
                 {
-                    conn.setAutoCommit(true);
-                }
-                if( turnOffReadOnly)
-                {
-                    conn.setReadOnly(false);
+                    try{
+                        if( turnOffAutoCommit )
+                        {
+                            conn.setAutoCommit(true);
+                        }
+                        if( turnOffReadOnly)
+                        {
+                            conn.setReadOnly(false);
+                        }
+
+                        break;
+                    }
+                    catch( SQLRecoverableException re)
+                    {
+                        if( attempts>5)
+                        {
+                            LOGGER.error( "could not reset after " + attempts + " attempts", re);
+                            break;
+                        }
+                        else
+                        {
+                            LOGGER.warn( "retrying reset", re);
+                            try {
+                                Thread.sleep((long) (100 * Math.random() + 1));
+                            } catch (InterruptedException ex) {
+                                LOGGER.warn( "retrying reset", ex);
+                            }
+                        }
+                    }
                 }
             }
             close(stmt);
@@ -1921,24 +1973,38 @@ public final class CSQL extends SResultSet implements ResultsLoader
      * @return the first warning
      */
     @CheckReturnValue @Nullable
+    @SuppressWarnings("SleepWhileInLoop")
     public SQLWarning getFirstWarning( final @Nonnull Statement stmt) throws Exception
     {
-        SQLWarning warn;
-
-        warn = stmt.getWarnings();
-        if( dataBase.getType().startsWith( DataBase.TYPE_MSSQL) == false)
+        for( int attempts=0; true;attempts++)
         {
-            return warn;
-        }
+            try{
+                SQLWarning warn;
 
-        while( warn != null)
-        {
-            if( warn.getErrorCode() != 0)
-            {
-                return warn;
+                warn = stmt.getWarnings();
+                if( dataBase.getType().startsWith( DataBase.TYPE_MSSQL) == false)
+                {
+                    return warn;
+                }
+
+                while( warn != null)
+                {
+                    if( warn.getErrorCode() != 0)
+                    {
+                        return warn;
+                    }
+                    warn = warn.getNextWarning();
+
+                }
+
+                break;
             }
-            warn = warn.getNextWarning();
-
+            catch( SQLRecoverableException re)
+            {
+                if( attempts>6) throw re;
+                LOGGER.warn( "could not get warning", re);
+                Thread.sleep((long) (100 * Math.random() + 1));
+            }
         }
         return null;
     }
