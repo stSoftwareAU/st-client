@@ -628,7 +628,10 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 {
                     if( conn.getAutoCommit()==false)
                     {
-                        conn.rollback();
+                        if( conn.isClosed()==false)
+                        {
+                            conn.rollback();
+                        }
                     }
                 }
                 catch( SQLException e)
@@ -1526,10 +1529,12 @@ public final class CSQL extends SResultSet implements ResultsLoader
 
         String currentStatement="UNKNOWN";
         PreparedStatementHolder tmpHolder=null;
+        Connection conn=null;
         try
         {
             int rows[]={};
             rowCount=0;
+            conn=batchStatement.getConnection();
             currentStatement=batchStatementText.toString();
             if( StringUtilities.isBlank(currentStatement)==false)
             {
@@ -1542,7 +1547,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
                     tCount += rows[i];
                 }
                 rowCount +=tCount;
-                recordTime( currentStatement, start, batchStatement.getConnection(), null, tCount, dataBase);
+                recordTime( currentStatement, start, conn, null, tCount, dataBase);
             }
 
             if( preparedStatementMap != null )
@@ -1568,7 +1573,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
                             tCount += pRows[i];
                         }
                         rowCount +=tCount;
-                        recordTime( currentStatement, pStart, batchStatement.getConnection(), null, tCount, dataBase);
+                        recordTime( currentStatement, pStart, conn, null, tCount, dataBase);
 
                         holder.preparedStatement.close();
                     }
@@ -1591,7 +1596,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 sb.append(" */");
             }
 
-            recordTime( sb.toString(), start, batchStatement.getConnection(), e);
+            recordTime( sb.toString(), start, conn, e);
 
             if( e instanceof SQLException)//NOPMD
             {
@@ -1647,7 +1652,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
                 );
             }
 
-            iRollback(batchStatement.getConnection());
+            iRollback(conn);
 
             throw sqlException;
         }
