@@ -1234,7 +1234,7 @@ public final class MemoryManager
 
                     if( wf == null)
                     {
-                        throw new RuntimeException("ERROR: Tail ment head");
+                        throw new RuntimeException("ERROR: Tail met head");
                     }
 
                     System.gc();
