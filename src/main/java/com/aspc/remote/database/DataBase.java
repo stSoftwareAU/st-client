@@ -668,7 +668,7 @@ public class DataBase
         Lap start=new Lap();
 
         String jdbcURL = "";
-        Connection connection;//NOPMD
+        Connection connection=null;
 
         Properties props = new Properties();
 
@@ -841,7 +841,17 @@ public class DataBase
             {
                 throw new SQLException( displayDriverInfo() + " does not accept " + StringUtilities.stripPasswordFromURL(jdbcURL));
             }
-            connection = driver.connect( jdbcURL, props );
+            for( int attempts=0;attempts<3;attempts++)
+            {
+                try{            
+                    connection = driver.connect( jdbcURL, props );
+                    break;
+                }
+                catch( SQLRecoverableException sre)
+                {
+                    LOGGER.warn( jdbcURL, sre);
+                }
+            }
             if( connection == null)
             {
                 throw new SQLException( displayDriverInfo() + " did not return a connection");

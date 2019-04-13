@@ -749,7 +749,7 @@ public final class TableUtil
      *
      * @param name our function name
      *
-     * @return the sql function name.
+     * @return the SQL function name.
      */
     @CheckReturnValue @Nonnull
     public String getSQLFunction( final @Nonnull String name)
@@ -883,11 +883,6 @@ public final class TableUtil
                 r=null;
                 CSQL.recordTime( "getTables( null, " + schema + ",%,{TABLE})", start, connection, null, tables.size(), dBase);
 
-                synchronized( this)
-                {
-                    holder[0] = tables;
-                }
-
                 dBase.checkInConnection( connection);
                 connection=null;
             }
@@ -903,6 +898,11 @@ public final class TableUtil
                 }
 
                 LinkManager.killClient( connection);
+            }
+                        
+            synchronized( this)
+            {
+                holder[0] = tables;
             }
         }
 
