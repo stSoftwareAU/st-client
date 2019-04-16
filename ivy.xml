@@ -18,16 +18,16 @@
         <dependency org="com.allen-sauer.gwt.dnd" name="gwt-dnd" rev="3.3.4" conf="runtime->master"/>
         <dependency org="com.googlecode.gwtquery" name="gwtquery" rev="1.4.3" conf="runtime->master"/>
         
-<!--         https://mvnrepository.com/artifact/org.sonatype.oss/oss-parent 
+        <!--         https://mvnrepository.com/artifact/org.sonatype.oss/oss-parent 
         <dependency org="org.sonatype.oss" name="oss-parent" rev="4">
             <artifact name="oss-parent" type="pom" ext="pom"/>
         </dependency>-->
-                <dependency org="javax.servlet" name="javax.servlet-api" rev="4.0.1"/>
+        <dependency org="javax.servlet" name="javax.servlet-api" rev="4.0.1"/>
         <!--<dependency org="com.extjs" name="gxt" rev="2.3.1-gwt22"/>-->
         <!-- https://mvnrepository.com/artifact/com.google.gwt/gwt-user -->
         <dependency org="com.google.gwt" name="gwt-user" rev="2.8.2" conf="runtime->master"/>
 
-         <!--https://mvnrepository.com/artifact/com.google.gwt/gwt-servlet--> 
+        <!--https://mvnrepository.com/artifact/com.google.gwt/gwt-servlet--> 
         <dependency org="com.google.gwt" name="gwt-servlet" rev="2.8.2" conf="runtime->master"/>      
         
         <!--<dependency org="com.google.gwt" name="gwt-user" rev="2.7.0" conf="runtime->master"/>-->
@@ -41,13 +41,13 @@
         <dependency org="com.googlecode.htmlcompressor" name="htmlcompressor" rev="1.5.2" conf="runtime->master"/>
 
         <dependency org="com.lowagie" name="itext" rev="2.1.7" conf="runtime->master"/>
-<!--        <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.4" conf="runtime->master"/>-->
+        <!--        <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.4.4" conf="runtime->master"/>-->
         <!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
         <dependency org="org.codehaus.groovy" name="groovy-all" rev="2.5.6" conf="runtime->master">
             <artifact name="groovy-all" type="pom" ext="pom"/>
         </dependency>
 
-        <dependency org="org.apache.activemq" name="activemq-client" rev="5.15.8"/>
+        <dependency org="org.apache.activemq" name="activemq-client" rev="5.15.9"/>
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->master"/>
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.26" conf="runtime->master"/>
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="runtime->master"/>
@@ -112,7 +112,7 @@
         <dependency org="com.sun.mail" name="javax.mail" rev="1.6.0-rc1"/>
 
 
-<!--        <dependency org="org.apache.lucene" name="lucene-core" rev="7.4.0" conf="runtime->master"/>
+        <!--        <dependency org="org.apache.lucene" name="lucene-core" rev="7.4.0" conf="runtime->master"/>
         <dependency org="org.apache.lucene" name="lucene-highlighter" rev="7.4.0" conf="runtime->master"/>
         -->
         <dependency org="commons-cli" name="commons-cli" rev="1.3.1" conf="runtime->master"/>
@@ -122,7 +122,7 @@
         <dependency org="wsdl4j" name="wsdl4j" rev="1.6.2" conf="runtime->master"/>
         
         <!--dependency org="com.github.jknack" name="handlebars" rev="4.0.1" conf="runtime->master"/-->
-<!--<dependency org="ar.com.fdvs" name="DynamicJasper" rev="5.0.3" conf="runtime->master"/>-->
+        <!--<dependency org="ar.com.fdvs" name="DynamicJasper" rev="5.0.3" conf="runtime->master"/>-->
         <dependency org="concurrent" name="concurrent" rev="1.3.4" conf="runtime->master"/>
         
         <dependency org="commons-net" name="commons-net" rev="3.3" conf="runtime->master"/>
@@ -142,7 +142,7 @@
         <!-- https://mvnrepository.com/artifact/log4j/apache-log4j-extras -->
         <dependency org="log4j" name="apache-log4j-extras" rev="1.2.17"/>
 
-<!--         OUT DATED 
+        <!--         OUT DATED 
         <dependency org="log4j" name="log4j" rev="1.2.17" conf="runtime->master"/>
         -->
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="runtime->master"/>
@@ -194,7 +194,7 @@
         <dependency org="org.hectorclient" name="hector-core" rev="2.0-0" conf="runtime->master"/>
 
         <!-- Tests ONLY -->
-        <dependency org="com.puppycrawl.tools" name="checkstyle" rev="6.9" conf="tests->master"/>
+        <dependency org="com.puppycrawl.tools" name="checkstyle" rev="8.18" conf="tests->master"/>
         <dependency org="junit" name="junit" rev="4.12" conf="tests->master"/>
         <dependency org="org.httpunit" name="httpunit" rev="1.7.2" conf="tests->master"/>
         <dependency org="net.sourceforge.htmlunit" name="htmlunit" rev="2.17" conf="tests->master"/>
@@ -214,60 +214,62 @@
         <!--<dependency org="org.seleniumhq.selenium" name="selenium-java" rev="3.0.1" conf="tests->master"/>-->
         
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-remote-driver -->
-<!--<dependency org="org.seleniumhq.selenium" name="selenium-remote-driver" rev="3.0.1"  conf="tests->master"/>-->
-<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
-<!--<dependency org="org.seleniumhq.selenium" name="selenium-chrome-driver" rev="3.0.1"  conf="tests->master"/>-->
+        <!--<dependency org="org.seleniumhq.selenium" name="selenium-remote-driver" rev="3.0.1"  conf="tests->master"/>-->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
+        <!--<dependency org="org.seleniumhq.selenium" name="selenium-chrome-driver" rev="3.0.1"  conf="tests->master"/>-->
 
-<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
-<!--<dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="3.0.1"/>-->
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
+        <!--<dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="3.0.1"/>-->
 
         <dependency org="com.tectonica" name="jonix" rev="8.0.1" />
         
-<!--         https://mvnrepository.com/artifact/com.oracle/ojdbc14 
+        <!--         https://mvnrepository.com/artifact/com.oracle/ojdbc14 
         <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.4.0"/>-->
 
-    <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sns -->
-    <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.431"/>
-    <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.431"/>
-    <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core -->
-    <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.431"/>
-    <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-api-gateway -->
-    <dependency org="com.amazonaws" name="aws-java-sdk-api-gateway" rev="1.11.431"/>
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sns -->
+        <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.431"/>
+        <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.431"/>
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core -->
+        <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.431"/>
+        <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-api-gateway -->
+        <dependency org="com.amazonaws" name="aws-java-sdk-api-gateway" rev="1.11.431"/>
 
     
-    <!--<dependency org="com.amazonaws" name="aws-java-sdk-secretsmanager" rev="1.11.402"/>-->
+        <!--<dependency org="com.amazonaws" name="aws-java-sdk-secretsmanager" rev="1.11.402"/>-->
 
-    <!--<dependency org="com.amazonaws" name="amazon-sqs-java-messaging-lib" rev="1.0.4"/>-->
-    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-    <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1"/>
-    <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
-    <dependency org="joda-time" name="joda-time" rev="2.9.9"/>    
+        <!--<dependency org="com.amazonaws" name="amazon-sqs-java-messaging-lib" rev="1.0.4"/>-->
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1"/>
+        <!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+        <dependency org="joda-time" name="joda-time" rev="2.9.9"/>    
 
-    <!-- <dependency>
-    <groupId>com.amazonaws</groupId>
-    <artifactId>amazon-sqs-java-messaging-lib</artifactId>
-    <version>1.0.4</version>
-    <type>jar</type>
-  </dependency>-->
+        <!-- <dependency>
+          <groupId>com.amazonaws</groupId>
+          <artifactId>amazon-sqs-java-messaging-lib</artifactId>
+          <version>1.0.4</version>
+          <type>jar</type>
+        </dependency>-->
   
-  <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
-    <dependency org="javax.xml.ws" name="jaxws-api" rev="2.3.1"/>
-    <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-    <dependency org="javax.xml.bind" name="jaxb-api" rev="2.4.0-b180830.0359"/>
-    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
-    <!--<dependency org="org.openjfx" name="javafx-swing" rev="1.3.0"/>-->
-    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
-    <!--<dependency org="org.openjfx" name="javafx-base" rev="1.3.0" />-->
-    <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
-    <!--<dependency org="org.openjfx" name="javafx-web" rev="1.3.0"/>-->
-    <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
-    <dependency org="javax.activation" name="activation" rev="1.1.1"/>
-    <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
-    <dependency org="javax.xml.soap" name="javax.xml.soap-api" rev="1.4.0"/>
-    <!-- https://mvnrepository.com/artifact/javax.jws/javax.jws-api -->
-    <dependency org="javax.jws" name="javax.jws-api" rev="1.1"/>
-<!-- https://mvnrepository.com/artifact/javafx/javafx-common -->
-<!--<dependency org="javafx" name="javafx-common" rev="1.3.0"/>-->
+        <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
+        <dependency org="javax.xml.ws" name="jaxws-api" rev="2.3.1"/>
+        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+        <dependency org="javax.xml.bind" name="jaxb-api" rev="2.4.0-b180830.0359"/>
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-swing -->
+        <!--<dependency org="org.openjfx" name="javafx-swing" rev="1.3.0"/>-->
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-base -->
+        <!--<dependency org="org.openjfx" name="javafx-base" rev="1.3.0" />-->
+        <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
+        <!--<dependency org="org.openjfx" name="javafx-web" rev="1.3.0"/>-->
+        <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
+        <dependency org="javax.activation" name="activation" rev="1.1.1"/>
+        <!-- https://mvnrepository.com/artifact/javax.xml.soap/javax.xml.soap-api -->
+        <dependency org="javax.xml.soap" name="javax.xml.soap-api" rev="1.4.0"/>
+        <!-- https://mvnrepository.com/artifact/javax.jws/javax.jws-api -->
+        <dependency org="javax.jws" name="javax.jws-api" rev="1.1"/>
+        <!-- https://mvnrepository.com/artifact/javafx/javafx-common -->
+        <!--<dependency org="javafx" name="javafx-common" rev="1.3.0"/>-->
 
+    
+        <dependency org="com.github.stSoftwareAU" name="st-sign-url" rev="1.1.2"/>
     </dependencies>
 </ivy-module>

@@ -31,7 +31,12 @@ import javax.annotation.Nullable;
 public class LargeLongArray
 {
     private static final boolean ASSERT;
-        
+
+    /**
+     * The default number of longs per segment.
+     */
+    public static final int DEFAULT_SEGMENT_SIZE;
+
     private long[] lastSegment;
     private long lastOffset;
 
@@ -170,6 +175,18 @@ public class LargeLongArray
         void sanityNewArray();
     }
     
+    static {
+        int tmpSize=MemoryManager.jvmG1HeapRegionSize()/64;
+        assert tmpSize > 1024:"default segment size too small was: " + tmpSize;
+        if( tmpSize>1024)
+        {
+            DEFAULT_SEGMENT_SIZE=tmpSize;
+        }
+        else
+        {
+            DEFAULT_SEGMENT_SIZE=1024;
+        }
+    }
     /**
      * The long array builder. 
      */
@@ -180,7 +197,6 @@ public class LargeLongArray
         private boolean checkIfUnique;
         private boolean assertIfZero;
         private boolean assertIfUnique;
-        public static final int DEFAULT_SEGMENT_SIZE=MemoryManager.jvmG1HeapRegionSize()/64;
         private int segmentSize=DEFAULT_SEGMENT_SIZE;
         private boolean inputShared=true;
         private boolean outputShared=true;
