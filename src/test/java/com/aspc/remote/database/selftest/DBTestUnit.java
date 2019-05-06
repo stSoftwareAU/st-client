@@ -119,6 +119,7 @@ public abstract class DBTestUnit extends TestCase
         return new String[] {
             
             "\"&amp;%00<!--\\'';你好", // Always try this one even if done manually. 
+            "’所", //both of these chars contain 0x80 which is a control character, but they should NOT be treated as a control character
             "\u0000", //Null
             "\u0001",
             "\u0002\u0003\u0004\u0005\u0006\u0007\u0008",
