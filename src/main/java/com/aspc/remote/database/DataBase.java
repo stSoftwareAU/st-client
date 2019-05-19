@@ -1291,7 +1291,45 @@ public class DataBase
         {
             try
             {
-                connection = (Connection)LinkManager.checkOutClient( key);
+                for( int attempts=0;attempts<6;attempts++)
+                {
+                    connection = (Connection)LinkManager.checkOutClient( key);
+                    
+                    
+                    if( connection != null)
+                    {
+                        try{
+                            if( connection.isValid(30))
+                            {
+                                break;
+                            }
+                        }
+                        catch( SQLException sqlE)
+                        {
+                            CLogger.schedule(
+                              LOGGER,
+                              "warn",
+                              key + " faild validation check",
+                              sqlE
+                            );
+                        }
+                        
+                        try{
+                            connection.close();
+                        }
+                        catch( SQLException sqlE)
+                        {
+                            CLogger.schedule(
+                              LOGGER,
+                              "warn",
+                              key + " could not close",
+                              sqlE
+                            );
+                        }
+                        LinkManager.removeClient(connection);
+                    }                        
+                    break;
+                }
             }
             catch( NoLinksException nl)
             {
