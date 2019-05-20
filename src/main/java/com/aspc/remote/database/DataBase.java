@@ -1328,7 +1328,6 @@ public class DataBase
                         }
                         LinkManager.removeClient(connection);
                     }                        
-                    break;
                 }
             }
             catch( NoLinksException nl)
