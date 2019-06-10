@@ -36,6 +36,9 @@ package com.aspc.remote.database.internal.wrapper;
 import com.aspc.developer.ThreadCop;
 import com.aspc.remote.jdbc.SoapSQLException;
 import com.aspc.remote.util.misc.CLogger;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.Reference;
+import java.lang.ref.ReferenceQueue;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -52,6 +55,7 @@ import org.apache.commons.logging.Log;
  * @author  Nigel Leck
  * @since 29 September 2006
  */
+@SuppressWarnings("AssertWithSideEffects")
 public class WrapperConnection implements Connection
 {
     public final Connection connection;
@@ -59,17 +63,39 @@ public class WrapperConnection implements Connection
 
     private RuntimeException alreadyClosedException;
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.database.internal.wrapper.WrapperConnection");//#LOGGER-NOPMD
-
+    private final ConnectionReference reference;
+    private static final ReferenceQueue QUEUE=new ReferenceQueue();
+    
+    private static final boolean ASSERT;
     /**
      * JDBC via SOAP
      *
      * @param connection the connection
      * @throws Exception a serious problem
      */
-    public WrapperConnection(final Connection connection) throws Exception
+    public WrapperConnection(final @Nonnull Connection connection) throws Exception
     {
         this.connection=connection;
 
+        if( ASSERT)
+        {
+            reference=new ConnectionReference( this, QUEUE);
+            
+            while( true)
+            {
+                Reference ref = QUEUE.poll();
+                
+                if( ref == null) break;
+                
+                ConnectionReference checkReference=(ConnectionReference)ref;
+                
+                checkReference.check();
+            }
+        }
+        else
+        {
+            reference=null;
+        }
     }
 
     @Override @CheckReturnValue @Nonnull
@@ -236,7 +262,12 @@ public class WrapperConnection implements Connection
     @Override
     public void close() throws SQLException
     {
+        if( alreadyClosedException !=null) throw alreadyClosedException;
+        
         alreadyClosedException=new RuntimeException( "closed by thread " + Thread.currentThread());
+        
+        if( reference !=null ) reference.close();
+        
         connection.close();
     }
 
@@ -584,5 +615,34 @@ public class WrapperConnection implements Connection
     {
         checkValid();
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    class ConnectionReference extends PhantomReference<WrapperConnection>{
+
+        private AssertionError error;
+        public ConnectionReference(WrapperConnection referent, ReferenceQueue<? super WrapperConnection> q) {
+            super(referent, q);
+            
+            error = new AssertionError(referent + " never closed");
+        }
+
+        public void close()
+        {
+            error=null;
+        }
+        public void check()
+        {
+            if( error !=null)
+            {
+                throw error;
+            }
+        }
+    }
+  
+    static{
+        boolean enabled=false;
+        assert enabled=true;
+        
+        ASSERT=enabled;
     }
 }
