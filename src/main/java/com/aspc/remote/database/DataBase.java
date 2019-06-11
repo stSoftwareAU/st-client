@@ -1291,10 +1291,9 @@ public class DataBase
         {
             try
             {
-                for( int attempts=0;attempts<6;attempts++)
+                for( int attempts=0;attempts<10;attempts++)
                 {
-                    connection = (Connection)LinkManager.checkOutClient( key);
-                    
+                    connection = (Connection)LinkManager.checkOutClient( key);                    
                     
                     if( connection != null)
                     {
@@ -1327,6 +1326,7 @@ public class DataBase
                             );
                         }
                         LinkManager.removeClient(connection);
+                        connection=null;
                     }                        
                 }
             }

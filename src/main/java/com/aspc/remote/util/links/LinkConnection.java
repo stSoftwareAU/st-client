@@ -48,6 +48,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.annotation.CheckReturnValue;
+import javax.annotation.Nonnegative;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -77,7 +78,7 @@ public class LinkConnection
     private final long birthMS=System.currentTimeMillis();
     
     private boolean markedAsClosed;
-    private final LinkType type;
+    private final @Nonnull LinkType type;
     private final ReadWriteLock rw=new ReentrantReadWriteLock();
     
     private static final AtomicLong COUNTER=new AtomicLong();
@@ -91,6 +92,7 @@ public class LinkConnection
      */
     public LinkConnection( final @Nonnull LinkType lt, final @Nonnull Object client) throws Exception
     {
+        assert lt!=null;
         if( client == null) 
         {
             throw new IllegalArgumentException( "Must not be null client");
@@ -99,7 +101,7 @@ public class LinkConnection
         lastAccess = System.currentTimeMillis();
         maxIdleSeconds = -1;
         this.client = client;
-        id = "" + COUNTER.incrementAndGet();
+        id = Long.toString(COUNTER.incrementAndGet());
     }
 
     /**
@@ -117,9 +119,10 @@ public class LinkConnection
      * the number of times this connection has been checked out. 
      * @return the count.
      */
-    @CheckReturnValue
+    @CheckReturnValue @Nonnegative
     public long getCheckOutCount()
     {
+        assert checkedOutCounter>=0: "Should be non negative was: " + checkedOutCounter;
         return checkedOutCounter;
     }
 
@@ -185,8 +188,8 @@ public class LinkConnection
             checkedOutTime = now;
             lastAccess = checkedOutTime;
             checkedOutCounter++;
-            checkedOut.put( client, this);
-
+            LinkConnection shouldBeNull=checkedOut.put( client, this);
+            assert shouldBeNull==null: "Should not have replaced a currently checked out: " + client;
             return true;
         }
         finally
