@@ -107,18 +107,18 @@ public class TestGroup extends DBTestUnit
 
         for( int i=0; i<10;i++)
         {
-            LinkManager.addConnection("TEST_TYPE1", new LinkConnection(lt1, ""));
+            LinkManager.addConnection("TEST_TYPE1", new LinkConnection(lt1, "Connection a" + String.valueOf(i)));
         }
 
         for( int i=0; i<10;i++)
         {
-            LinkConnection lc = new LinkConnection(lt1, "");
+            LinkConnection lc = new LinkConnection(lt1, "Connection b" + String.valueOf(i));
             LinkManager.addConnection("TEST_TYPE1", lc);
         }
 
         for( int i=0; i<20;i++)
         {
-            LinkManager.addConnection("TEST_TYPE2", new LinkConnection(lt2, ""));
+            LinkManager.addConnection("TEST_TYPE2", new LinkConnection(lt2, "Connection c" + String.valueOf(i)));
         }
 
         ConcurrentHashMap<Object, LinkConnection>    checkout=new ConcurrentHashMap<>();
