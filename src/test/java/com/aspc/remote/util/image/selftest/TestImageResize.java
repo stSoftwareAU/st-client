@@ -151,7 +151,8 @@ public class TestImageResize extends TestCase
     {
         File srcFile=load( 
             "srl-Brochure", 
-            "http://www.ece.rice.edu/~wakin/images/lena512.bmp"
+            "https://aspc.jobtrack.com.au/docs/web/images/test.bmp"
+//            "http://www.ece.rice.edu/~wakin/images/lena512.bmp"
 //            "http://shawreynolds.com/docs/web/images/MODE11429_IWP_Brochure_S5A.pdf%20-%20Adobe%20Reader.bmp"
         );
         if( srcFile.getName().endsWith(".bmp")==false)
