@@ -277,7 +277,7 @@
         </condition>
         <property name="_crash_on_oome" value=""/>
         <property name="jvm.email.oncrash" value="true"/>
-        <property name="crash.mail.list" value="support@stsoftware.com.au"/>
+        <property name="crash.mail.list" value="developers@stsoftware.com.au"/>
 
         <condition property="ON_ERROR" value="${_crash_on_oome}-XX:OnError=&quot;tail --lines=100 ${LOG_DIR}/${APP_NAME}.out ${_error_file}|mail -s '${APP_NAME} crash (pid %p)' ${crash.mail.list}&quot; ">
             <and>
