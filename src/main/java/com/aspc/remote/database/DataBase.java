@@ -841,15 +841,16 @@ public class DataBase
             {
                 throw new SQLException( displayDriverInfo() + " does not accept " + StringUtilities.stripPasswordFromURL(jdbcURL));
             }
-            for( int attempts=0;attempts<3;attempts++)
+            for( int attempt=0;attempt<6;attempt++)
             {
                 try{            
                     connection = driver.connect( jdbcURL, props );
                     break;
                 }
-                catch( SQLRecoverableException sre)
+                catch( SQLException sre)
                 {
                     LOGGER.warn( jdbcURL, sre);
+                    exponentialBackOff( attempt);
                 }
             }
             if( connection == null)
@@ -962,6 +963,54 @@ public class DataBase
         }
     }
 
+    /**
+     * Sleep for a increasing amount of time as each attempt fails.
+     * @param attempt the attempt counter.
+     */
+    public static void exponentialBackOff( final int attempt)
+    {
+        if( attempt<0) throw new IllegalArgumentException("Must be a non negative value was: " + attempt);
+        long tempSleepMS;
+        switch( attempt)
+        {
+            case 0:
+                tempSleepMS=0;
+                break;
+            case 1:
+                tempSleepMS=1000;
+                break;
+            case 2:
+                tempSleepMS=5000;
+                break;
+            case 3:
+                tempSleepMS=30000;
+                break;
+            case 4:
+                tempSleepMS=60000;
+                break;
+            case 5: 
+                tempSleepMS=300000;
+                break;
+            default:
+                tempSleepMS=600000;
+        }
+        
+        long sleepMS=(long)(tempSleepMS * Math.random()) + 1;
+        final long maxDelay = 300000; // 5 minutes
+
+        if (sleepMS > maxDelay) {
+           sleepMS = maxDelay;
+        }
+        LOGGER.info( "Pausing for " + TimeUtil.getDiff(0, sleepMS));
+        try{
+            Thread.sleep(sleepMS);
+        }
+        catch( InterruptedException ie)
+        {
+            throw new RuntimeException("could not sleep",ie);
+        }
+    }
+    
     /**
      * Display the driver info ( class name and jar file). 
      * @return the information. 
