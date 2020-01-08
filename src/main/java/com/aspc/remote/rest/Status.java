@@ -835,7 +835,7 @@ public enum Status
         520, 
         "Unknown Error",
         "This status code is not specified in any RFC and is returned by many services. \"The 520 error is essentially a “catch-all” response for when the origin server returns something unexpected or something that is not tolerated/interpreted (protocol violation or empty response).",
-        "https://support.cloudflare.com/hc/en-us/articles/200171936-Error-520-Web-server-is-returning-an-unknown-error"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#520error"
     ),
     
     /**
@@ -847,7 +847,7 @@ public enum Status
         521, 
         "Web Server Is Down",
         "The origin server has refused the connection.",
-        "https://support.cloudflare.com/hc/en-us/articles/200171916-Error-521-Web-server-is-down"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#521error"
     ),
     
     /**
@@ -859,7 +859,7 @@ public enum Status
         522, 
         "Connection Timed Out",
         "Could not negotiate a TCP handshake with the origin server.",
-        "https://support.cloudflare.com/hc/en-us/articles/200171906-Error-522-Connection-timed-out"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#522error"
     ),
 
     /**
@@ -871,7 +871,7 @@ public enum Status
         523, 
         "Origin Is Unreachable",
         "Could not reach the origin server; for example, if the DNS records for the origin server are incorrect.",
-        "https://support.cloudflare.com/hc/en-us/articles/200171946-Error-523-Origin-is-unreachable"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#523error"
     ),
 
     /**
@@ -883,7 +883,7 @@ public enum Status
         524, 
         "A Timeout Occurred",
         "Was able to complete a TCP connection to the origin server, but did not receive a timely HTTP response.",
-        "https://support.cloudflare.com/hc/en-us/articles/200171926-Error-524-A-timeout-occurred"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#524error"
     ),
     
     /**
@@ -895,7 +895,7 @@ public enum Status
         525, 
         "SSL Handshake Failed",
         "Could not negotiate a SSL/TLS handshake with the origin server.",
-        "https://support.cloudflare.com/hc/en-us/articles/200278659-Error-525-SSL-handshake-failed"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#525error"
     ),
     
     /**
@@ -907,7 +907,7 @@ public enum Status
         526, 
         "Invalid SSL Certificate",
         "Could not validate the SSL/TLS certificate that the origin server presented.",
-        "https://support.cloudflare.com/hc/en-us/articles/200721975-Error-526-Invalid-SSL-certificate"
+        "https://support.cloudflare.com/hc/en-us/articles/115003011431#526error"
     ),
         
     /**
