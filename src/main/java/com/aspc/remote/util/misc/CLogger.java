@@ -280,9 +280,8 @@ public final class CLogger
         try
         {
             Map<Thread, StackTraceElement[]> st = Thread.getAllStackTraces();
-            for (Map.Entry<Thread, StackTraceElement[]> e : st.entrySet())
-            {
-                StackTraceElement[] el = e.getValue();
+            st.entrySet().stream().map((e) -> {
+                //                StackTraceElement[] el = e.getValue();
                 Thread t = e.getKey();
                 buffer.append("\"").
                         append(t.getName()).
@@ -294,14 +293,15 @@ public final class CLogger
                         append(t.getId()).append(" ").
                         append(t.getState()).
                         append("\n");
-
-                for (StackTraceElement line : el)
+                for (StackTraceElement line : e.getValue())
                 {
                     buffer.append("\tat ").append(line);
                     buffer.append("\n");
                 }
+                return e;
+            })/*.forEachOrdered((_item) -> {
                 buffer.append("\n");
-            }
+            })*/;
 
         }
         catch (Exception e)
