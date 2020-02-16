@@ -174,7 +174,47 @@ public final class StringUtilities
     {
         return c < 255 && ASCII_WHITE_SPACE[c];
     }
-    
+ 
+    public static String maskCreditCards( final String text)
+    {
+        Pattern p =Pattern.compile(
+            "[:,=\\s]((?:(?:4\\d{3})|(?:5[1-5]\\d{2})|6(?:011|5[0-9]{2}))(?:-?|\\040?)(?:\\d{4}"+
+            "(?:-?|\\040?)){3}|(?:3[4,7]\\d{2})(?:-?|\\040?)\\d{6}(?:-?|\\040?)\\d{5})[:,=\\s]"
+        );
+        
+        StringBuilder sb=new StringBuilder();
+        for( String line:text.split("\n"))
+        {
+            while( true)
+            {
+                String temp=" " +line+ " ";
+                Matcher m = p.matcher(temp);
+                if( m.find()==false)
+                {
+                    sb.append(line).append("\n");
+                    break;
+                }
+                else
+                {
+                    String prefix=temp.substring(0, m.start());
+                    String mid=temp.substring( m.start(),m.end());
+                    String end=temp.substring(m.end());
+                    
+                    String mid1=mid.substring(0, mid.length()-5).replaceAll("[0-9]", "#");
+                    String mid2=mid.substring(mid.length()-5);
+                    
+                    String temp2 = prefix + mid1 + mid2 + end;
+                    line=temp2.substring(1, temp2.length()-1);
+                }
+            }
+        }
+        
+        if(text.endsWith("\n")==false)
+        {
+            sb.deleteCharAt(sb.length()-1);
+        }
+        return sb.toString();
+    }
     private static final HashMap<String, Character> HTML_CHARACTER;
     
     private static final NumberFormatException NFE;

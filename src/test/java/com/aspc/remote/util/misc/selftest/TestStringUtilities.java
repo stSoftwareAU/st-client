@@ -109,6 +109,27 @@ public class TestStringUtilities extends TestCase
             assertEquals( pos+")", array[pos],decodeArray[pos]);
         }
     }
+    
+    public void testCreditCard()
+    {
+        String check=
+            "American Express: 3711-078176-01234  |  371107817601234  |  3711 078176 01234\n" +
+            "Visa: 4123-5123-6123-7123  |  4123512361237123  |  4123 5123 6123 7123\n" +
+            "Other: 4123-5123-6123-7123,cc=4123512361237123\t4123 5123 6123 7123\n" +
+            "Master Card: 5123-4123-6123-7123  |  5123412361237123  |  5123 4123 6123 7123\n" +
+            "Discover: 6011-0009-9013-9424  |  6500000000000002  |  6011 0009 9013 9424";
+
+        String expect=
+            "American Express: ####-######-#1234  |  ###########1234  |  #### ###### #1234\n" +
+            "Visa: ####-####-####-7123  |  ############7123  |  #### #### #### 7123\n" +
+            "Other: ####-####-####-7123,cc=############7123\t#### #### #### 7123\n" +
+            "Master Card: ####-####-####-7123  |  ############7123  |  #### #### #### 7123\n" +
+            "Discover: ####-####-####-9424  |  ############0002  |  #### #### #### 9424";
+
+        String actual =StringUtilities.maskCreditCards( check);
+        
+        assertEquals( check, expect, actual);
+    }
     public void testNotEncoded()
     {
         String[] notEncodedStr = {"%", "%3", "%zz", "%3z", "%z3", "a b", "&nbsp;", "a=b"};

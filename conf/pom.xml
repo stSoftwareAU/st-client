@@ -42,6 +42,12 @@
     <dependencies>
         <!-- load all dependencies from ivy -->
             <dependency>
+      <groupId>com.google.code.findbugs</groupId>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>com.allen-sauer.gwt.dnd</groupId>
       <artifactId>gwt-dnd</artifactId>
       <version>3.3.4</version>
