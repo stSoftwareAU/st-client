@@ -847,7 +847,7 @@ public final class DateUtil
 
         if( aDate.getTime() < JAN1ST1900)
         {
-            LOGGER.warn( "WARNING: " + aDate + " < 1 Jan 1900 you probably entered a 2-digit year");
+            LOGGER.warn( "WARNING: " + aDate + " (" + userDate + ") < 1 Jan 1900 you probably entered a 2-digit year");
         }
 
         if( allowFutureDates == false)
