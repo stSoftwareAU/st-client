@@ -115,7 +115,9 @@ public class HTMLInput extends  HTMLFormComponent implements HandlesSingleClick
         /** reset */
         RESET ("reset"),
         /** button */
-        BUTTON ("button");
+        BUTTON ("button"),
+        /** iCal RRule */
+        ICAL_RRULE ("rrule");
 
         /**
          * the type name
