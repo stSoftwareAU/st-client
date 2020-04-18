@@ -77,6 +77,7 @@ public class Version extends VersionENV
         HashSet<Version> set = CHANGED_VERSIONS.get();
         if( set != null)
         {
+            CHANGED_VERSIONS.remove();
             HashSet<Version>set2=(HashSet<Version>) set.clone();
             for( Version v: set2)
             {
