@@ -32,7 +32,6 @@
  *  Australia.
  */
 package com.aspc.remote.util.net.selftest;
-import com.aspc.remote.database.selftest.DBTestUnit;
 import com.aspc.remote.rest.ReST;
 import com.aspc.remote.rest.Response;
 import org.apache.commons.logging.Log;
@@ -75,23 +74,47 @@ public class TestFTP extends TestCase
         }
         for( int attempts=0;true;attempts++)
         {
-            String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
-            boolean found10GB=false;
-            for( String fn: fileList)
+            try
             {
-                if( fn.contains("10GB.zip"))
+                String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
+                boolean found10GB=false;
+                for( String fn: fileList)
                 {
-                    found10GB=true;
+                    if( fn.contains("10GB.zip"))
+                    {
+                        found10GB=true;
+                    }
+                    LOGGER.info( fn);
                 }
-                LOGGER.info( fn);
-            }
 
-            if( found10GB) break;
-            
-            if( attempts>3) {
-                fail("should have found file");
+                if( found10GB) break;
+
+                if( attempts>5) {
+                    fail("should have found file");
+                }
+                Thread.sleep((long) (10000 * Math.random()));
+                
             }
-            Thread.sleep((long) (10000 * Math.random()));
+            catch (Exception e)
+            {
+                if (attempts > 5)
+                {
+                    LOGGER.fatal("could not FTP after " + attempts + " attempts", e);
+                    throw e;
+                }
+                else
+                {
+                    LOGGER.warn(attempts + " retry FTP", e);
+                    try
+                    {
+                        Thread.sleep((long) (10000 * Math.random() + 1000));
+                    }
+                    catch (InterruptedException ex)
+                    {
+                        LOGGER.warn("retrying FTP", ex);
+                    }
+                }
+            }
         }
     }
 

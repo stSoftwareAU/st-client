@@ -1233,6 +1233,14 @@ public final class DocumentUtil
         BUILDER_TOLERANT_FACTORY.setValidating( false);
         BUILDER_TOLERANT_FACTORY.setNamespaceAware( false);
         BUILDER_TOLERANT_FACTORY.setIgnoringComments( true);     
+        try
+        {
+            BUILDER_TOLERANT_FACTORY.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        }
+        catch(ParserConfigurationException e)
+        {
+            LOGGER.error("Can't skip loading external DTD", e);
+        }
         
         BUILDER_VALIDATE_FACTORY.setValidating( true);        
         BUILDER_VALIDATE_FACTORY.setNamespaceAware( true);

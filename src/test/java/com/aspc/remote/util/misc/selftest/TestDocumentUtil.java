@@ -137,6 +137,39 @@ public class TestDocumentUtil extends TestCase
         String xml=DocumentUtil.docToString(doc);
         
         LOGGER.info( xml);
+        
+        xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                    "<!DOCTYPE transaction PUBLIC \"-//Morningstar Australasia//DTD Payment Gateway 1.1//EN\" \"http://www.google.com/this/DTD/does/not/exist/Just/make/sure/it/does/not/exist.dtd\">\n" +
+                    "\n" +
+                    "<transaction>\n" +
+                    "  <purchase-request>\n" +
+                    "    <cardholdername>Melissa McCurdie</cardholdername>\n" +
+                    "    <cardexpiry>0623</cardexpiry>\n" +
+                    "    <amount>399.00</amount>\n" +
+                    "    <cardtype>AMEX</cardtype>\n" +
+                    "    <userid>1398148</userid>\n" +
+                    "    <timestamp>2019-09-12 11:51:42.391</timestamp>\n" +
+                    "  </purchase-request>\n" +
+                    "  <purchase-response status=\"processed\">\n" +
+                    "    <transactionid>2230000140468395</transactionid>\n" +
+                    "    <responsecode>08</responsecode>\n" +
+                    "    <responsetext>APPROVED</responsetext>\n" +
+                    "    <settlementdate>2019-09-12</settlementdate>\n" +
+                    "  </purchase-response>\n" +
+                    "</transaction>";
+        try
+        {
+            DocumentUtil.makeDocument(xml);
+            fail("should get an error to load the DTD file");
+        }
+        catch(DocumentException e)
+        {
+            ;//expected
+        }
+
+        doc = DocumentUtil.loadDocument(f, DocumentUtil.PARSER.TOLERANT);
+        
+        LOGGER.info(DocumentUtil.docToString(doc));
     }
     
     /**
