@@ -223,6 +223,9 @@
         <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-firefox-driver -->
         <!--<dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="3.0.1"/>-->
 
+        <!-- https://mvnrepository.com/artifact/com.github.xeroapi/xero-java -->
+        <dependency org="com.github.xeroapi" name="xero-java" rev="3.6.0"/>
+
         <dependency org="com.tectonica" name="jonix" rev="9.0" />
         
         <!--         https://mvnrepository.com/artifact/com.oracle/ojdbc14 

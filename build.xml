@@ -45,7 +45,7 @@
                fork="true"
                includejavaruntime="false"
                memoryinitialsize="512m"
-               memoryMaximumSize="1024m">
+               memoryMaximumSize="2048m">
             <src path="src/main/java" />
             <src path="src/test/java"/>
             

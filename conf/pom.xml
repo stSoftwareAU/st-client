@@ -685,6 +685,12 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>com.github.xeroapi</groupId>
+      <artifactId>xero-java</artifactId>
+      <version>3.6.0</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
       <groupId>com.tectonica</groupId>
       <artifactId>jonix</artifactId>
       <version>9.0</version>
