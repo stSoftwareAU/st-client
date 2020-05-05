@@ -142,7 +142,9 @@
         <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency org="log4j" name="log4j" rev="1.2.17" conf="runtime->master"/>
         <!-- https://mvnrepository.com/artifact/log4j/apache-log4j-extras -->
-        <dependency org="log4j" name="apache-log4j-extras" rev="1.2.17"/>
+        <dependency org="log4j" name="apache-log4j-extras" rev="1.2.17">
+            <exclude org="hsqldb" name="hsqldb"/>
+        </dependency>
 
         <!--         OUT DATED 
         <dependency org="log4j" name="log4j" rev="1.2.17" conf="runtime->master"/>
@@ -224,7 +226,10 @@
         <!--<dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="3.0.1"/>-->
 
         <!-- https://mvnrepository.com/artifact/com.github.xeroapi/xero-java -->
-        <dependency org="com.github.xeroapi" name="xero-java" rev="3.6.0"/>
+        <dependency org="com.github.xeroapi" name="xero-java" rev="3.6.0">
+            <exclude org="org.apache.logging.log4j" name="log4j-core"/>
+            <exclude org="org.apache.logging.log4j" name="log4j-api"/>
+        </dependency>
 
         <dependency org="com.tectonica" name="jonix" rev="9.0" />
         

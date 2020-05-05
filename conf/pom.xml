@@ -473,6 +473,12 @@
       <artifactId>apache-log4j-extras</artifactId>
       <version>1.2.17</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>hsqldb</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>xml-apis</groupId>
@@ -689,6 +695,16 @@
       <artifactId>xero-java</artifactId>
       <version>3.6.0</version>
       <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.tectonica</groupId>
