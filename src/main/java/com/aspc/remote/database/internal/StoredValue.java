@@ -85,7 +85,7 @@ public class StoredValue
         {
             throw new NextNumberException(
                 "Trying to set the start number (" + inNr +
-                ") to be less than current (" + startNr + ")"
+                ") to be less than current (" + startNr + ") for " + id
             );
         }
 
