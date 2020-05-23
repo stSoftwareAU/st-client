@@ -226,10 +226,14 @@
         <!--<dependency org="org.seleniumhq.selenium" name="selenium-firefox-driver" rev="3.0.1"/>-->
 
         <!-- https://mvnrepository.com/artifact/com.github.xeroapi/xero-java -->
-        <dependency org="com.github.xeroapi" name="xero-java" rev="3.6.0">
+        <dependency org="com.github.xeroapi" name="xero-java" rev="4.0.1">
             <exclude org="org.apache.logging.log4j" name="log4j-core"/>
             <exclude org="org.apache.logging.log4j" name="log4j-api"/>
         </dependency>
+        <dependency org="org.threeten" name="threetenbp" rev="1.4.4"/>
+        <dependency org="javax.ws.rs" name="javax.ws.rs-api" rev="2.1.1"/>
+        <dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.0-m03"/>
+        <dependency org="com.auth0" name="java-jwt" rev="3.10.3"/>
 
         <dependency org="com.tectonica" name="jonix" rev="9.0" />
         
