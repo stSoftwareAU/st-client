@@ -495,6 +495,30 @@ public final class ReST
             this.bodyXML = bodyXML;
             return this;
         }
+        
+        /**
+         * set the body of this POST/PUT request with given contentType and dispositionType
+         * @param bodyXML the xml body to send
+         * @param contentType content type of this request
+         * @param dispositionType disposition type
+         * @return this
+         * @throws InvalidDataException The method must not be GET
+         */
+        public @Nonnull Builder setBody (
+            final @Nullable Document bodyXML,
+            final @Nonnull ContentType contentType,
+            final @Nonnull DispositionType dispositionType 
+        ) throws InvalidDataException
+        {
+            if(method == Method.GET && bodyXML != null)
+            {
+                throw new InvalidDataException("body is not allowed for method GET");
+            }
+            this.bodyXML = bodyXML;
+            this.contentType=contentType;
+            this.dispositionType=dispositionType;
+            return this;
+        }
        
         @CheckReturnValue 
         private boolean hasBody()
