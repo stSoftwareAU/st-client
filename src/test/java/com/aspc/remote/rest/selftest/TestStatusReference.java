@@ -32,6 +32,7 @@
  *  Australia.
  */
 package com.aspc.remote.rest.selftest;
+import com.aspc.remote.database.selftest.DBTestUnit;
 import com.aspc.remote.rest.ReST;
 import com.aspc.remote.rest.Response;
 import com.aspc.remote.rest.Status;
@@ -100,6 +101,14 @@ public class TestStatusReference extends TestCase
                 if( pos != -1)
                 {
                     url=url.substring(0, pos);
+                }
+                if("https://support.cloudflare.com/hc/en-us/articles/115003011431".equals(url))
+                {
+                    //cloudflare return 403 for his page if the cookie is not enabled
+                    if(DBTestUnit.hideKnownErrors())
+                    {
+                        continue;
+                    }
                 }
 //                Response r = ReST.builder(url).setMinCachePeriod("31 days").setAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").getResponse();
                 Response r = ReST.builder(url).setMinCachePeriod("31 days").getResponse();
