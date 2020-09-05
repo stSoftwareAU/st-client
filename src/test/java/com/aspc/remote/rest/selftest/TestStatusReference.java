@@ -94,6 +94,11 @@ public class TestStatusReference extends TestCase
     {
         for( Status status:Status.values())
         {
+            if(status == Status.C420_ENHANCE_YOUR_CALM && DBTestUnit.hideKnownErrors())
+            {
+                //420 reference page is 404 now... https://developer.twitter.com/en/docs/response-codes
+                continue;
+            }
             String url=status.reference;
             if( url!=null)
             {
