@@ -32,7 +32,6 @@
  *  Australia.
  */
 package com.aspc.remote.util.net.selftest;
-import com.aspc.remote.database.selftest.DBTestUnit;
 import com.aspc.remote.rest.ReST;
 import com.aspc.remote.rest.Response;
 import org.apache.commons.logging.Log;
@@ -62,10 +61,6 @@ public class TestFTP extends TestCase
     @SuppressWarnings("SleepWhileInLoop")
     public void testConnect() throws Exception
     {
-        if(DBTestUnit.hideKnownErrors())
-        {
-            return;
-        }
         Response r = ReST.builder("http://speedtest.tele2.net/").getResponse();
         
         if( r.status.isError())
