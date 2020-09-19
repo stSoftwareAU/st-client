@@ -59,7 +59,7 @@ import org.w3c.dom.Document;
  *
  *  @author         Nigel Leck
  *  
- *  @since          13 February @014
+ *  @since          13 February 2004
  */
 public class TestDocumentUtil extends TestCase
 {
