@@ -235,7 +235,8 @@
         <dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.0-m03"/>
         <dependency org="com.auth0" name="java-jwt" rev="3.10.3"/>
 
-        <dependency org="com.tectonica" name="jonix" rev="9.0" />
+        <!-- Will need to uncomment following once JONIX developers do new release and remove the JONIX jars from ST/lib -->
+        <!--<dependency org="com.tectonica" name="jonix" rev="9.0" />-->
         
         <!--         https://mvnrepository.com/artifact/com.oracle/ojdbc14 
         <dependency org="com.oracle" name="ojdbc14" rev="10.2.0.4.0"/>-->
