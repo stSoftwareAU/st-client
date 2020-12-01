@@ -158,6 +158,51 @@ public class TestHTMLUtilities extends TestCase
                 " <li>Cats</li>" +
                 " <li>Dogs</li> " +
                 "</ol>"                
+            },
+            
+            {
+                "<div>duopress labs&#160;<p>SmartFlash</p>&trade;&#1;and <p>TummyTime&trade;</p></div>",
+                "duopress labs&nbsp;<p>SmartFlash</p>™and <p>TummyTime™</p>"
+            },
+            {
+                "Mauricio Vela&#769;zquez de Leo&#769;n, developing dozens of books&#160;<I>100 Pablo Picassos</I>;",
+                "Mauricio Velázquez de León, developing dozens of books&nbsp;<i>100 Pablo Picassos</i>;"
+            },
+            {
+                "<div>&#33;</div>",
+                "!"
+            },
+            {
+                "<p>&#9825</p>",
+                "♡"
+            },
+            {
+                "<p>&#129472</p>",
+                "🧀"
+            },
+            {
+                "<p>&#11001;</p>",
+                "⫹"
+            },
+            {
+                "<div><p>&#x2AF9;</p><p>\u0416</p></div>",
+                "<p>⫹</p><p>Ж</p>"
+            },  
+            {
+                "<p>&#17555;apple&#17555;</p>",
+                "䒓apple䒓"
+            },
+            {
+                "<p>&#129530;&#x1f9fa;0x0001F9FA</p>",
+                "🧺🧺0x0001F9FA"
+            },
+            {
+                "<p>&#2579;&#xa13;\u0A13&#2579;</p>",
+                "ਓਓਓਓ"
+            },
+            {
+                "<p>\uD87E\uDDF4&#x2f9f4;&#195060;</p>",
+                "嶲嶲嶲"
             }
         };
         

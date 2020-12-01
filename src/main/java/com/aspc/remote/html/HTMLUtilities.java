@@ -48,8 +48,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.net.ssl.SSLException;
@@ -109,7 +113,9 @@ public final class HTMLUtilities
     @Nonnull @CheckReturnValue
     public static String makeSafeSegment( final @Nonnull String html)
     {
-        String cleanHTML=iMakeSafeSegment(html);
+        String withValidEntities = stripInvalidCharacters(html);
+        
+        String cleanHTML=iMakeSafeSegment(withValidEntities);
         
         while( cleanHTML.startsWith("&nbsp;"))
         {
@@ -138,9 +144,54 @@ public final class HTMLUtilities
                 break;
             }
         }
-
+        
         return cleanHTML.trim();
-    }        
+    }
+    
+    private static String stripInvalidCharacters(@Nonnull final String html)
+    {
+        final Pattern XML_ENTITY_PATTERN = Pattern.compile("\\&\\#(?:x([0-9a-fA-F]+)|([0-9]+))\\;");
+        Matcher m = XML_ENTITY_PATTERN.matcher(html);
+        Set<String> replaceSet = new HashSet<>();
+        while (m.find())
+        {
+            String group = m.group(1);
+            int val;
+            if (group != null)
+            {
+                val = Integer.parseInt(group, 16);
+                if (isInvalidXmlChar(val))
+                {
+                    replaceSet.add("&#x" + group + ";");
+                }
+            }
+            else if ((group = m.group(2)) != null)
+            {
+                val = Integer.parseInt(group);
+                if (isInvalidXmlChar(val))
+                {
+                    replaceSet.add("&#" + group + ";");
+                }
+            }
+        }
+        String cleanedXmlString = html;
+        for (String replacer : replaceSet)
+        {
+            cleanedXmlString = cleanedXmlString.replaceAll(replacer, "");
+        }
+        return cleanedXmlString;
+    }
+    
+    private static boolean isInvalidXmlChar(int val)
+    {
+        if (val == 0x9 || val == 0xA || val == 0xD
+                || val >= 0x20 && val <= 0xD7FF
+                || val >= 0x10000 && val <= 0x10FFFF)
+        {
+            return false;
+        }
+        return true;
+    }
     
     private static String iMakeSafeSegment( final @Nonnull String html)
     {        
