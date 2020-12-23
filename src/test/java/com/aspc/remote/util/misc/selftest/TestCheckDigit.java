@@ -59,7 +59,7 @@ public class TestCheckDigit extends TestCase
 
     /**
      * Main method
-     * @param args commandline args
+     * @param args command line arguments.
      */
     public static void main(String[] args)
     {
@@ -109,6 +109,17 @@ public class TestCheckDigit extends TestCase
     {
         String num = "1 2 3 4 - 5 6 7 8 - 9 0 1 2 - 3 4 5 2";        
         assertEquals( "should be valid",true,CheckDigit.validateCheckDigit( num ) );
+    }
+    
+    /**
+     * Check we handle blanks.
+     * @throws Exception a test failure
+     */
+    public void testCheckDigitBlank() throws Exception
+    {
+        assertFalse( "should be not valid",CheckDigit.validateCheckDigit( "" ) );
+        assertFalse( "should be not valid",CheckDigit.validateCheckDigit( " " ) );
+        assertFalse( "should be not valid",CheckDigit.validateCheckDigit( null ) );
     }
     
     /**

@@ -35,7 +35,7 @@ package com.aspc.remote.util.misc;
 
 /**
  *  <i>THREAD MODE: SINGLE-THREADED</i>
- * TODO: Think this may have been better as a singeton or a static method of StringUtilities. 
+ * TODO: Think this may have been better as a singleton or a static method of StringUtilities. 
  * @author Aloysius George
  * @since November 14, 2006, 1:04 AM
  */         
@@ -80,12 +80,14 @@ public final class CheckDigit
     }
     
     /**
-     * validates a check sum digit
+     * Validates a check sum digit
      * @param value the value to verify
      * @return the value
      */
     public static boolean validateCheckDigit( final String value )
     {
+        if( StringUtilities.isBlank(value)) return false;
+        
         String numbers = stripNonDigit( value );
         
         int cut = numbers.length() - 1; // the last character
