@@ -116,7 +116,7 @@ public class TestStatusReference extends TestCase
                     }
                 }
 //                Response r = ReST.builder(url).setMinCachePeriod("31 days").setAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").getResponse();
-                Response r = ReST.builder(url).setMinCachePeriod("31 days").getResponse();
+                Response r = ReST.builder(url).getResponse();
                 if( r.status.isError())
                 {
                     fail( url + " status: " + r.status);
