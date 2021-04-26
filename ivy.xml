@@ -49,7 +49,7 @@
             <artifact name="groovy-all" type="pom" ext="pom"/>
         </dependency>
 
-        <dependency org="org.apache.activemq" name="activemq-client" rev="5.15.9"/>
+        <dependency org="org.apache.activemq" name="activemq-client" rev="5.15.14"/>
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->master"/>
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.26" conf="runtime->master"/>
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="runtime->master"/>
