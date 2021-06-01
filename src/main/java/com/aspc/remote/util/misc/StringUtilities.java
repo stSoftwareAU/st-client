@@ -6202,6 +6202,6 @@ public final class StringUtilities
         HTML_CHARACTER=tmpHtmlToCharacter;
     
     }
-
+    
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.misc.StringUtilities");//#LOGGER-NOPMD
 }

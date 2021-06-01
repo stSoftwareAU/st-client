@@ -86,7 +86,7 @@ public class TestStringUtilities extends TestCase
     public static void main(String[] args)
     {
         Test test = suite();
-//        test = TestSuite.createTest(TestStringUtilities.class, "testRangeUTF8");
+//        test = TestSuite.createTest(TestStringUtilities.class, "testRemoveUnmatchedBad");
         TestRunner.run(test);
         QueueLog.flush(60000);
     }
@@ -3067,8 +3067,7 @@ public class TestStringUtilities extends TestCase
             assertEquals( "Wrong string after capitalizing the string " ,testCase[1], StringUtilities.capitalizeWordsInString(testCase[0].toString()));
         });
     }
-
-
+    
     static void info( final Object o )
     {
         LOGGER.info( o );
