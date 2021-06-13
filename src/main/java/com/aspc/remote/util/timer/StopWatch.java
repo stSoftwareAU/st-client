@@ -139,8 +139,7 @@ public final class StopWatch
     {
         long nanoEnd=System.nanoTime();
 
-        for( Lap l: laps)
-        {
+        laps.forEach((l) -> {
             long s = l.start();
             if( s > nanoEnd) 
             {
@@ -159,12 +158,10 @@ public final class StopWatch
             {
                 throw new IllegalArgumentException( "lap end greater than stop watch start");
             }
-            
-            if( e<s)
-            {
-                 throw new IllegalArgumentException( "lap end before start");
+            if (e<s) {
+                throw new IllegalArgumentException( "lap end before start");
             }
-        }
+        });
     }
     public long median()
     {
@@ -412,6 +409,7 @@ public final class StopWatch
         String medString="n/a";
         String maxTitle="Max";
         String minTitle="Min";
+        String totalString=formatNano(total());
         if( laps.size()>0)
         {
             long max=max();
@@ -434,7 +432,7 @@ public final class StopWatch
             }
         }
         
-        String details = maxTitle + ": " + maxString + ", " + minTitle + ": " + minString + ", Avg: " + avgString + ", Median: " + medString + ", Count: " + NF.format(laps.size());
+        String details = maxTitle + ": " + maxString + ", " + minTitle + ": " + minString + ", Avg: " + avgString + ", Median: " + medString  + ", Total: " + totalString + ", Count: " + NF.format(laps.size());
         
         String full= tmpTitle + details;
         

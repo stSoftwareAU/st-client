@@ -370,10 +370,31 @@ public abstract class DBTestUnit extends TestCase
             DataBase db;
             db = new DataBase(sUser, sPassword, sType, sURL, DataBase.Protection.SELECT_READONLY_BY_DEFAULT);
 
-            db.connect();
+            for( int attempts=0;true;attempts++){
+                try{
+                    db.connect();
+                    break;
+                }
+                catch( Exception e){
+                    LOGGER.warn( "Could  not connect to master", e);
+                    if( attempts>3) throw e;
+                    randomPause();
+                }
+            }
         }
     }
 
+    public static void randomPause(){
+        try{
+            long ms=(long)(10000 * Math.random()) +1;
+            LOGGER.info( "Pause: " + ms);
+            Thread.currentThread().sleep(ms);
+        }
+        catch( InterruptedException ie){
+            throw new RuntimeException( "could not sleep", ie);
+        }
+    }
+    
     /**
      *
      * @throws Exception a serious problem
