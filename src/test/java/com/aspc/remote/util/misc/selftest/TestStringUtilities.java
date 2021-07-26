@@ -511,7 +511,8 @@ public class TestStringUtilities extends TestCase
             "http://www.penguin.com.au/products/9781925355741/beach-at-night,-the/",
             "http://www.penguin.com.au/products/9781922182128/hello,-beautiful!:-scenes-from-a-life/",
             "http://www.penguin.com.au/products/9781921922244/careful,-he-might-hear-you:-text-classic/",
-            "s3://AABBDSFSDFSDF:jlasdWE23823oiasdfS@sie-docs.s3-ap-southeast-2.amazonaws.com/"
+            "s3://AABBDSFSDFSDF:jlasdWE23823oiasdfS@sie-docs.s3-ap-southeast-2.amazonaws.com/",
+            "https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         };
         
         for( String uri: list)
@@ -530,7 +531,7 @@ public class TestStringUtilities extends TestCase
 //            "https://www,stsoftware.com.au",
             "/summary/generic&SCREEN_KEY=270650@2~170@1&LAYERID=110?FC=Y",
             "/summary/generic?SCREEN_KEY=270650@2~170@1&LAYERID=110?FC=Y",
-            "ftp://noboby:xxxx@localhost/docs2,ftp://noboby:xxxx@localhost/docs",
+//            "ftp://noboby:xxxx@localhost/docs2,ftp://noboby:xxxx@localhost/docs",
             "http:\\/\\/www.youtube.com\\/v\\/7zxEw3QanhY",
             "http://www.jobtrack.com.au/docs/web/icon[2].png",
             "/report_explorer/transfer?ESEARCHOR1=ESEARCHAND|Task%3asimpleStatus|IS|OPEN%402%7e2791%402&EFIELD_sortDesc=&SCREEN_KEY=231009@2~170@1&EFIELD_sortField=&FORMAT=CSV&EFIELD_name=Job&CLASS_KEY=74@2~1@1&TS=1484111658864&ADD_VALUES=@@@@@@@@@@@@@"
