@@ -512,6 +512,7 @@ public class TestStringUtilities extends TestCase
             "http://www.penguin.com.au/products/9781922182128/hello,-beautiful!:-scenes-from-a-life/",
             "http://www.penguin.com.au/products/9781921922244/careful,-he-might-hear-you:-text-classic/",
             "s3://AABBDSFSDFSDF:jlasdWE23823oiasdfS@sie-docs.s3-ap-southeast-2.amazonaws.com/",
+            "https://test.test@test.com",
             "https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
         };
         
