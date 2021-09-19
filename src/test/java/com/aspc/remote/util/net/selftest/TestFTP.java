@@ -36,7 +36,12 @@ import com.aspc.remote.rest.ReST;
 import com.aspc.remote.rest.Response;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.util.misc.CLogger;
+import com.aspc.remote.util.misc.CProperties;
+import com.aspc.remote.util.net.NetClient;
 import com.aspc.remote.util.net.NetUtil;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.UUID;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -61,38 +66,58 @@ public class TestFTP extends TestCase
     @SuppressWarnings("SleepWhileInLoop")
     public void testConnect() throws Exception
     {
-        Response r = ReST.builder("http://speedtest.tele2.net/").getResponse();
-        
-        if( r.status.isError())
+        String testFtpURL = CProperties.findProperty("TEST_FTP_URL", "ftp://anonymous:@speedtest.tele2.net/");
+        LOGGER.info("TEST FTP URL: " + testFtpURL);
+
+        if(testFtpURL.contains("speedtest.tele2.net"))
         {
-            LOGGER.warn("Could not connect:" + r.status);
-            
-//            if( DBTestUnit.hideKnownErrors())
-//            {
+            Response r = ReST.builder("http://speedtest.tele2.net/").getResponse();
+
+            if( r.status.isError())
+            {
+                LOGGER.warn("Could not connect:" + r.status);
+
                 return;
-//            }
+            }
         }
+
         for( int attempts=0;true;attempts++)
         {
             try
             {
-                String[] fileList = NetUtil.retrieveFileList("ftp://anonymous:@speedtest.tele2.net/");
-                boolean found10GB=false;
-                for( String fn: fileList)
+
+                NetClient client = null;
+                client = NetUtil.borrowClient(testFtpURL);
+                File temp = null;
+                try
                 {
-                    if( fn.contains("10GB.zip"))
-                    {
-                        found10GB=true;
+                    temp = File.createTempFile("test", "test");
+                    try (FileWriter fw = new FileWriter(temp)) {
+                        fw.write("t");
                     }
-                    LOGGER.info( fn);
-                }
+                    String remotePath = "test-" + UUID.randomUUID() + ".txt";
+                    client.send(temp, remotePath);
 
-                if( found10GB) break;
+                    String[] files = client.retrieveFileList();
+                    LOGGER.info("Number of FTP files: " + files.length);
+                    for (String fileName : files)
+                    {
+                        LOGGER.info("file -> " + fileName);
+                    }
 
-                if( attempts>5) {
-                    fail("should have found file");
+                    client.fetch(remotePath, temp);
+
+                    client.remove(remotePath);
                 }
-                Thread.sleep((long) (10000 * Math.random()));
+                finally
+                {
+                    if(temp != null)
+                    {
+                        temp.delete();
+                    }
+                    NetUtil.returnClient(client);
+                }
+                break;
                 
             }
             catch (Exception e)
