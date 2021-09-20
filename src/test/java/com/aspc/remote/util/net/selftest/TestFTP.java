@@ -67,7 +67,6 @@ public class TestFTP extends TestCase
     public void testConnect() throws Exception
     {
         String testFtpURL = CProperties.findProperty("TEST_FTP_URL", "ftp://anonymous:@speedtest.tele2.net/");
-        LOGGER.info("TEST FTP URL: " + testFtpURL);
 
         if(testFtpURL.contains("speedtest.tele2.net"))
         {
