@@ -112,7 +112,7 @@ public class TestImageResize extends TestCase
     public void testXIcon() throws Exception 
     {
         //image/x-icon
-        File srcFile=load( "favicon", "http://www.sydneyshardrockstory.com/docs/web/shr/favicon.ico");
+        File srcFile=load( "favicon", "https://tutorialehtml.com/assets/images/favicon.ico?v=3");
            
         ImageResize ir = new ImageResize(srcFile);
         ir.setMaxWidth(200);
