@@ -40,7 +40,7 @@ import javax.swing.SwingUtilities;
 
 /**
  *  Run is a static class provides a method for
- *  running an application simular to Applets
+ *  running an application similar to Applets
  *
  *  <br>
  *  <i>THREAD MODE: SINGLE-THREADED swing</i>
