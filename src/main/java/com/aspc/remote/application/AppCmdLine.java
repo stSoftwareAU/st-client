@@ -48,8 +48,6 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.logging.Log;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  *  AppCmdLine is the standard command line.
@@ -203,7 +201,7 @@ public abstract class AppCmdLine
         Properties p = new Properties();
         getExtraPars( p);
 
-        if( p.size() > 0)
+        if( !p.isEmpty())
         {
             if( parser != null ) parser.setLegacyArgs( true);
 
@@ -271,6 +269,7 @@ public abstract class AppCmdLine
         {
             LOGGER.error( footer);
         }
+        CLogger.flush();
         System.exit(1);
     }
 
@@ -279,6 +278,7 @@ public abstract class AppCmdLine
      * @param p the parameters
      * @deprecated NO LONGER USED
      */
+    @Deprecated
     public void getExtraPars(final @Nonnull Properties p)
     {
     }
@@ -346,6 +346,7 @@ public abstract class AppCmdLine
      * @throws Exception a serious problem
      * @deprecated NO LONGER USED
      */
+    @Deprecated
     public void handleArgs( final @Nonnull Properties p) throws Exception
     {
     }
@@ -378,11 +379,7 @@ public abstract class AppCmdLine
            );
         }
 
-        if( line.hasOption( OPTION_DEBUG))
-        {
-           Logger.getRootLogger().setLevel( Level.DEBUG);
-        }
-        else
+        if( !line.hasOption( OPTION_DEBUG))
         {
            System.getProperties().put( "debug", "NO");
         }

@@ -37,7 +37,11 @@ import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.QueueLog;
 import com.aspc.remote.util.misc.TimeUtil;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
@@ -136,7 +140,8 @@ public final class Shutdown implements Runnable
             );
         }
         
-        QueueLog.flush(60000);
+        CLogger.flush();
+
     }
 
     private Shutdown()

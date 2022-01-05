@@ -36,8 +36,7 @@ package com.aspc.remote.util.misc;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+
 import java.util.Map;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
@@ -89,9 +88,6 @@ public final class CLogger
     {
 
     }
-
-    /** The System property that contains the file name of the logging properties */
-    public static final String LOG_PROPERTIES = "LOG_PROPERTIES";
 
     /**
      * log a fatal message via a background thread
@@ -281,7 +277,6 @@ public final class CLogger
         {
             Map<Thread, StackTraceElement[]> st = Thread.getAllStackTraces();
             st.entrySet().stream().map((e) -> {
-                //                StackTraceElement[] el = e.getValue();
                 Thread t = e.getKey();
                 buffer.append("\"").
                         append(t.getName()).
@@ -299,9 +294,7 @@ public final class CLogger
                     buffer.append("\n");
                 }
                 return e;
-            })/*.forEachOrdered((_item) -> {
-                buffer.append("\n");
-            })*/;
+            });
 
         }
         catch (Exception e)
@@ -380,7 +373,7 @@ public final class CLogger
     }
 
     /**
-     * gets a Log4J logger
+     * gets a logger
      * @param name path name.
      * @return logger
      */
@@ -396,25 +389,16 @@ public final class CLogger
         return QueueLog.find(l);
     }
 
+    public static void flush(){
+        QueueLog.flush(60000);
+        CLoggerConfig.flush();
+    }
+    
     static
     {
         String tmp=System.getProperty(ENV_DISABLE_QUEUE_LOG, "N");
 
         DISABLE_QUEUE_LOG = tmp.matches("(Y|t|T|y).*");
-
-        try
-        {
-            Class configClass = Class.forName("com.aspc.remote.util.misc.CLoggerConfig");
-            Method configMethod = configClass.getMethod("configure");
-            configMethod.invoke(null);
-        }
-        catch(ClassNotFoundException | SecurityException ce)
-        {
-            ; // it may be Ok when the applet version is used
-        }
-        catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException me)
-        {
-            me.printStackTrace();//NOPMD
-        }
+        CLoggerConfig.configure();
     }
 }

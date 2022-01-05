@@ -263,7 +263,7 @@ public final class QueueLog implements Log
                         QUEUE_LOCK.lock();
                         try
                         {
-                            if( QUEUE.size() > 0)
+                            if( !QUEUE.isEmpty())
                             {
                                 EMPTY_QUEUE.await(1000, TimeUnit.MILLISECONDS);
                             }
@@ -531,7 +531,7 @@ public final class QueueLog implements Log
         RUNNER=new Thread(new LogRunner(), "log runner - IDLE");
         RUNNER.setPriority( Thread.MIN_PRIORITY);
         RUNNER.setDaemon(true);
-
+        
         RUNNER.start();
         //SERVER-START
         MemoryManager.register(new MemoryHandler() {

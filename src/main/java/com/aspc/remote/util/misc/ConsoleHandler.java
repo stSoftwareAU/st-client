@@ -1,5 +1,5 @@
-/*
- * STS Remote library
+/**
+ *  STS Remote library
  *
  *  Copyright (C) 2006  stSoftware Pty Ltd
  *
@@ -33,28 +33,47 @@
  */
 package com.aspc.remote.util.misc;
 
-import org.apache.commons.logging.Log;
-
+import java.io.PrintStream;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.SimpleFormatter;
 
 /**
- *  Purify the current datasource
- *
- *  <br>
- *  <i>THREAD MODE: SINGLE-THREADED</i>
- *
- *  @author      Paul SMout
- *  @since       29 July 2008
+ * Standard out or standard err. 
  */
-public class DelaySMTPPurifier implements ThreadPurifier
-{
-    private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.misc.DelaySMTPPurifier");//#LOGGER-NOPMD
+public final class ConsoleHandler extends Handler {
+
     
-    /**
-     * purify thread.
-     */
     @Override
-    public void purifyThread()
-    {               
-          DelaySMTPAppender.setSMTPForThreadEnabled(true);
-    }        
-} 
+    public void publish(final LogRecord record) {
+        if (getFormatter() == null) {
+            setFormatter(new SimpleFormatter());
+        }
+
+        String message = getFormatter().format(record);
+        PrintStream ps = System.out;
+
+        if (record.getLevel().intValue() >= Level.WARNING.intValue()) {
+            ps = System.err;
+        }
+
+        ps.print(message);
+        Throwable thrown = record.getThrown();
+
+        if (thrown != null) {
+            thrown.printStackTrace(ps);
+        }
+    }
+
+    @Override
+    public void close() throws SecurityException {
+        flush();
+    }
+
+    @Override
+    public void flush() {
+        System.err.flush();
+        System.out.flush();
+    }
+}

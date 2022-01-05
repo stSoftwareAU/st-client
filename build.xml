@@ -42,7 +42,7 @@
                
                includes="**/*.java"
                
-               fork="true"
+               fork="yes"
                includejavaruntime="false"
                memoryinitialsize="512m"
                memoryMaximumSize="2048m">

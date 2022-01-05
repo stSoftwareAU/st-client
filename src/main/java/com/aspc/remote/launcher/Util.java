@@ -179,7 +179,6 @@ public final class Util
          * Search for launcher.xml file in bin folder (i.e, //../stServer/bin/launcher.xml).
          */
         File launcherFile = locateLauncher();
-        System.getProperties().remove("LOG_PROPERTIES");
         Project p = new Project();
         if(bl != null)
         {
@@ -227,30 +226,30 @@ public final class Util
             {
                 tmpTarget = p.getDefaultTarget();
             }
-            if( tailQueue != null)
-            {
-                String logDir=(String)p.getProperties().get( "log.dir");
-                if( StringUtilities.isBlank(logDir)==false)
-                {
-                    String tmpName=tmpTarget.trim();
-                    String tmp=(String)p.getProperties().get( "LOG_PROPERTIES");
-                    if( StringUtilities.isBlank(tmp)==false)
-                    {
-                        int startPos = tmp.lastIndexOf("/");
-                        if( startPos> 0)
-                        {
-                            int endPos = tmp.indexOf("_", startPos);
-                            if( endPos >0)
-                            {
-                                tmpName=tmp.substring(startPos +1, endPos);
-                            }
-                        }
-                    }
-                    File logFile = new File( logDir +"/" + tmpName + ".log");
-
-                    new TailFile( logFile, tailQueue).schedule();
-                }
-            }
+//            if( tailQueue != null)
+//            {
+//                String logDir=(String)p.getProperties().get( "log.dir");
+//                if( StringUtilities.isBlank(logDir)==false)
+//                {
+//                    String tmpName=tmpTarget.trim();
+//                    String tmp=(String)p.getProperties().get( "LOG_PROPERTIES");
+//                    if( StringUtilities.isBlank(tmp)==false)
+//                    {
+//                        int startPos = tmp.lastIndexOf("/");
+//                        if( startPos> 0)
+//                        {
+//                            int endPos = tmp.indexOf("_", startPos);
+//                            if( endPos >0)
+//                            {
+//                                tmpName=tmp.substring(startPos +1, endPos);
+//                            }
+//                        }
+//                    }
+//                    File logFile = new File( logDir +"/" + tmpName + ".log");
+//
+//                    new TailFile( logFile, tailQueue).schedule();
+//                }
+//            }
 
             if( inputHandler != null)
             {

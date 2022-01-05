@@ -363,6 +363,14 @@ public class DataBase
         return this;
     }
 
+    /** 
+     * Is the database shutting down ?
+     * @return true if shutting down.
+     */
+    public boolean isShuttingDown(){
+        return shuttingDown;
+    }
+    
     /**
      * get the create index suffix
      * @return the suffix
@@ -539,12 +547,7 @@ public class DataBase
     @CheckReturnValue
     public boolean supportsMultipleJVMs()
     {
-        if( TYPE_HSQLDB.equals(type))
-        {
-            return false;
-        }
-        
-        return true; 
+        return !TYPE_HSQLDB.equals(type); 
     }
     /**
      *

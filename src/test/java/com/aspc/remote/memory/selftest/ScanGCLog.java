@@ -22,7 +22,6 @@ import com.aspc.remote.util.misc.CLogger;
 import com.aspc.remote.util.misc.NumUtil;
 import com.aspc.remote.util.misc.QueueLog;
 import com.aspc.remote.util.misc.StringUtilities;
-import com.google.gwt.user.client.Random;
 
 import java.awt.Color;
 import java.io.BufferedReader;
@@ -214,10 +213,11 @@ public class ScanGCLog  extends AppCmdLine
             addColor( tmp, Color.YELLOW, colors);
         }
 
+    
         while( orderedList.isEmpty()==false)
         {
             tmp=orderedList.remove(0);
-            addColor( tmp, new Color( Random.nextInt()), colors);
+            addColor( tmp, new Color((int) ((Math.random() * Integer.MAX_VALUE)) ), colors);
         }
         return colors;
     }
