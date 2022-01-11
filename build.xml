@@ -66,6 +66,9 @@
 
         <property name="test.xml.dir" value="${BASE_DIR}/tests/xml"/>
         <mkdir dir="${test.xml.dir}"/>
+        
+        <!-- TESTING only-->
+        <echo>TEST CLASSPATH: ${test.classpath}</echo>
 
         <!-- timeout after 6 hours -->
         <junit

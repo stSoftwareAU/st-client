@@ -33,6 +33,7 @@
         <dependency org="org.apache.activemq" name="activemq-client" rev="5.16.3">
             <exclude module="slf4j-log4j12"/>
         </dependency>
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->master"/>
 
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="runtime->master"/>
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.4" conf="runtime->master"/>
@@ -172,12 +173,20 @@
         <dependency org="org.glassfish.jersey.core" name="jersey-common" rev="2.0-m03"/>
         <dependency org="com.auth0" name="java-jwt" rev="3.10.3"/>
     
-        <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.431"/>
-        <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.431"/>
+        <dependency org="com.amazonaws" name="aws-java-sdk-s3" rev="1.11.431">
+            <exclude org="log4j" module="log4j"/>
+        </dependency>
+        <dependency org="com.amazonaws" name="aws-java-sdk-sns" rev="1.11.431">
+            <exclude org="log4j" module="log4j"/>
+        </dependency>
     
-        <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.431"/>
+        <dependency org="com.amazonaws" name="aws-java-sdk-core" rev="1.11.431">
+            <exclude org="log4j" module="log4j"/>
+        </dependency>
     
-        <dependency org="com.amazonaws" name="aws-java-sdk-api-gateway" rev="1.11.431"/>
+        <dependency org="com.amazonaws" name="aws-java-sdk-api-gateway" rev="1.11.431">
+            <exclude org="log4j" module="log4j"/>
+        </dependency>
 
         <dependency org="com.fasterxml.jackson.core" name="jackson-core" rev="2.9.1"/>
         
