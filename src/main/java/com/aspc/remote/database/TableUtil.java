@@ -951,10 +951,13 @@ public final class TableUtil
                 dbMeta = connection.getMetaData();
                 String dbType =dBase.getType();
 
-                String schema=null;
+                String schema;
                 if( dbType.equals( DataBase.TYPE_ORACLE))
                 {
                     schema=dBase.getUser();
+                }
+                else {
+                     schema=connection.getSchema();
                 }
                 String catalog=connection.getCatalog();
                 r = dbMeta.getProcedures( catalog, schema, "%");

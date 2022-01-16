@@ -33,7 +33,8 @@
         <dependency org="org.apache.activemq" name="activemq-client" rev="5.16.3">
             <exclude module="slf4j-log4j12"/>
         </dependency>
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.26" conf="runtime->master"/>
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="runtime->master"/>
+        <dependency org="org.slf4j" name="slf4j-jdk14" rev="1.7.32" conf="runtime->master"/>
 
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="runtime->master"/>
         <dependency org="commons-fileupload" name="commons-fileupload" rev="1.4" conf="runtime->master"/>
@@ -72,10 +73,10 @@
         <dependency org="commons-digester" name="commons-digester" rev="2.1" conf="runtime->master"/>
         <dependency org="commons-discovery" name="commons-discovery" rev="0.5" conf="runtime->master"/>
         
-        <dependency org="org.apache.poi" name="poi" rev="3.17" conf="runtime->master"/>
-        <dependency org="org.apache.poi" name="poi-scratchpad" rev="3.17" conf="runtime->master"/>
-        <dependency org="org.apache.poi" name="poi-ooxml" rev="3.17" conf="runtime->master"/>
-        <dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="3.17" conf="runtime->master"/>
+        <dependency org="org.apache.poi" name="poi" rev="3.14" conf="runtime->master"/>
+        <dependency org="org.apache.poi" name="poi-scratchpad" rev="3.14" conf="runtime->master"/>
+        <dependency org="org.apache.poi" name="poi-ooxml" rev="3.14" conf="runtime->master"/>
+        <dependency org="org.apache.poi" name="poi-ooxml-schemas" rev="3.14" conf="runtime->master"/>
         <dependency org="org.apache.poi" name="ooxml-schemas" rev="1.1" conf="runtime->master"/>
         <dependency org="org.apache.xmlbeans" name="xmlbeans" rev="5.0.2" conf="runtime->master"/>
         
@@ -121,7 +122,7 @@
 
         <!-- JDBC --> 
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.16"/>
-        <dependency org="org.postgresql" name="postgresql" rev="42.3.1"/>
+        <dependency org="org.postgresql" name="postgresql" rev="42.2.2"/>
 
         <dependency org="org.hsqldb" name="hsqldb" rev="2.5.1" conf="runtime->master"/>
         

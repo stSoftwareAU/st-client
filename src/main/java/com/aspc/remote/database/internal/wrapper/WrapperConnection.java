@@ -590,7 +590,7 @@ public class WrapperConnection implements Connection
     public String getSchema() throws SQLException
     {
         checkValid();
-        throw new UnsupportedOperationException("Not supported yet.");
+        return connection.getSchema();
     }
 
     /** {@inheritDoc } */
