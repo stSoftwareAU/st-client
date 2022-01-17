@@ -42,25 +42,23 @@ import javax.annotation.Nonnull;
 import org.apache.commons.logging.Log;
 
 /**
- *  Don't all Runtime.exec to be call from within the server.
+ * Don't all Runtime.exec to be call from within the server.
  *
- *  <br>
- *  <i>THREAD MODE: MULTI-THREADED</i>
+ * <br>
+ * <i>THREAD MODE: MULTI-THREADED</i>
  *
- *  @author      Nigel Leck
- *  @since       2 Aug 2007
+ * @author Nigel Leck
+ * @since 2 Aug 2007
  */
-public final class ServerSecurityManager extends SecurityManager
-{
-    private static final int MODE_NONE=0;
-    private static final int MODE_SCRIPT=1;
-    private static final int MODE_XLST=2;
-    
-    private static final ThreadLocal<Integer>USER_ACCESS=new ThreadLocal()
-    {
+public final class ServerSecurityManager extends SecurityManager {
+
+    private static final int MODE_NONE = 0;
+    private static final int MODE_SCRIPT = 1;
+    private static final int MODE_XLST = 2;
+
+    private static final ThreadLocal<Integer> USER_ACCESS = new ThreadLocal() {
         @Override
-        protected Object initialValue()
-        {
+        protected Object initialValue() {
             return 0;
         }
     };
@@ -69,224 +67,171 @@ public final class ServerSecurityManager extends SecurityManager
 
     /**
      * turn on/off user script permission restrictions
+     *
      * @param flag turn on/off
      * @return the previous value.
      */
     @CheckReturnValue
-    public static boolean modeUserScriptAccess( final boolean flag)
-    {
+    public static boolean modeUserScriptAccess(final boolean flag) {
         Integer current = USER_ACCESS.get();
-        if( flag)
-        {
+        if (flag) {
             USER_ACCESS.set(MODE_SCRIPT);
-        }
-        else
-        {
+        } else {
             USER_ACCESS.set(MODE_NONE);
         }
-        
-        return current== MODE_SCRIPT;
+
+        return current == MODE_SCRIPT;
     }
 
     /**
      * turn on/off user script permission restrictions
+     *
      * @param flag turn on/off
      * @return the previous value.
      */
     @CheckReturnValue
-    public static boolean modeUserXlstAccess( final boolean flag)
-    {
+    public static boolean modeUserXlstAccess(final boolean flag) {
         Integer current = USER_ACCESS.get();
-        if( flag)
-        {
+        if (flag) {
             USER_ACCESS.set(MODE_XLST);
-        }
-        else
-        {
+        } else {
             USER_ACCESS.set(MODE_NONE);
         }
-        
-        return current== MODE_XLST;
+
+        return current == MODE_XLST;
     }
 
     /**
      * All other permissions are allowed.
+     *
+     * @param perm the permission to check.
      */
     @Override
-    public void checkPermission(final @Nonnull Permission perm)
-    {
-        if( perm == null) throw new IllegalArgumentException("perm is Mandatory");
+    public void checkPermission(final @Nonnull Permission perm) {
+        if (perm == null) {
+            throw new IllegalArgumentException("perm is Mandatory");
+        }
         Integer current = USER_ACCESS.get();
-        if( current == MODE_SCRIPT)
-        {
-            boolean lowSecurity=false;
+        if (current == MODE_SCRIPT) {
+            boolean lowSecurity = false;
 
-            if( perm instanceof FilePermission)
-            {
-                FilePermission fp=(FilePermission)perm;
+            if (perm instanceof FilePermission) {
+                FilePermission fp = (FilePermission) perm;
 
-                if( perm.getActions().equals("read"))
-                {
+                if (perm.getActions().equals("read")) {
                     String name = fp.getName();
 
-                    if( name.endsWith("/classes")|| name.endsWith(".class")|| name.endsWith(".jar")||name.contains("org/mozilla/")||name.contains("org.apache.xml.serializer."))
-                    {
-                        lowSecurity=true;
+                    if (name.endsWith("/classes") || name.endsWith(".class") || name.endsWith(".jar") || name.contains("org/mozilla/") || name.contains("org.apache.xml.serializer.")) {
+                        lowSecurity = true;
                     }
                 }
-            }
-            else if( perm instanceof PropertyPermission)
-            {
-                if( perm.getActions().equals("read"))
-                {
-                   // String name = perm.getName();
-
-                 //   if( name.endsWith(".class"))
-                 //   {
-                        lowSecurity=true;
-                 //   }
+            } else if (perm instanceof PropertyPermission) {
+                if (perm.getActions().equals("read")) {
+                    lowSecurity = true;
                 }
-            }
-            else if( perm instanceof ReflectPermission)
-            {
-                lowSecurity=true;
-            }
-            else if( perm instanceof RuntimePermission)
-            {
-                String name=perm.getName();
-                if(
-                    name.equalsIgnoreCase("nashorn.createGlobal") ||
-                    name.equals("createClassLoader")||
-                    name.equals("getClassLoader")||
-                    name.startsWith("accessClassInPackage.sun.reflect") ||
-                    name.startsWith("accessClassInPackage.jdk.nashorn.") ||
-                    name.startsWith("accessClassInPackage.sun.text.")||
-                    name.startsWith("accessClassInPackage.sun.util.resources")||
-                    name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm")||
-                    name.startsWith("accessClassInPackage.jdk.internal.misc")||
-                    name.equals("accessSystemModules") ||
-                    name.equals("accessDeclaredMembers")
-                )
-                {
-                    lowSecurity=true;
+            } else if (perm instanceof ReflectPermission) {
+                lowSecurity = true;
+            } else if (perm instanceof RuntimePermission) {
+                String name = perm.getName();
+                if (name.equalsIgnoreCase("nashorn.createGlobal")
+                        || name.equals("createClassLoader")
+                        || name.equals("getClassLoader")
+                        || name.startsWith("accessClassInPackage.sun.reflect")
+                        || name.startsWith("accessClassInPackage.jdk.nashorn.")
+                        || name.startsWith("accessClassInPackage.sun.text.")
+                        || name.startsWith("accessClassInPackage.sun.util.resources")
+                        || name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm")
+                        || name.startsWith("accessClassInPackage.jdk.internal.misc")
+                        || name.equals("accessSystemModules")
+                        || name.equals("accessDeclaredMembers")) {
+                    lowSecurity = true;
                 }
-            }
-            else
-            {
-                String name =perm.getName();
+            } else {
+                String name = perm.getName();
 
-                if(
-                    name.startsWith("accessClassInPackage.sun.org.mozilla.javascript.")||
-                    name.equals("specifyStreamHandler")
-                )
-                {
-                    lowSecurity=true;
+                if (name.startsWith("accessClassInPackage.sun.org.mozilla.javascript.")
+                        || name.equals("specifyStreamHandler")) {
+                    lowSecurity = true;
                 }
 
             }
 
-            if( lowSecurity == false)
-            {
-                String msg="may not call from user script (perm: " + perm + " name: " + perm.getName() + " action: " + perm.getActions() + ")";
-                LOGGER.warn( "SECURITY: " + msg);
-                SecurityException mayNotCallFromUserScript= new SecurityException( msg);
+            if (lowSecurity == false) {
+                String msg = "may not call from SCRIPT (perm: " + perm + " name: " + perm.getName() + " action: " + perm.getActions() + " instanceof: " + perm.getClass().getName() + ")";
+                LOGGER.warn("SECURITY: " + msg);
+                SecurityException mayNotCallFromUserScript = new SecurityException(msg);
                 throw mayNotCallFromUserScript;
             }
-        }
-        else if( current == MODE_XLST)
-        {
-            boolean lowSecurity=false;
+        } else if (current == MODE_XLST) {
+            boolean lowSecurity = false;
 
-            if( perm instanceof FilePermission)
-            {
-                FilePermission fp=(FilePermission)perm;
+            if (perm instanceof FilePermission) {
+                FilePermission fp = (FilePermission) perm;
 
-                if( perm.getActions().equals("read"))
-                {
+                if (perm.getActions().equals("read")) {
                     String name = fp.getName();
 
-                    if( 
-                        name.endsWith("javax.xml.transform.TransformerFactory") ||
-                        (
-                            (
-                                name.contains("xerces")
-                            ) && name.endsWith(".jar")
-                        ) ||
-                        name.endsWith("xalan.properties")||
-                        name.contains("org/apache/xml/serializer")||
-                        name.endsWith("xerces.properties")||
-                        name.endsWith("currency.data")||
-                        name.endsWith("org.apache.xml.dtm.DTMManager")||                            
-                        name.endsWith("currency.properties")||
-                        name.endsWith(".class") ||
-                        name.endsWith("classes") ||
-                        name.endsWith("ext") ||
-                        name.endsWith(".jar") ||
-                        name.endsWith("org.apache.xerces.xni.parser.XMLParserConfiguration")
-                    )
-                    {
-                        lowSecurity=true;
-                    }                   
+                    if (name.endsWith("javax.xml.transform.TransformerFactory")
+                            || ((name.contains("xerces")) && name.endsWith(".jar"))
+                            || name.endsWith("xalan.properties")
+                            || name.contains("org/apache/xml/serializer")
+                            || name.endsWith("xerces.properties")
+                            || name.endsWith("currency.data")
+                            || name.endsWith("org.apache.xml.dtm.DTMManager")
+                            || name.endsWith("currency.properties")
+                            || name.endsWith(".class")
+                            || name.endsWith("classes")
+                            || name.endsWith("ext")
+                            || name.endsWith(".jar")
+                            || name.endsWith("org.apache.xerces.xni.parser.XMLParserConfiguration")) {
+                        lowSecurity = true;
+                    }
                 }
-            }
-            else if( perm instanceof PropertyPermission)
-            {
-                if( perm.getActions().equals("read"))
-                {
+            } else if (perm instanceof PropertyPermission) {
+                if (perm.getActions().equals("read")) {
                     String name = perm.getName();
 
-                    if( 
-                        name.equals("line.separator")||
-                        name.equals("media-type")||
-                        name.equals("version")||
-                        name.equals("org.apache.xml.dtm.DTMManager")||
-                        name.equals("user.dir")||
-                        name.equals("standalone")||
-                        name.equals("encoding")||
-                        name.equals("omit-xml-declaration")||
-                        name.equals("method")||
-                        name.equals("indent")||
-                        name.startsWith("javax.xml.") || 
-                        name.startsWith("java.home") || 
-                        name.equals("file.separator") || 
-                        name.equals("path.separator") || 
-                        name.contains(".class.path") || 
-                        name.contains("org.apache.xalan")||
-                        name.contains("org/apache/xml") ||
-                        name.contains("xml.apache.org")||
-                        name.contains("java.ext.dirs")||
-                        name.contains("JavaClass.debug")||
-                        name.contains("org.apache.xerces")
-                    )
-                    {
-                        lowSecurity=true;
+                    if (name.equals("line.separator")
+                            || name.equals("media-type")
+                            || name.equals("version")
+                            || name.equals("org.apache.xml.dtm.DTMManager")
+                            || name.equals("user.dir")
+                            || name.equals("standalone")
+                            || name.equals("encoding")
+                            || name.equals("omit-xml-declaration")
+                            || name.equals("method")
+                            || name.equals("indent")
+                            || name.startsWith("javax.xml.")
+                            || name.startsWith("java.home")
+                            || name.equals("file.separator")
+                            || name.equals("path.separator")
+                            || name.contains(".class.path")
+                            || name.contains("org.apache.xalan")
+                            || name.contains("org/apache/xml")
+                            || name.contains("xml.apache.org")
+                            || name.contains("java.ext.dirs")
+                            || name.contains("JavaClass.debug")
+                            || name.contains("org.apache.xerces")) {
+                        lowSecurity = true;
                     }
                 }
-            }            
-            else if( perm instanceof RuntimePermission)
-            {
-                String name=perm.getName();
-                if(
-                    name.equals("readFileDescriptor")||
-                    name.equals("writeFileDescriptor")||
-                    name.equals("accessClassInPackage.sun.text.resources")||
-                    name.equals("getClassLoader")||
-                    name.equals("createClassLoader")
-                )
-                {
-                    lowSecurity=true;
+            } else if (perm instanceof RuntimePermission) {
+                String name = perm.getName();
+                if (name.equals("readFileDescriptor")
+                        || name.equals("writeFileDescriptor")
+                        || name.equals("accessClassInPackage.sun.text.resources")
+                        || name.equals("getClassLoader")
+                        || name.equals("createClassLoader")) {
+                    lowSecurity = true;
                 }
+            } else if (perm instanceof ReflectPermission) {
+                lowSecurity = true;
             }
-            else if( perm instanceof ReflectPermission)
-            {
-                lowSecurity=true;
-            }
-            
-            if( lowSecurity == false)
-            {
-                String msg="may not call from user script (perm: " + perm + " name: " + perm.getName() + " action: " + perm.getActions() + ")";
-                LOGGER.error( "SECURITY: " + msg);
-                SecurityException mayNotCallFromUserScript= new SecurityException( msg);
+
+            if (lowSecurity == false) {
+                String msg = "may not call from XLST (perm: " + perm + " name: " + perm.getName() + " action: " + perm.getActions() + " instanceof: " + perm.getClass().getName() + ")";
+                LOGGER.error("SECURITY: " + msg);
+                SecurityException mayNotCallFromUserScript = new SecurityException(msg);
                 throw mayNotCallFromUserScript;
             }
         }
@@ -294,10 +239,12 @@ public final class ServerSecurityManager extends SecurityManager
 
     /**
      * All other permissions are allowed.
+     *
+     * @param perm the permission to check
+     * @param context the context
      */
     @Override
-    public void checkPermission(final @Nonnull Permission perm, Object context)
-    {
+    public void checkPermission(final @Nonnull Permission perm, Object context) {
         checkPermission(perm);
     }
 }

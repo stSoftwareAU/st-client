@@ -36,7 +36,6 @@ package com.aspc.remote.jdbc.impl;
 import com.aspc.remote.jdbc.SoapResultSet;
 import com.aspc.remote.jdbc.SoapSQLException;
 import com.aspc.remote.util.misc.CLogger;
-import com.aspc.remote.util.misc.StringUtilities;
 import com.aspc.remote.util.misc.TimeUtil;
 import java.io.InputStream;
 import java.io.Reader;
@@ -93,22 +92,15 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     @Override
     public ResultSet executeQuery() throws SQLException
     {
-        String tempSQL = null;
-        try
-        {
-            tempSQL = parseSQL();
-        }
-        catch(IndexOutOfBoundsException e)
-        {
-            throw new SQLException("Less parameters than expected");
-        }
+        String tempSQL;
+        tempSQL = parseSQL();
 
         resultSet = (SoapResultSet)iExecuteQuery(tempSQL);//NOPMD
 
         return resultSet;
     }
 
-    private String parseSQL()
+    private String parseSQL() throws SQLException
     {
         StringBuilder buffer = new StringBuilder();
 
@@ -121,6 +113,9 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
 
             if( token.equals( "?"))
             {
+                if( parameters.size() <= arg){
+                    throw new SQLException("only " + parameters.size() + " arguments, requested " + (arg +1));
+                }
                 String value = parameters.get( arg );
                 arg++;
                 buffer.append( value);
@@ -145,7 +140,7 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
         {
             tempSQL=parseSQL();
         }
-        catch(Exception e)
+        catch(SQLException e)
         {
             LOGGER.warn( sql + "\n" + parameters, e);
             throw new SQLException("error parsing SQL", e);
@@ -250,7 +245,6 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     @Override
     public void setBytes(int parameterIndex, byte[] x) throws SQLException
     {
-        //throw new SoapSQLException("Not supported yet.");
         if(x == null)
         {
             put(parameterIndex,"''");
@@ -272,7 +266,6 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     @Override
     public void setTime(int parameterIndex, Time x) throws SQLException
     {
-        //throw new SoapSQLException("Not supported yet.");
         put(parameterIndex, "'" + TimeUtil.format("dd MMM yyyy HH:mm:ss", x, TimeZone.getDefault()) + "'");
     }
 
@@ -321,7 +314,6 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     public void setObject(int parameterIndex, Object x, int targetSqlType,
             int scale) throws SQLException
     {
-        //throw new SoapSQLException("Not supported yet.");
         switch(targetSqlType)
         {
             case Types.DECIMAL:
@@ -366,7 +358,6 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     @Override
     public void setObject(int parameterIndex, Object x, int targetSqlType) throws SQLException
     {
-        //throw new SoapSQLException("Not supported yet.");
         switch(targetSqlType)
         {
             case Types.TINYINT:
@@ -566,7 +557,6 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
     @Override
     public void setObject(int parameterIndex, Object x) throws SQLException
     {
-        //throw new SoapSQLException("Not supported yet.");
         if(x == null)
         {
             setNull(parameterIndex,Types.CHAR);
@@ -638,7 +628,7 @@ public class ExecutorPreparedStatement extends ExecutorStatement implements Prep
         {
             tempSQL = parseSQL();
         }
-        catch(Exception e)
+        catch(SQLException e)
         {
             LOGGER.warn( sql + "\n" + parameters, e);
             throw new SQLException("error parsing SQL", e);
