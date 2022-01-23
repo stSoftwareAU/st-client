@@ -120,10 +120,10 @@ public abstract class CacheTableTemplate<V> implements MemoryHandler
                 if( c > max) max = c;
             }
 
-            if( LOGGER.isDebugEnabled())
-            {
-                LOGGER.debug( description + ", count=" + tmpCount + ", blank=" + blank+ ", max=" + max+ ", multi=" + multi + ", len=" + tmpData.length );
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                LOGGER.debug( description + ", count=" + tmpCount + ", blank=" + blank+ ", max=" + max+ ", multi=" + multi + ", len=" + tmpData.length );
+//            }
         }
         finally
         {
@@ -674,28 +674,28 @@ public abstract class CacheTableTemplate<V> implements MemoryHandler
                 releasedSize = freed * averageSize;
             }
 
-            if( releasedSize != 0 && LOGGER.isDebugEnabled())
-            {
-                String freedStr = NUMBER_FORMAT.format( freed);
-
-                String holderStr = NUMBER_FORMAT.format( holder);
-
-                double percentCleared = (double)releasedSize/(double)orginalSize;
-
-                String percentStr = PERCENT_FORMAT.format( percentCleared);
-                String requiredStr = PERCENT_FORMAT.format( requiredPercent);
-
-                String previouslyAllocatedStr = NUMBER_FORMAT.format( previouslyAllocated);
-
-                if( LOGGER.isDebugEnabled())
-                {
-                    LOGGER.debug(
-                        "Cleared " + description + " cost: " + cost + " unlinked: " + freedStr +
-                        " of " + previouslyAllocatedStr + "(" + holderStr + ") required: " + requiredStr +
-                        " Released: " + NumUtil.convertMemoryToHumanReadable( releasedSize)+ " " + percentStr
-                    );
-                }
-            }
+//            if( releasedSize != 0 && LOGGER.isDebugEnabled())
+//            {
+//                String freedStr = NUMBER_FORMAT.format( freed);
+//
+//                String holderStr = NUMBER_FORMAT.format( holder);
+//
+//                double percentCleared = (double)releasedSize/(double)orginalSize;
+//
+//                String percentStr = PERCENT_FORMAT.format( percentCleared);
+//                String requiredStr = PERCENT_FORMAT.format( requiredPercent);
+//
+//                String previouslyAllocatedStr = NUMBER_FORMAT.format( previouslyAllocated);
+//
+//                if( LOGGER.isDebugEnabled())
+//                {
+//                    LOGGER.debug(
+//                        "Cleared " + description + " cost: " + cost + " unlinked: " + freedStr +
+//                        " of " + previouslyAllocatedStr + "(" + holderStr + ") required: " + requiredStr +
+//                        " Released: " + NumUtil.convertMemoryToHumanReadable( releasedSize)+ " " + percentStr
+//                    );
+//                }
+//            }
 
             return releasedSize;
         }

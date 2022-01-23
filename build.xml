@@ -101,7 +101,7 @@
             <sysproperty key="MAX_MEMORY" value="${MAX_MEMORY}"/>
 
             <sysproperty key="DISABLE_LAZY_LOAD" value="${DISABLE_LAZY_LOAD}"/>
-            <sysproperty key="LOG_PROPERTIES" value="${LOG_PROPERTIES}"/>
+            <sysproperty key="java.util.logging.config.file" value="${LOG_PROPERTIES}"/>
 
             <sysproperty key="SRC_DIR" value="${BASE_DIR}/src/test/java"/>
             <sysproperty key="LOG_DIR" value="${log.dir}"/>

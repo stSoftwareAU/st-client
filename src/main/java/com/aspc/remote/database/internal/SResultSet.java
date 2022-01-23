@@ -48,6 +48,7 @@ import java.util.*;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import org.apache.commons.logging.Log;
 
 /**
@@ -111,6 +112,7 @@ public class SResultSet implements ResultSet
     {
         int holdRow = currentRow;
         Row holdData = currentData;
+        boolean holdIsAfterLastFg=isAfterLastFg;
         try
         {
             StringBuilder buffer = new StringBuilder();
@@ -199,6 +201,7 @@ public class SResultSet implements ResultSet
         {
             currentRow = holdRow;
             currentData = holdData;
+            isAfterLastFg=holdIsAfterLastFg;
         }
     }
 
@@ -314,18 +317,6 @@ public class SResultSet implements ResultSet
     @Override @CheckReturnValue
     public boolean next() throws SQLException
     {
-        if( LOGGER.isDebugEnabled() && loggedOutput == false)
-        {
-            loggedOutput = true;
-            try
-            {
-                LOGGER.debug( formatOutput());
-            }
-            catch( Exception e)
-            {
-                LOGGER.warn( "problem logging output", e);
-            }
-        }
         Row nextRow = fetchRow(currentRow + 1);
 
         if (nextRow == null)
@@ -3739,7 +3730,14 @@ public class SResultSet implements ResultSet
     {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
+    
+    @OverridingMethodsMustInvokeSuper
+    protected void clear()
+    {
+        currentRow          = 0;
+        isAfterLastFg=false;
+    }
+    
     /**
      *
      */
@@ -3759,7 +3757,7 @@ public class SResultSet implements ResultSet
     /**
      *
      */
-    protected int currentRow;
+    private int currentRow;
     /**
      *
      */

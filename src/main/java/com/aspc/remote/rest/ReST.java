@@ -1061,10 +1061,10 @@ public final class ReST
                    throw new RuntimeException( sb.toString(), ex);
                 }
             }
-            if( LOGGER.isDebugEnabled())
-            {
-                LOGGER.debug( "Real URL: " + realURL);
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                LOGGER.debug( "Real URL: " + realURL);
+//            }
             return realURL;
         }
 

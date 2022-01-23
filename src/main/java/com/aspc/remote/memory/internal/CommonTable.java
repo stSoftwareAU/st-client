@@ -236,24 +236,24 @@ public class CommonTable implements SizeOf
         {
             int calculateCapacity = (int)(( newCount + 1000) * 2.5) + 1;
             int pc = ( 100 - (newCount * 100/ oldCapacity));
-            if( LOGGER.isDebugEnabled())
-            {
-                LOGGER.debug(
-                    description + " COMPACTING as counts dropped from " +
-                    oldCount + "->" + newCount + " " + pc +
-                    "% remaining RESIZING TO " +calculateCapacity
-                );
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                LOGGER.debug(
+//                    description + " COMPACTING as counts dropped from " +
+//                    oldCount + "->" + newCount + " " + pc +
+//                    "% remaining RESIZING TO " +calculateCapacity
+//                );
+//            }
             return forceRehash( hash, calculateCapacity, true);
         }
         else if( ignoreCounts == false && newCount < oldCapacity * 0.5f)
         {
-            if( LOGGER.isDebugEnabled())
-            {
-                LOGGER.debug(
-                    description + " did not grow as counts dropped from " + oldCount + "->" + newCount + " " + ( 100 - (newCount * 100/ oldCapacity)) + "% remaining"
-                );
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                LOGGER.debug(
+//                    description + " did not grow as counts dropped from " + oldCount + "->" + newCount + " " + ( 100 - (newCount * 100/ oldCapacity)) + "% remaining"
+//                );
+//            }
         }
         else
         {
@@ -262,15 +262,15 @@ public class CommonTable implements SizeOf
             {
                 LOGGER.warn( description + " count " + newCount + " is more than capacity " + newCapacity + " " + pc + "% remaining" );
             }
-            else
-            {
-                if( LOGGER.isDebugEnabled())
-                {
-                    LOGGER.debug(
-                        description + " count " + newCount + " capacity grown from " + oldCapacity + "->" + newCapacity + " " + pc + "% remaining"
-                    );
-                }
-            }
+//            else
+//            {
+//                if( LOGGER.isDebugEnabled())
+//                {
+//                    LOGGER.debug(
+//                        description + " count " + newCount + " capacity grown from " + oldCapacity + "->" + newCapacity + " " + pc + "% remaining"
+//                    );
+//                }
+//            }
             data = tempArray;
             threshold = (int)( newCapacity * 0.75f);
         }

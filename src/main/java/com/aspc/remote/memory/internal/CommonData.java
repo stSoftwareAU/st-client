@@ -78,10 +78,10 @@ public final class CommonData
             }
             else if( data instanceof NotFoundException)
             {
-                if( LOGGER.isDebugEnabled()==false)
-                {
+//                if( LOGGER.isDebugEnabled()==false)
+//                {
                     data = COMMON_NF;
-                }
+//                }
             }
             else if( data instanceof NullValueException)
             {

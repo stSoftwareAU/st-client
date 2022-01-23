@@ -214,17 +214,17 @@ public class HTMLPanel extends HTMLContainer
 
             String html = buffer.toString();
 
-            if( LOGGER.isDebugEnabled())
-            {
-                try
-                {
-                    writeToFile( html);
-                }
-                catch( IOException e)
-                {
-                    LOGGER.warn( "could not write generated html", e);
-                }
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                try
+//                {
+//                    writeToFile( html);
+//                }
+//                catch( IOException e)
+//                {
+//                    LOGGER.warn( "could not write generated html", e);
+//                }
+//            }
 
             return html;
         }

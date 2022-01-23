@@ -89,7 +89,7 @@
         <dependency org="nu.validator.htmlparser" name="htmlparser" rev="1.4" conf="runtime->master"/>
         <dependency org="javax.xml" name="jaxrpc-api" rev="1.1" conf="runtime->master"/>
         
-        <dependency org="com.sun.mail" name="javax.mail" rev="1.6.0-rc1"/>
+        <dependency org="com.sun.mail" name="javax.mail" rev="1.6.2"/>
 
         <dependency org="commons-cli" name="commons-cli" rev="1.5.0" conf="runtime->master"/>
         <dependency org="com.jcraft" name="jsch" rev="0.1.55" conf="runtime->master"/>

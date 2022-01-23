@@ -442,17 +442,17 @@ public class CacheLongTable<V> extends CacheTableTemplate<V>
 
         if( o instanceof Exception)
         {
-            if( LOGGER.isDebugEnabled())
-            {
-                if( o instanceof NotFoundException)
-                {
-                    throw new NotFoundException( description + " {" + key + "}");
-                }
-                if( o instanceof NullValueException)
-                {
-                    throw new NullValueException( description + " {" + key + "}");
-                }
-            }
+//            if( LOGGER.isDebugEnabled())
+//            {
+//                if( o instanceof NotFoundException)
+//                {
+//                    throw new NotFoundException( description + " {" + key + "}");
+//                }
+//                if( o instanceof NullValueException)
+//                {
+//                    throw new NullValueException( description + " {" + key + "}");
+//                }
+//            }
             throw (Exception)o;
         }
 

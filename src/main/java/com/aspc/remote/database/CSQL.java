@@ -1776,7 +1776,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
     {
         if( inObj == null) return;
 
-        if( LOGGER_TIMINGS_SQL.isDebugEnabled() == false) return;
+        if( true || LOGGER_TIMINGS_SQL.isDebugEnabled() == false) return;
         lap.end();
         String temp = inObj.toString();
 
@@ -1903,7 +1903,7 @@ public final class CSQL extends SResultSet implements ResultsLoader
         }
 
         List<String> threadIds = THREAD_IDS.get();
-        if(threadIds != null && threadIds.size() > 0)
+        if(threadIds != null && !threadIds.isEmpty())
         {
             buffer.append( "\n| ");
             boolean first = true;
@@ -2557,9 +2557,10 @@ public final class CSQL extends SResultSet implements ResultsLoader
         return result;
     }
 
-    private void clear()
+    @Override
+    protected void clear()
     {
-        currentRow          = 0;
+        super.clear();
         rowPage             = null;
         sqlWarning          = null;
         columnKeys          = null;
