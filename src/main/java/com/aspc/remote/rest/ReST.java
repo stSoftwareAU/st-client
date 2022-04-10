@@ -59,6 +59,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -1529,8 +1530,12 @@ public final class ReST
             else if( cause instanceof SocketTimeoutException)
             {
                 explicitStatus=Status.C598_TIMED_OUT_SERVER_NETWORK_READ;
-            }                    
-
+            }
+            else if( cause instanceof ProtocolException)
+            {
+                explicitStatus=Status.C500_SERVER_INTERNAL_ERROR;
+            }
+            
             return explicitStatus;
         }
         
