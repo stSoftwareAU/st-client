@@ -122,7 +122,7 @@
 
         <!-- JDBC --> 
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.16"/>
-        <dependency org="org.postgresql" name="postgresql" rev="42.3.3"/>
+        <dependency org="org.postgresql" name="postgresql" rev="42.2.2"/>
 
         <dependency org="org.hsqldb" name="hsqldb" rev="2.5.1" conf="runtime->master"/>
         
