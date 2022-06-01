@@ -120,6 +120,7 @@ public class TestCheckDigit extends TestCase
         assertFalse( "should be not valid",CheckDigit.validateCheckDigit( "" ) );
         assertFalse( "should be not valid",CheckDigit.validateCheckDigit( " " ) );
         assertFalse( "should be not valid",CheckDigit.validateCheckDigit( null ) );
+        assertFalse( "should be not valid",CheckDigit.validateCheckDigit( "asdf" ) );
     }
     
     /**

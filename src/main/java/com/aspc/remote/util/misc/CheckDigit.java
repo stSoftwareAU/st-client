@@ -90,6 +90,8 @@ public final class CheckDigit
         
         String numbers = stripNonDigit( value );
         
+        if(StringUtilities.isBlank(numbers)) return false;
+        
         int cut = numbers.length() - 1; // the last character
         int check = Character.getNumericValue( numbers.charAt( cut ) );
         numbers = numbers.substring( 0, cut );
