@@ -230,7 +230,7 @@ public final class ServerSecurityManager extends SecurityManager {
 
             if (lowSecurity == false) {
                 String msg = "may not call from XLST (perm: " + perm + " name: " + perm.getName() + " action: " + perm.getActions() + " instanceof: " + perm.getClass().getName() + ")";
-                LOGGER.error("SECURITY: " + msg);
+                LOGGER.warn("SECURITY: " + msg);
                 SecurityException mayNotCallFromUserScript = new SecurityException(msg);
                 throw mayNotCallFromUserScript;
             }
