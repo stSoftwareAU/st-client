@@ -409,7 +409,7 @@ public final class EmailUtil
         env.put("com.sun.jndi.dns.timeout.initial", "5000");    /* quite short... too short? */
         env.put("com.sun.jndi.dns.timeout.retries", "3");
         
-        env.put(Context.PROVIDER_URL, CProperties.getProperty(DNS_PROVIDER_URL, "dns://8.8.8.8"));
+        env.put(Context.PROVIDER_URL, CProperties.getProperty(DNS_PROVIDER_URL, "dns://8.8.8.8 dns://8.8.4.4"));
         
         InitialDirContext ictx = new InitialDirContext( env);
 
