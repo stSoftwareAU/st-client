@@ -269,6 +269,30 @@ public final class Response
     }
     
     /**
+     * Get the content as a JSONArray. 
+     * 
+     * @return the content.
+     * @throws IOException problem reading. 
+     */
+    @CheckReturnValue @Nonnull
+    public JSONArray getContentAsJSONArray() throws IOException
+    {
+        String text=getContentAsString();
+        if( StringUtilities.isBlank(text))
+        {
+            return new JSONArray();
+        }
+        else if( text.startsWith("["))
+        {
+            return new JSONArray( text);
+        }        
+        else
+        {
+            throw new FileNotFoundException(text);
+        }
+    }
+    
+    /**
      * Get the content as a file. 
      * 
      * @return the content.
