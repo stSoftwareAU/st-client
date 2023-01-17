@@ -178,6 +178,10 @@ public final class FileUtil
             {
                 type="application/msword";
             }
+            else if( name.endsWith(".json"))
+            {
+                type = "application/json";
+            }
             else if( name.endsWith(".docx"))
             {
                 type="application/vnd.openxmlformats-officedocument.wordprocessingml.document";
@@ -1102,6 +1106,19 @@ public final class FileUtil
         }
 
         replaceTargetWithTempFile( tempFile, targetFile);
+    }
+    
+    /**
+     * write the content to the file. The file will be overridden if it exists
+     * @param file file to write
+     * @param content string content
+     * @throws IOException 
+     */
+    public static void writeFile(final @Nonnull File file, final @Nonnull String content) throws IOException
+    {
+        try (FileWriter w = new FileWriter( file)) {
+            w.write(content);
+        }
     }
 
     /**

@@ -78,6 +78,7 @@ import javax.annotation.*;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLProtocolException;
 import org.apache.commons.logging.Log;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 
 /**
@@ -151,6 +152,7 @@ public final class ReST
         private Method method=null;
         private File body = null;
         private Document bodyXML=null;
+        private JSONObject bodyJSON = null;
         private boolean methodInUrl;
         private boolean disableURLLengthCheck = false;
         private boolean enableValidateCharactersInURL;
@@ -494,6 +496,16 @@ public final class ReST
                 throw new InvalidDataException("body is not allowed for method GET");
             }
             this.bodyXML = bodyXML;
+            return this;
+        }
+        
+        public @Nonnull Builder setBody(final @Nullable JSONObject bodyJSON) throws InvalidDataException
+        {
+            if(method == Method.GET && bodyJSON != null)
+            {
+                throw new InvalidDataException("body is not allowed for method GET");
+            }
+            this.bodyJSON = bodyJSON;
             return this;
         }
         
@@ -1566,6 +1578,12 @@ public final class ReST
                 {
                     tempFile=File.createTempFile("rest",".xml", FileUtil.makeQuarantineDirectory());
                     DocumentUtil.writeDocument(bodyXML, tempFile);
+                    tmpBody=tempFile;
+                }
+                if( bodyJSON!=null)
+                {
+                    tempFile=File.createTempFile("rest",".json", FileUtil.makeQuarantineDirectory());
+                    FileUtil.writeFile(tempFile, bodyJSON.toString());
                     tmpBody=tempFile;
                 }
                 int callTimeout=Math.max(Math.max(timeoutMs, Math.max( staleBlockMs, maxBlockMs)),0);
