@@ -117,9 +117,21 @@ public class TestStatusReference extends TestCase
                 }
 //                Response r = ReST.builder(url).setMinCachePeriod("31 days").setAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").getResponse();
                 Response r = ReST.builder(url).getResponse();
+                int attempt = 0;
+                while(r.status.code == 403)
+                {
+                    if(attempt > 10)
+                    {
+                        break;
+                    }
+                    attempt++;
+                    LOGGER.info("Status " + status.code + ": " + url + " status: " + r.status + ", retrying " + attempt + "...");
+                    Thread.sleep(1000);
+                    r = ReST.builder(url).getResponse();
+                }
                 if( r.status.isError())
                 {
-                    fail( url + " status: " + r.status);
+                    fail( "Status " + status.code + ": " + url + " status: " + r.status);
                 }
 
             }
