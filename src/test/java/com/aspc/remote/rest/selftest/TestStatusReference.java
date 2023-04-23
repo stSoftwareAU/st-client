@@ -38,6 +38,9 @@ import com.aspc.remote.rest.Response;
 import com.aspc.remote.rest.Status;
 import org.apache.commons.logging.Log;
 import com.aspc.remote.util.misc.CLogger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -92,8 +95,14 @@ public class TestStatusReference extends TestCase
      */
     public void testCheckReferenceIsValid() throws Exception
     {
-        for( Status status:Status.values())
+        HashSet<String> testedURL = new HashSet<>();
+        Status[] array = Status.values();
+        ArrayList<Status> statuses = new ArrayList<>(Arrays.asList(array));
+        while(statuses.size() > 0)
         {
+            int i = (int)(statuses.size() * Math.random());
+            Status status = statuses.get(i);
+            statuses.remove(i);
             if(status == Status.C420_ENHANCE_YOUR_CALM && DBTestUnit.hideKnownErrors())
             {
                 //420 reference page is 404 now... https://developer.twitter.com/en/docs/response-codes
@@ -115,10 +124,18 @@ public class TestStatusReference extends TestCase
                         continue;
                     }
                 }
+                if(testedURL.contains(url))
+                {
+                    LOGGER.info("status " + status.code + " URL " + url + " has been tested successfully, skip it now");
+                    continue;
+                }
+                LOGGER.info("testing status " + status.code + " URL: " + url);
 //                Response r = ReST.builder(url).setMinCachePeriod("31 days").setAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36").getResponse();
-                Response r = ReST.builder(url).getResponse();
+                Response r = ReST.builder(url)
+                        .setAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 13_3_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36") //chrome 112 on macOS
+                        .getResponse();
                 int attempt = 0;
-                while(r.status.code == 403)
+                while(r.status.code == 403 || r.status.code == 429)
                 {
                     if(attempt > 10)
                     {
@@ -126,14 +143,27 @@ public class TestStatusReference extends TestCase
                     }
                     attempt++;
                     LOGGER.info("Status " + status.code + ": " + url + " status: " + r.status + ", retrying " + attempt + "...");
-                    Thread.sleep(1000);
+                    long sleep = 1000;
+                    if(r.status.code == 429)
+                    {
+                        sleep += attempt * 1000;
+                    }
+                    Thread.sleep(sleep);
                     r = ReST.builder(url).getResponse();
                 }
-                if( r.status.isError())
+                if(r.status.isError())
                 {
-                    fail( "Status " + status.code + ": " + url + " status: " + r.status);
+                    if(r.status.code != 429)
+                    {
+                        fail( "Status " + status.code + ": " + url + " status: " + r.status);
+                    }
+                    else
+                    {
+                        //skip the check for Too Many Requests error
+                        LOGGER.info("Skip Status " + status.code + ": " + url + " status: " + r.status + " because of too many requests error");
+                    }
                 }
-
+                testedURL.add(url);
             }
         }
 
