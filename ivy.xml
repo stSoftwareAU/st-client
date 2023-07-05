@@ -211,6 +211,6 @@
         <!-- https://mvnrepository.com/artifact/com.tectonica/jonix -->
 
 <dependency org="com.tectonica" name="jonix" rev="2022-11"/>
-
+<!--<dependency org="com.tectonica" name="jonix" rev="2023-05"/>-->
     </dependencies>
 </ivy-module>
