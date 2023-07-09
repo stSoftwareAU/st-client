@@ -201,7 +201,7 @@
         <dependency org="javax.xml.soap" name="javax.xml.soap-api" rev="1.4.0"/>
         <dependency org="javax.jws" name="javax.jws-api" rev="1.1"/>
 
-        <dependency org="com.github.stSoftwareAU" name="st-sign-url" rev="1.1.5">
+        <dependency org="com.github.stSoftwareAU" name="st-sign-url" rev="1.1.6">
             <exclude module="st-client"/>
             <exclude module="junit"/>
         </dependency>
