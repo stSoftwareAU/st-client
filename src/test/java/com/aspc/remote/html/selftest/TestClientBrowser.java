@@ -67,7 +67,7 @@ public class TestClientBrowser extends TestCase
     public static void main(String[] args)
     {
         Test test=suite();
-//        test =TestSuite.createTest(TestClientBrowser.class, "testIsNOTIE");
+//        test =TestSuite.createTest(TestClientBrowser.class, "testIsWebCrawler");
         TestRunner.run(test);
     }
 
@@ -470,6 +470,7 @@ public class TestClientBrowser extends TestCase
     public void testIsWebCrawler() throws Exception
     {
         String agents[] = {
+            "MOZILLA/5.0 (LINUX; ANDROID 5.0) APPLEWEBKIT/537.36 (KHTML, LIKE GECKO) MOBILE SAFARI/537.36 (COMPATIBLE; BYTESPIDER; SPIDER-FEEDBACK@BYTEDANCE.COM)",
             "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
             "Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)",
             "Googlebot/2.1 (+http://www.googlebot.com/bot.html)",

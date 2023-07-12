@@ -135,7 +135,7 @@ public class ClientBrowser
         Pattern.compile(".*webcrawler.*", Pattern.CASE_INSENSITIVE),
         Pattern.compile(".*Mediapartners-Google.*", Pattern.CASE_INSENSITIVE),
         Pattern.compile(".* Girafabot;.*", Pattern.CASE_INSENSITIVE),
-        
+        Pattern.compile(".* BYTESPIDER;.*")
     };
     @SuppressWarnings("PublicInnerClass")
     public static enum PLUGIN
@@ -232,9 +232,7 @@ public class ClientBrowser
     @CheckReturnValue
     public boolean supportsP3P()
     {
-        if( isBrowserIE()) return true;
-        
-        return false;
+        return isBrowserIE();
     }
     
     /**
@@ -477,6 +475,11 @@ public class ClientBrowser
                     if( end != -1)
                     {
                         String tmpVersion = agent.substring(start, end);
+                        pos = tmpVersion.indexOf(")");
+                        if( pos != -1)
+                        {
+                            tmpVersion = tmpVersion.substring(0, pos);
+                        }
                         pos = tmpVersion.indexOf(".");
                         if( pos != -1)
                         {
@@ -743,7 +746,7 @@ public class ClientBrowser
                                     temp=temp.substring(0, pos2);
                                 }
                             }
-                            browserVersion = (new Double( temp ));
+                            browserVersion = Double.parseDouble(temp);
                         }
 
                         if( name.equals( BROWSER_NETSCAPE) && browserVersion >= 5 && browserVersion <= 6)
@@ -924,7 +927,7 @@ public class ClientBrowser
         }
         if( StringUtilities.isBlank(temp)== false)
         {
-            browserVersion = (new Double( temp ));
+            browserVersion = Double.parseDouble(temp);
         }
     }
 
@@ -1290,11 +1293,7 @@ public class ClientBrowser
         {
             return false;
         }
-        if(isBrowserIE() && getBrowserVersion() < 9)
-        {
-            return false;
-        }
-        return true;
+        return !(isBrowserIE() && getBrowserVersion() < 9);
     }
 
     /**
@@ -1343,14 +1342,7 @@ public class ClientBrowser
     @CheckReturnValue
     public boolean hasEventStopPropagation()
     {
-        if( isBrowserIE() && getBrowserVersion() <9)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return !(isBrowserIE() && getBrowserVersion() <9);
     }
             
     /**
@@ -1364,11 +1356,7 @@ public class ClientBrowser
     {
         if( DISABLE_CDN) return false;
         
-        if( isBrowserHTTPUnit())
-        {
-            return false;
-        }
-        return true;
+        return !isBrowserHTTPUnit();
     }
     
     /**
@@ -1381,12 +1369,7 @@ public class ClientBrowser
     @CheckReturnValue
     public boolean canHandleDisabledInput()
     {
-        if( isBrowserFirefox())
-        {
-            return false;
-        }
-        
-        return true;
+        return !isBrowserFirefox();
     }
     
     /**
