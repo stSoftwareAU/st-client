@@ -33,6 +33,7 @@
  */
 package com.aspc.remote.util.misc;
 
+import org.apache.commons.logging.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -40,7 +41,7 @@ import java.util.StringTokenizer;
 import javax.annotation.CheckReturnValue;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.Log;
 
 /**
  *  Allows a properties file before the properties are required
@@ -67,19 +68,19 @@ public final class CProperties
      * location of properties file
      */
     public static final String PROPERTY_PROP_FILE="ST_PROPERTIES";
-    
+
     /**
      * cservlet request timeout
      */
     public static final String PROPERTY_REQUEST_TIMEOUT="REQUEST_TIMEOUT";
 
     private static final Log LOGGER = CLogger.getLog( "com.aspc.remote.util.misc.CProperties");//#LOGGER-NOPMD
-    
+
     private CProperties()
     {
 
     }
- 
+
     /**
      * Has this module been disabled.
      * @param module The module to check
@@ -148,8 +149,8 @@ public final class CProperties
 
         return result;
     }
-    
-    
+
+
      /**
      * is Mac?
      *
@@ -168,7 +169,7 @@ public final class CProperties
 
         return result;
     }
-    
+
 
     /**
      * Home directory path property name
@@ -200,7 +201,7 @@ public final class CProperties
          assert StringUtilities.notBlank(name);
          return System.getProperty(name);
      }
-     
+
      /**
      * Return specified property value.
      * @param name name of property
@@ -214,10 +215,10 @@ public final class CProperties
          {
              return "";
          }
-         
+
          return value;
      }
-      
+
      /**
      * Return specified property value.
      * @param name name of property
@@ -229,16 +230,16 @@ public final class CProperties
      {
          if( name==null) throw new IllegalArgumentException("name parameter is mandatory");
          if( defaultValue==null) throw new IllegalArgumentException("defaultValue parameter is mandatory");
-         
+
          String value=System.getProperty(name);
          if( StringUtilities.isBlank(value))
          {
              return defaultValue;
          }
-         
+
          return value;
      }
-     
+
      /**
      * Return specified property value.
      * @param name name of property
@@ -294,7 +295,7 @@ public final class CProperties
                 throw new IOException( "does not exist: " + propFile);
             }
         }
-        
+
         File home = new File(getHomeDir());
         if( home.isDirectory())
         {
@@ -309,9 +310,9 @@ public final class CProperties
                         System.getProperties().load(in);
                     }
                 }
-                
+
                 String appName=System.getProperty(CUtilities.PROPERTY_APP_NAME);
-                
+
                 if( StringUtilities.notBlank(appName))
                 {
                     File appProperties = new File(confDIR, appName + ".properties");
@@ -324,7 +325,7 @@ public final class CProperties
                     }
                 }
             }
-//            else 
+//            else
 //            {
 //                LOGGER.info( "conf directory doesn't exist: " + confDIR);
 //            }
