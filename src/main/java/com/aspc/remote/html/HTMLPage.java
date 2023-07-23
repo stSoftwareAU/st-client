@@ -1202,6 +1202,7 @@ public class HTMLPage extends HTMLPanel
         super.iGenerate(browser,buffer);
     }
 
+    
     /**
      *
      * @param buffer
@@ -2169,7 +2170,7 @@ public class HTMLPage extends HTMLPanel
 
         makeListOfEvents( list);
 
-        if( list.size() > 0)
+        if( !list.isEmpty())
         {
             needed = true;
         }
