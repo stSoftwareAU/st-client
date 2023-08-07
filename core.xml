@@ -251,31 +251,8 @@
         <delete file="${__hprof_file}" failonerror="false"/>-->
         
         <!--<mkdir dir="${LOG_DIR}/gc"/>-->
-        
-        <!--
-        Crash on Out Of Memory Error 
-        https://bugs.openjdk.java.net/browse/JDK-8138745
-        -->
-        <condition property="_crash_on_oome" value="-XX:+CrashOnOutOfMemoryError ">
-           
-           <scriptcondition language="javascript" value="false">
-               var v=project.getProperty("java.version");
-               
-               if( /1\.8\.0_[0-9]+/.test( v))
-               {
-                 var b=v.substring( v.lastIndexOf("_") + 1);
-                 if( b >= 92)
-                 {
-                    self.setValue(true);
-                 }
-               }
-               else
-               {
-                 self.setValue( true);
-               }
-            </scriptcondition>
-        </condition>
-        <property name="_crash_on_oome" value=""/>
+       
+        <property name="_crash_on_oome" value="-XX:+CrashOnOutOfMemoryError "/>
         <property name="jvm.email.oncrash" value="true"/>
         <property name="crash.mail.list" value="developers@stsoftware.com.au"/>
 

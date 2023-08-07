@@ -62,13 +62,14 @@
     <!--<target name="test">-->
         <property name="test.threads" value="4"/>
         <property name="test.package" value="com/**"/>
-        <property name="_test_std_ex" value="**/*$*"/>
+        <property name="_test_std_ex" value="${test.excludes},**/*$*"/>
 
         <property name="test.xml.dir" value="${BASE_DIR}/tests/xml"/>
         <mkdir dir="${test.xml.dir}"/>
         
         <!-- TESTING only-->
-        <echo>TEST CLASSPATH: ${test.classpath}</echo>
+        <echo>TEST CLASSPATH (standalone): ${test.classpath}</echo>
+        <echo>TEST Excludes: ${test.excludes}</echo>
 
         <!-- timeout after 6 hours -->
         <junit
