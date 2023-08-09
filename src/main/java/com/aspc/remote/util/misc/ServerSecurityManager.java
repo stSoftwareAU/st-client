@@ -133,17 +133,20 @@ public final class ServerSecurityManager extends SecurityManager {
                 lowSecurity = true;
             } else if (perm instanceof RuntimePermission) {
                 String name = perm.getName();
-                if (name.equalsIgnoreCase("nashorn.createGlobal")
-                        || name.equals("createClassLoader")
-                        || name.equals("getClassLoader")
-                        || name.startsWith("accessClassInPackage.sun.reflect")
-                        || name.startsWith("accessClassInPackage.jdk.nashorn.")
-                        || name.startsWith("accessClassInPackage.sun.text.")
-                        || name.startsWith("accessClassInPackage.sun.util.resources")
-                        || name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm")
-                        || name.startsWith("accessClassInPackage.jdk.internal.misc")
-                        || name.equals("accessSystemModules")
-                        || name.equals("accessDeclaredMembers")) {
+                if (
+                    name.equalsIgnoreCase("nashorn.createGlobal") ||
+                    name.equals("createClassLoader") ||
+                    name.equals("getClassLoader") ||
+                    name.equals("accessClassInPackage.jdk.internal.reflect") ||
+                    name.startsWith("accessClassInPackage.sun.reflect") ||
+                    name.startsWith("accessClassInPackage.jdk.nashorn.") ||
+                    name.startsWith("accessClassInPackage.sun.text.") ||
+                    name.startsWith("accessClassInPackage.sun.util.resources") ||
+                    name.startsWith("accessClassInPackage.jdk.internal.org.objectweb.asm") ||
+                    name.startsWith("accessClassInPackage.jdk.internal.misc") ||
+                    name.equals("accessSystemModules") ||
+                    name.equals("accessDeclaredMembers")
+                ) {
                     lowSecurity = true;
                 }
             } else {

@@ -1009,7 +1009,7 @@ public final class MemoryManager
         max = getTotalMemory(heapMemoryUsage);
         free  = getFreeMemory(heapMemoryUsage);
 
-        float percent = (float)free / (float)max;
+        float percent = (float)free / (float)(max>free?max:free);
                 
         assert percent >=0 && percent <=1: "percentage out of range was: " + PF.format(percent);
 
