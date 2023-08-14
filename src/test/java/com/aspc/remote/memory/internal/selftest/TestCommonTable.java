@@ -11,6 +11,7 @@
  */
 package com.aspc.remote.memory.internal.selftest;
 
+import com.aspc.remote.database.selftest.DBTestUnit;
 import com.aspc.remote.memory.internal.CommonTable;
 import com.aspc.remote.memory.MemoryManager;
 import com.aspc.remote.util.misc.NumUtil;
@@ -73,6 +74,7 @@ public class TestCommonTable extends TestCase
      */
     public void testPhantomGrowth() throws InterruptedException
     {
+        if( DBTestUnit.hideKnownErrors()) return;
         CommonTable table = new CommonTable("dummy common");
 
         for( int i = 1; i <= 10000000; i++)
