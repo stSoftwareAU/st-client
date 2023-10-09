@@ -42,8 +42,10 @@ import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -391,7 +393,9 @@ public final class FileUtil
     @CheckReturnValue @Nonnull
     public static File makeQuarantineDirectory() throws IOException
     {
-        File dir = new File( FileUtil.getCachePath() + "quarantine");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy/MMM");
+        String path=FileUtil.getCachePath() + "quarantine/" + sdf.format(new Date());
+        File dir = new File( path);
         mkdirs(dir);
         
         return dir;
@@ -1621,6 +1625,7 @@ public final class FileUtil
      * @param inFile the file to compress
      * @throws Exception failure to compress the file
      */
+    @SuppressWarnings("ThrowFromFinallyBlock")
     public static void compressFile( final @Nonnull File inFile, final @Nonnull File targetFile) throws Exception
     {
         File tempFile = File.createTempFile( targetFile.getName(), "compress", targetFile.getParentFile());
