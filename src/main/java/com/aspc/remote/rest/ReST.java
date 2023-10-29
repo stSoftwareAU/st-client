@@ -1425,7 +1425,7 @@ public final class ReST
                                 rb.setRedirection(rr.redirection);
                         }
                         rr = rb.make();
-                        LOGGER.info( "prefetch next version due in " + TimeUtil.getDiff(nowTime, expireTS) + " for " + realURL  );
+                        LOGGER.debug( "prefetch next version due in " + TimeUtil.getDiff(nowTime, expireTS) + " for " + realURL  );
                     }
                     else
                     {
