@@ -32,6 +32,7 @@
         </dependency>
         <dependency org="org.apache.activemq" name="activemq-client" rev="5.16.7">
             <exclude module="slf4j-log4j12"/>
+            <exclude module="slf4j-reload4j"/>
         </dependency>
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="runtime->master"/>
         <dependency org="org.slf4j" name="slf4j-jdk14" rev="1.7.32" conf="runtime->master"/>
