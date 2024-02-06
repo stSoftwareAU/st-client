@@ -137,7 +137,7 @@ public class TestImageResize extends TestCase
 
     public void testRaster()throws Exception 
     {
-        File srcFile=load( "smeg-raster", "https://crm.smegateway.com.au/docs/web/images%20from%20Gaye/Dee-Logos/Hifrasergroup_Spot.jpg");
+        File srcFile=load( "smeg-raster", "https://smegateway.stsoftware.com.au/docs/web/images%20from%20Gaye/Dee-Logos/Hifrasergroup_Spot.jpg");
         
         //ImageIO.read(srcFile);
         process( srcFile, 50, 50,"", -1, -1,-1, -1);
@@ -171,7 +171,7 @@ public class TestImageResize extends TestCase
      */
     public void testHandleInconsistent2()throws Exception
     {
-        File srcFile=load( "smeg-bs", "http://crm.smegateway.com.au/docs/web/smeg/capabilities/BUSINESS%20SUPPORT.jpeg");
+        File srcFile=load( "smeg-bs", "http://smegateway.stsoftware.com.au/docs/web/smeg/capabilities/BUSINESS%20SUPPORT.jpeg");
         process( srcFile, 150, 150,"", -1, -1,-1, -1);
     }
     
