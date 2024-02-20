@@ -596,8 +596,9 @@ public class RestCallHTTP extends RestCall
             
             /**
              * AWS S3 sends back zero length response with no content type.
+             * ContentType could be null, we set the default ContentType to the text/plain
              */
-            if( mimeType==null && data.isEmpty())
+            if( mimeType==null)
             {
                 mimeType=ContentType.TEXT_PLAIN.mimeType;
             }
