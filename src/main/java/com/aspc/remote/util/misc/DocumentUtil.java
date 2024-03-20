@@ -355,7 +355,7 @@ public final class DocumentUtil
         {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 
-            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", "2");
+            transformer.setOutputProperty("{http://xml.apache.org/xalan}indent-amount", String.valueOf(indent));
         }
 
         transformer.transform(source, result);
@@ -489,6 +489,22 @@ public final class DocumentUtil
     {
         StringWriter w = new StringWriter();
         writeNode(doc, w, 0);
+
+        String data = w.toString();
+
+        return data;
+    }
+    
+    /**
+     * convert a node to a string
+     * @param node the node to convert
+     * @return The XML string
+     * @throws Exception 
+     */
+    public static String nodeToString(final @Nonnull Node node) throws Exception
+    {
+        StringWriter w = new StringWriter();
+        writeNode(node, w, 0);
 
         String data = w.toString();
 
