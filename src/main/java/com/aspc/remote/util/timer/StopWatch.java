@@ -266,6 +266,12 @@ public final class StopWatch
         
         return endNs;
     }
+    
+    public void cancel()
+    {
+        lap = null;
+    }
+    
     private static final long NS_FORMAT_LIMIT=5L*1000L;
     private static final long US_FORMAT_LIMIT=5L*1000L*1000L;
     
